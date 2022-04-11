@@ -10,6 +10,10 @@ class Products with ChangeNotifier {
     return [..._items];
   }
 
+  Product findById(String id){
+    return _items.firstWhere((prod) => prod.id == id);
+  }
+
   Future<void> fetchAndSendProducts() async {
     var url = Uri.parse(
         'https://flutter-update-89c84-default-rtdb.firebaseio.com/products.json');
