@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/models/product.dart';
+import 'package:ecommerce_app/widgets/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,9 @@ class ProductItem extends StatelessWidget {
     return InkWell(
       highlightColor: Colors.transparent,
       splashColor: Theme.of(context).accentColor.withOpacity(0.08),
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).pushNamed(ProductDetailWidget.routeName,arguments: product.id);
+      },
       child: Container(
         decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,

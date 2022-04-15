@@ -1,17 +1,19 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/providers/products.dart';
+import 'package:ecommerce_app/widgets/drawer_widget.dart';
 import 'package:ecommerce_app/widgets/product_grib.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const routeName ='/home';
   const HomeScreen({Key? key}) : super(key: key);
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final GlobalKey<ScaffoldState>_scafoldKey= GlobalKey<ScaffoldState>();
   @override
   void didChangeDependencies() {
     Provider.of<Products>(context).fetchAndSendProducts();
@@ -21,6 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scafoldKey,
+      drawer: DrawerWidget(),
       appBar: AppBar(
         title: Text(
           'Home',
@@ -28,12 +32,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         leading: IconButton(
           icon: Icon(Icons.sort),
-          onPressed: () {},
+          onPressed: () => _scafoldKey.currentState!.openDrawer(),
+          color: Theme.of(context).hintColor,
         ),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.shopping_cart),
+            icon: Icon(UiIcons.shopping_cart),
+            color: Theme.of(context).hintColor,
           ),
           Container(
             width: 30,
@@ -46,8 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {},
               child: CircleAvatar(
                 backgroundImage: NetworkImage(
-                  'https://toppng.com/uploads/preview/vu-thi-ha-user-pro-icon-115534024853ae3gswzwd.png',
-                ),
+                        'https://1.bp.blogspot.com/-wIaKEkcCTTk/XqjcK5-2a8I/AAAAAAAAk4k/opJSFhhMK2MXq51T3fXX8TaMUSW78alSgCEwYBhgL/s1600/hinh-nen-girl-xinh-4k-nu-cuoi-xinh-xan.jpg'),
                 // child: Image.network(
                 //   'https://toppng.com/uploads/preview/vu-thi-ha-user-pro-icon-115534024853ae3gswzwd.png',
                 //   fit: BoxFit.cover,
@@ -62,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Theme.of(context).accentColor,
         backgroundColor: Colors.transparent,
+        unselectedItemColor: Theme.of(context).hintColor.withOpacity(1),
         items: [
           BottomNavigationBarItem(
             icon: Icon(UiIcons.bell),

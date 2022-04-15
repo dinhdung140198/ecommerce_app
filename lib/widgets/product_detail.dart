@@ -1,22 +1,63 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/providers/products.dart';
+import 'package:ecommerce_app/widgets/details_tab_widget.dart';
+import 'package:ecommerce_app/widgets/information_tab_wiget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailWidget extends StatefulWidget {
+  static const routeName = '/product-detail';
   const ProductDetailWidget({Key? key}) : super(key: key);
 
   @override
   State<ProductDetailWidget> createState() => _ProductDetailWidgetState();
 }
 
-class _ProductDetailWidgetState extends State<ProductDetailWidget> {
+class _ProductDetailWidgetState extends State<ProductDetailWidget>
+    with TickerProviderStateMixin {
   TabController? _tabController;
+  int _tabIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _tabController = TabController(
+      length: 3,
+      initialIndex: _tabIndex,
+      vsync: this,
+    );
+    _tabController!.addListener(_handleTabSelection);
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _tabController!.dispose();
+    super.dispose();
+  }
+
+  _handleTabSelection() {
+    if (_tabController!.indexIsChanging) {
+      setState(() {
+        _tabIndex = _tabController!.index;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final productId = ModalRoute.of(context)!.settings.arguments as String;
-    final loadProduct = Provider.of<Products>(context).findById(productId);
+    final productId = ModalRoute.of(
+      context,
+    )!
+        .settings
+        .arguments as String;
+    final loadProduct = Provider.of<Products>(
+      context,
+    ).findById(productId);
     return Scaffold(
       key: _scaffoldkey,
       bottomNavigationBar: Container(
@@ -29,29 +70,35 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                   blurRadius: 5,
                   offset: Offset(0, -2)),
             ]),
-        child: Row(children: [
-          Expanded(
-              child: FlatButton(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+          FlatButton(
+            height: 50,
+            minWidth: 55,
             onPressed: () {},
             child: Icon(UiIcons.heart, color: Theme.of(context).primaryColor),
             padding: EdgeInsets.symmetric(vertical: 14),
             color: Theme.of(context).accentColor,
             shape: StadiumBorder(),
-          )),
+          ),
           SizedBox(
             width: 10,
           ),
           FlatButton(
+              shape: StadiumBorder(),
+              color: Theme.of(context).accentColor,
               onPressed: () {},
               child: Container(
                 child: Row(
                   children: [
-                    Expanded(
-                      child: Text(
-                        'Add to Cart',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(color: Theme.of(context).primaryColor),
-                      ),
+                    Text(
+                      'Add to Cart',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
+                    SizedBox(
+                      width: 50,
                     ),
                     IconButton(
                       onPressed: () {},
@@ -154,10 +201,106 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                   )),
             ),
             bottom: TabBar(
-              tabs: [],
+              controller: _tabController,
+              indicatorSize: TabBarIndicatorSize.label,
+              labelPadding: EdgeInsets.symmetric(horizontal: 10),
+              labelColor: Theme.of(context).primaryColor,
+              indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: Theme.of(context).accentColor),
+              tabs: [
+                Tab(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(
+                            color:
+                                Theme.of(context).accentColor.withOpacity(0.2),
+                            width: 1)),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text('Product'),
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(
+                            color:
+                                Theme.of(context).accentColor.withOpacity(0.2),
+                            width: 1)),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text('Detail'),
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(
+                            color:
+                                Theme.of(context).accentColor.withOpacity(0.2),
+                            width: 1)),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text('Review'),
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
-          SliverList(delegate: SliverChildDelegate([]))
+          SliverList(
+              delegate: SliverChildListDelegate([
+            Offstage(
+              offstage: 0 != _tabIndex,
+              child: Column(
+                children: [
+                  InformationTabWiget(
+                      name: loadProduct.name, price: loadProduct.price)
+                ],
+              ),
+            ),
+            Offstage(
+              offstage: 1 != _tabIndex,
+              child: Column(
+                children: [
+                  DetailsTabWidget(productDetails: loadProduct.description)
+                ],
+              ),
+            ),
+            Offstage(
+              offstage: 2 != _tabIndex,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    child: ListTile(
+                      dense: true,
+                      contentPadding: EdgeInsets.symmetric(vertical: 0),
+                      leading: Icon(
+                        UiIcons.chat_1,
+                        color: Theme.of(context).hintColor,
+                      ),
+                      title: Text(
+                        'Product Reviews',
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ]))
         ],
       ),
     );
