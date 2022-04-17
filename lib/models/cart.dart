@@ -13,4 +13,6 @@ class CartItem {
       @required this.quantity,
       @required this.urlImage
       });
+
+  get values => null;
 }

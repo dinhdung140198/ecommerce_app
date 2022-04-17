@@ -7,6 +7,8 @@ class Cart with ChangeNotifier {
     return {..._items};
   }
 
+  int count = 0;
+
   int get itemCount {
     return _items.length;
   }
@@ -19,12 +21,17 @@ class Cart with ChangeNotifier {
     return total;
   }
 
-  void addItem(
-    String productId,
-    double price,
-    String name,
-    String urlImage
-  ) {
+  int? productCount(String productId) {
+    int? count = 0;
+    if (_items.containsKey(productId)) {
+      _items.values.forEach((element) {
+        count = element.quantity;
+      });
+    }
+    return count;
+  }
+
+  void addItem(String productId, double price, String name, String urlImage) {
     if (_items.containsKey(productId)) {
       _items.update(
           productId,
@@ -47,10 +54,10 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
-  void removeItem(String productId) {
-    _items.remove(productId);
-    notifyListeners();
-  }
+  // void removeItem(String productId) {
+  //   _items.remove(productId);
+  //   notifyListeners();
+  // }
 
   void removeSingleItem(String productId) {
     if (!_items.containsKey(productId)) {
@@ -65,14 +72,14 @@ class Cart with ChangeNotifier {
               price: existingCartItem.price,
               urlImage: existingCartItem.urlImage,
               quantity: existingCartItem.quantity! - 1));
-    }else{
+    } else {
       _items.remove(productId);
     }
     notifyListeners();
   }
 
-  void clear(){
-    _items ={};
+  void clear() {
+    _items = {};
     notifyListeners();
   }
 }

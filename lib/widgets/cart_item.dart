@@ -22,6 +22,7 @@ class CartItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cart = Provider.of<Cart>(context);
     return InkWell(
       splashColor: Theme.of(context).accentColor,
       focusColor: Theme.of(context).accentColor,
@@ -80,11 +81,11 @@ class CartItemWidget extends StatelessWidget {
                 ),
                 SizedBox(width: 8),
                 Column(
-//                    mainAxisAlignment: MainAxisAlignment.center,
+                  //  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () =>cart.addItem(productId!, price!, name!, urlImage!),
                       iconSize: 30,
                       padding: EdgeInsets.symmetric(horizontal: 5),
                       icon: Icon(Icons.add_circle_outline),
@@ -92,7 +93,7 @@ class CartItemWidget extends StatelessWidget {
                     ),
                     Text(quantity.toString()),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () => cart.removeSingleItem(productId!),
                       iconSize: 30,
                       padding: EdgeInsets.symmetric(horizontal: 5),
                       icon: Icon(Icons.remove_circle_outline),

@@ -1,4 +1,6 @@
+import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/route_generator.dart';
+import 'package:ecommerce_app/screens/cart.dart';
 import 'package:ecommerce_app/widgets/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,12 +17,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider.value(value: Products())],
+      providers: [
+        ChangeNotifierProvider.value(value: Cart()),
+        ChangeNotifierProvider.value(value: Products())
+        ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Ecommerce App',
         // onGenerateRoute: RouteGenerator.generatorRouter,
         routes: {
+          CartScreen.routeName: (context) =>CartScreen(),
           HomeScreen.routeName: (context) => HomeScreen(),
           ProductDetailWidget.routeName: (context) => ProductDetailWidget(),
         },

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
+  static const routeName = '/cart';
   const CartScreen({Key? key}) : super(key: key);
 
   @override
@@ -13,8 +14,6 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
         leading: IconButton(
           icon: Icon(
             UiIcons.return_icon,
@@ -22,6 +21,8 @@ class CartScreen extends StatelessWidget {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: Text(
           'Cart',
           style: Theme.of(context).textTheme.headline4,
@@ -46,7 +47,7 @@ class CartScreen extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 150),
+            margin: EdgeInsets.only(bottom: 150),
             padding: EdgeInsets.only(bottom: 15),
             child: SingleChildScrollView(
               padding: EdgeInsets.symmetric(vertical: 10),
@@ -106,7 +107,87 @@ class CartScreen extends StatelessWidget {
                     color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.only(
                         topRight: Radius.circular(20),
-                        topLeft: Radius.circular(20))),
+                        topLeft: Radius.circular(20)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Theme.of(context).focusColor.withOpacity(0.15),
+                          offset: Offset(0, -2),
+                          blurRadius: 5.0)
+                    ]),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width - 40,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                              child: Text(
+                            'subtotal',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          )),
+                          Text(
+                            '\$${cart.totalAmount}',
+                            style: Theme.of(context).textTheme.subtitle1,
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: Text(
+                            'TAX(10%)',
+                            style: Theme.of(context).textTheme.subtitle1,
+                          )),
+                          Text(
+                            '\$10',
+                            style: Theme.of(context).textTheme.bodyText2,
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Stack(
+                        fit: StackFit.loose,
+                        alignment: AlignmentDirectional.centerEnd,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width - 40,
+                            child: FlatButton(
+                              onPressed: () {},
+                              padding: EdgeInsets.symmetric(vertical: 14),
+                              color: Theme.of(context).accentColor,
+                              shape: StadiumBorder(),
+                              child: Text(
+                                'Checkout',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
+                              '\$${cart.totalAmount}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline4!
+                                  .merge(TextStyle(
+                                      color: Theme.of(context).primaryColor)),
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 10,)
+                    ],
+                  ),
+                ),
               ))
         ],
       ),

@@ -1,7 +1,11 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
+import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/products.dart';
+import 'package:ecommerce_app/screens/cart.dart';
 import 'package:ecommerce_app/widgets/details_tab_widget.dart';
+import 'package:ecommerce_app/widgets/drawer_widget.dart';
 import 'package:ecommerce_app/widgets/information_tab_wiget.dart';
+import 'package:ecommerce_app/widgets/shopping_cart_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +21,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
     with TickerProviderStateMixin {
   TabController? _tabController;
   int _tabIndex = 0;
+  int count = 0;
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
@@ -48,6 +53,16 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
     }
   }
 
+  // void count = productCount (String productId){
+  //   int count = 0;
+  //   cart.items.forEach((key, value) {
+  //     if (key == productId) {
+  //       count = value.quantity!;
+  //       return ;
+  //     }
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     final productId = ModalRoute.of(
@@ -58,8 +73,10 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
     final loadProduct = Provider.of<Products>(
       context,
     ).findById(productId);
+    final cart = Provider.of<Cart>(context);
     return Scaffold(
       key: _scaffoldkey,
+      // drawer: DrawerWidget(),
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
@@ -70,9 +87,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
                   blurRadius: 5,
                   offset: Offset(0, -2)),
             ]),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           FlatButton(
             height: 50,
             minWidth: 55,
@@ -88,7 +103,8 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
           FlatButton(
               shape: StadiumBorder(),
               color: Theme.of(context).accentColor,
-              onPressed: () {},
+              onPressed: () => cart.addItem(productId, loadProduct.price!,
+                  loadProduct.name!, loadProduct.urlImage!),
               child: Container(
                 child: Row(
                   children: [
@@ -101,7 +117,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
                       width: 50,
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () => cart.removeSingleItem(productId),
                       icon: Icon(Icons.remove_circle_outline),
                       color: Theme.of(context).primaryColor,
                       iconSize: 30,
@@ -109,12 +125,16 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
                           EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                     ),
                     Text(
-                      '2',
+                      '${cart.productCount(productId)}',
                       style: Theme.of(context).textTheme.subtitle1!.merge(
                           TextStyle(color: Theme.of(context).primaryColor)),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () => cart.addItem(
+                          productId,
+                          loadProduct.price!,
+                          loadProduct.name!,
+                          loadProduct.urlImage!),
                       icon: Icon(Icons.add_circle_outline),
                       color: Theme.of(context).primaryColor,
                       iconSize: 30,
@@ -139,18 +159,18 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
               onPressed: () => Navigator.of(context).pop(),
             ),
             actions: [
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    UiIcons.shopping_cart,
-                    color: Theme.of(context).hintColor,
-                  )),
+              ShoppingCartButton(
+                  iconColor: Theme.of(context).hintColor,
+                  labelColor: Theme.of(context).accentColor,
+                  labelCount: cart.itemCount),
               Container(
                 width: 30,
                 height: 30,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(300),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamed(CartScreen.routeName);
+                  },
                   child: CircleAvatar(
                     backgroundImage: NetworkImage(
                         'https://1.bp.blogspot.com/-wIaKEkcCTTk/XqjcK5-2a8I/AAAAAAAAk4k/opJSFhhMK2MXq51T3fXX8TaMUSW78alSgCEwYBhgL/s1600/hinh-nen-girl-xinh-4k-nu-cuoi-xinh-xan.jpg'),
@@ -205,6 +225,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
               indicatorSize: TabBarIndicatorSize.label,
               labelPadding: EdgeInsets.symmetric(horizontal: 10),
               labelColor: Theme.of(context).primaryColor,
+              unselectedLabelColor: Theme.of(context).accentColor,
               indicator: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
                   color: Theme.of(context).accentColor),
