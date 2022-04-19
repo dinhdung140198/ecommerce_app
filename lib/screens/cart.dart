@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
+import 'package:ecommerce_app/screens/checkout.dart';
 import 'package:ecommerce_app/widgets/cart_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -159,7 +160,9 @@ class CartScreen extends StatelessWidget {
                           SizedBox(
                             width: MediaQuery.of(context).size.width - 40,
                             child: FlatButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).pushNamed(CheckoutScreen.routeName,arguments: cart.totalAmount );
+                              },
                               padding: EdgeInsets.symmetric(vertical: 14),
                               color: Theme.of(context).accentColor,
                               shape: StadiumBorder(),

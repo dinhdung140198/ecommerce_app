@@ -7,7 +7,7 @@ class Cart with ChangeNotifier {
     return {..._items};
   }
 
-  int count = 0;
+  // int count = 0;
 
   int get itemCount {
     return _items.length;
@@ -54,10 +54,10 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
-  // void removeItem(String productId) {
-  //   _items.remove(productId);
-  //   notifyListeners();
-  // }
+  void removeItem(String productId) {
+    _items.remove(productId);
+    notifyListeners();
+  }
 
   void removeSingleItem(String productId) {
     if (!_items.containsKey(productId)) {

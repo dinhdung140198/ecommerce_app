@@ -1,6 +1,10 @@
+import 'package:ecommerce_app/providers/auth.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/route_generator.dart';
 import 'package:ecommerce_app/screens/cart.dart';
+import 'package:ecommerce_app/screens/checkout.dart';
+import 'package:ecommerce_app/screens/checkout_done.dart';
+import 'package:ecommerce_app/screens/signIn.dart';
 import 'package:ecommerce_app/widgets/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: Auth()),
         ChangeNotifierProvider.value(value: Cart()),
         ChangeNotifierProvider.value(value: Products())
         ],
@@ -26,6 +31,8 @@ class MyApp extends StatelessWidget {
         title: 'Ecommerce App',
         // onGenerateRoute: RouteGenerator.generatorRouter,
         routes: {
+          CheckoutDoneScreen.routeName: (context) =>CheckoutDoneScreen(),
+          CheckoutScreen.routeName:(context) =>CheckoutScreen(),
           CartScreen.routeName: (context) =>CartScreen(),
           HomeScreen.routeName: (context) => HomeScreen(),
           ProductDetailWidget.routeName: (context) => ProductDetailWidget(),
@@ -56,7 +63,7 @@ class MyApp extends StatelessWidget {
                 fontSize: 12.0, color: config.Colors().secondColor(0.6)),
           ),
         ),
-        home: HomeScreen(),
+        home: SignInScreen(),
       ),
     );
   }
