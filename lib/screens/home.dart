@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scafoldKey = GlobalKey<ScaffoldState>();
   @override
   void didChangeDependencies() {
-    Provider.of<Products>(context).fetchAndSendProducts();
+    Provider.of<Products>(context,listen: false).fetchAndSendProducts();
     super.didChangeDependencies();
   }
 

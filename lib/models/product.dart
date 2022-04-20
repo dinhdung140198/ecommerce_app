@@ -7,6 +7,7 @@ class Product with ChangeNotifier{
   final String? description;
   final double? rate;
   final String? urlImage;
+  bool isFavorite;
 
   Product(
       {@required this.id,
@@ -14,5 +15,6 @@ class Product with ChangeNotifier{
       @required this.price,
       @required this.description,
       @required this.urlImage,
-      @required this.rate});
+      @required this.rate,
+      this.isFavorite=false});
 }
