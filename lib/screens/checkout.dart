@@ -1,21 +1,31 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
+import 'package:ecommerce_app/providers/orders.dart';
+import 'package:ecommerce_app/screens/checkout_done.dart';
 import 'package:ecommerce_app/widgets/credit_card.dart';
 import 'package:ecommerce_app/widgets/shopping_cart_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CheckoutScreen extends StatelessWidget {
+class CheckoutScreen extends StatefulWidget {
   static const routeName = '/Checkout';
-  const CheckoutScreen({Key? key}) : super(key: key);
+  const CheckoutScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
+  _CheckoutScreenState createState() => _CheckoutScreenState();
+}
+
+class _CheckoutScreenState extends State<CheckoutScreen> {
+  var _isLoading = false;
+  @override
   Widget build(BuildContext context) {
-    final totalAmount = ModalRoute.of(
-      context,
-    )!
-        .settings
-        .arguments as double;
+    // final cart = ModalRoute.of(
+    //   context,
+    // )!
+    //     .settings
+    //     .arguments as Cart;
     final cart = Provider.of<Cart>(context);
     return Scaffold(
       appBar: AppBar(
@@ -126,28 +136,47 @@ class CheckoutScreen extends StatelessWidget {
                 SizedBox(
                   width: 320,
                   child: FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/CheckoutDone');
-                      cart.clear();
-                    },
+                    onPressed: (cart.totalAmount <= 0 || _isLoading)
+                        ? null
+                        // ignore: unnecessary_statements
+                        : () async {
+                            print(cart.items.values.toList());
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            await Provider.of<Orders>(context, listen: false)
+                                .addOrder(
+                              cart.items.values.toList(),
+                              cart.totalAmount,
+                            );
+                            cart.clear();
+                            setState(() {
+                              _isLoading = false;
+                            });
+                            Navigator.of(context)
+                                .pushNamed(CheckoutDoneScreen.routeName);
+                          },
                     padding: EdgeInsets.symmetric(vertical: 14),
                     color: Theme.of(context).accentColor,
                     shape: StadiumBorder(),
                     child: Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        'Confirm Payment',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(color: Theme.of(context).primaryColor),
-                      ),
+                      child: _isLoading
+                          ? CircularProgressIndicator()
+                          : Text(
+                              'Confirm Payment',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor),
+                            ),
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    '\$$totalAmount',
+                    '\$${cart.totalAmount}',
                     style: Theme.of(context).textTheme.headline4!.merge(
                         TextStyle(color: Theme.of(context).primaryColor)),
                   ),

@@ -161,7 +161,7 @@ class CartScreen extends StatelessWidget {
                             width: MediaQuery.of(context).size.width - 40,
                             child: FlatButton(
                               onPressed: () {
-                                Navigator.of(context).pushNamed(CheckoutScreen.routeName,arguments: cart.totalAmount );
+                                Navigator.of(context).pushNamed(CheckoutScreen.routeName);
                               },
                               padding: EdgeInsets.symmetric(vertical: 14),
                               color: Theme.of(context).accentColor,

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class OrdersScreen extends StatefulWidget {
+  static const routeName = '/order';
   const OrdersScreen({Key? key}) : super(key: key);
 
   @override
@@ -15,7 +16,6 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -27,8 +27,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
         key: _scaffoldKey,
         drawer: DrawerWidget(),
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           title: Text(
-            'Home',
+            'MY ORDER',
             style: Theme.of(context).textTheme.headline4,
           ),
           leading: IconButton(
@@ -62,19 +64,22 @@ class _OrdersScreenState extends State<OrdersScreen> {
             )
           ],
           bottom: TabBar(
-            
             indicatorPadding: EdgeInsets.all(10),
             labelPadding: EdgeInsets.symmetric(horizontal: 5),
             unselectedLabelColor: Theme.of(context).accentColor,
             labelColor: Theme.of(context).primaryColor,
             isScrollable: true,
+            indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                color: Theme.of(context).accentColor),
             tabs: [
               Tab(
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
-                    border: Border.all(color: Theme.of(context).accentColor),
+                    border: Border.all(
+                        color: Theme.of(context).accentColor, width: 1),
                   ),
                   child: Align(
                     alignment: Alignment.center,
@@ -100,7 +105,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
-                    border: Border.all(color: Theme.of(context).accentColor),
+                    border: Border.all(
+                        color: Theme.of(context).accentColor, width: 1),
                   ),
                   child: Align(
                     alignment: Alignment.center,
@@ -113,7 +119,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
-                    border: Border.all(color: Theme.of(context).accentColor),
+                    border: Border.all(
+                        color: Theme.of(context).accentColor, width: 1),
                   ),
                   child: Align(
                     alignment: Alignment.center,
@@ -124,9 +131,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
             ],
           ),
         ),
-        body: TabBarView(children: [
-          OrdersProductsWidget()
-        ],),
+        body: TabBarView(
+          children: [
+            OrdersProductsWidget(),
+            OrdersProductsWidget(),
+            OrdersProductsWidget(),
+            OrdersProductsWidget()
+          ],
+        ),
       ),
     );
   }

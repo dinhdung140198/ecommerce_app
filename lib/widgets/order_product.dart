@@ -5,6 +5,7 @@ import 'package:ecommerce_app/widgets/order_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
 class OrdersProductsWidget extends StatefulWidget {
   @override
   _OrdersProductsWidgetState createState() => _OrdersProductsWidgetState();
@@ -24,12 +25,14 @@ class _OrdersProductsWidgetState extends State<OrdersProductsWidget> {
             return Center(
               child: CircularProgressIndicator(),
             );
-          } else {
-            if (dataSnapshot.error != null) {
-              return Center(
-                child: Text('An error occurred'),
-              );
-            } else {
+          }
+          //else {
+          //   if (dataSnapshot.error != null) {
+          //     return Center(
+          //       child: Text(dataSnapshot.error.toString()),
+          //     );
+          //   } 
+          else {
               return Consumer<Orders>(
                 builder: (ctx, orderData, child) => SingleChildScrollView(
                   padding: EdgeInsets.symmetric(vertical: 10),
@@ -89,7 +92,7 @@ class _OrdersProductsWidgetState extends State<OrdersProductsWidget> {
                         ),
                       ),
                       Offstage(
-                        offstage:orderData.orders.isEmpty,
+                        offstage: orderData.orders.isEmpty,
                         child: ListView.separated(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
@@ -99,15 +102,7 @@ class _OrdersProductsWidgetState extends State<OrdersProductsWidget> {
                             return SizedBox(height: 10);
                           },
                           itemBuilder: (context, index) {
-                            return OrderItemWiget(orderData.orders[index]
-                                // heroTag: 'orders_list',
-                                // order: widget.ordersList.elementAt(index),
-                                // onDismissed: () {
-                                //   setState(() {
-                                //     widget.ordersList.removeAt(index);
-                                //   });
-                                // },
-                                );
+                            return OrderItemWiget(orderData.orders[index]);
                           },
                         ),
                       ),
@@ -121,6 +116,6 @@ class _OrdersProductsWidgetState extends State<OrdersProductsWidget> {
               );
             }
           }
-        });
+        );
   }
 }

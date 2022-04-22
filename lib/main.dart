@@ -1,11 +1,13 @@
 import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/providers/auth.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
+import 'package:ecommerce_app/providers/orders.dart';
 import 'package:ecommerce_app/route_generator.dart';
 import 'package:ecommerce_app/screens/auth.dart';
 import 'package:ecommerce_app/screens/cart.dart';
 import 'package:ecommerce_app/screens/checkout.dart';
 import 'package:ecommerce_app/screens/checkout_done.dart';
+import 'package:ecommerce_app/screens/orders.dart';
 import 'package:ecommerce_app/widgets/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,18 +29,25 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value(value: Cart()),
           ChangeNotifierProxyProvider<Auth, Products>(create: (_) {
             return Products('', '', []);
-          }, update: (ctx, auth, previsousProducts) {
+          }, update: (ctx, auth, previousProducts) {
             return Products(auth.token, auth.userId,
-                previsousProducts == null ? [] : previsousProducts.items);
+                previousProducts == null ? [] : previousProducts.items);
+          }),
+          ChangeNotifierProxyProvider<Auth, Orders>(create: (_) {
+            return Orders('', '', []);
+          }, update: (ctx, auth, previousOrders ){
+            return Orders(auth.token, auth.userId,
+                previousOrders == null ? [] : previousOrders.orders);
           })
-          // ChangeNotifierProvider.value(value: Products())
         ],
         child: Consumer<Auth>(
           builder: (ctx, auth, _) => MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Ecommerce App',
+            initialRoute: '/',
             // onGenerateRoute: RouteGenerator.generatorRouter,
-            routes: {
+            routes: {AuthScreen.routeName: (context) =>AuthScreen(),
+              OrdersScreen.routeName: (context) =>OrdersScreen(),
               CheckoutDoneScreen.routeName: (context) => CheckoutDoneScreen(),
               CheckoutScreen.routeName: (context) => CheckoutScreen(),
               CartScreen.routeName: (context) => CartScreen(),

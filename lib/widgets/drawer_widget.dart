@@ -1,6 +1,8 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/providers/auth.dart';
+import 'package:ecommerce_app/screens/auth.dart';
 import 'package:ecommerce_app/screens/home.dart';
+import 'package:ecommerce_app/screens/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +11,6 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final auth =Provider.of<Auth>(context);
     return Drawer(
       child: ListView(
         children: [
@@ -53,7 +54,9 @@ class DrawerWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(OrdersScreen.routeName);
+            },
             leading: Icon(
               UiIcons.home,
               color: Theme.of(context).focusColor.withOpacity(1),
@@ -63,13 +66,14 @@ class DrawerWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.subhead,
             ),
             trailing: Chip(
-                label: Text(
-              '8',
-              style: TextStyle(color: Theme.of(context).focusColor),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            backgroundColor: Colors.transparent,
-            shape: StadiumBorder(side: BorderSide(color: Theme.of(context).focusColor)),
+              label: Text(
+                '8',
+                style: TextStyle(color: Theme.of(context).focusColor),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              backgroundColor: Colors.transparent,
+              shape: StadiumBorder(
+                  side: BorderSide(color: Theme.of(context).focusColor)),
             ),
           ),
           ListTile(
@@ -83,7 +87,7 @@ class DrawerWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.subhead,
             ),
           ),
-           ListTile(
+          ListTile(
             dense: true,
             title: Text(
               "Products",
@@ -172,7 +176,9 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              auth.logout();
+              Navigator.of(context).pop();
+              Provider.of<Auth>(context, listen: false).logout();
+              Navigator.of(context).pushReplacementNamed('/');
             },
             leading: Icon(
               UiIcons.upload,

@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/providers/cart_provider.dart';
+import 'package:ecommerce_app/screens/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/config/app_config.dart' as config;
@@ -107,7 +108,7 @@ class CheckoutDoneScreen extends StatelessWidget {
               SizedBox(height: 25),
               FlatButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/Orders');
+                  Navigator.of(context).pushNamed(OrdersScreen.routeName);
                 },
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
                 color: Theme.of(context).focusColor.withOpacity(0.15),
