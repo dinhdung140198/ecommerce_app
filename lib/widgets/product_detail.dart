@@ -1,4 +1,6 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
+import 'package:ecommerce_app/models/product.dart';
+import 'package:ecommerce_app/providers/auth.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/products.dart';
 import 'package:ecommerce_app/screens/cart.dart';
@@ -53,16 +55,6 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
     }
   }
 
-  // void count = productCount (String productId){
-  //   int count = 0;
-  //   cart.items.forEach((key, value) {
-  //     if (key == productId) {
-  //       count = value.quantity!;
-  //       return ;
-  //     }
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     final productId = ModalRoute.of(
@@ -74,6 +66,8 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
       context,
     ).findById(productId);
     final cart = Provider.of<Cart>(context);
+    // final favor = Provider.of<Product>(context);
+    final auth = Provider.of<Auth>(context);
     return Scaffold(
       key: _scaffoldkey,
       // drawer: DrawerWidget(),
@@ -91,8 +85,13 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
           FlatButton(
             height: 50,
             minWidth: 55,
-            onPressed: () {},
-            child: Icon(UiIcons.heart, color: Theme.of(context).primaryColor),
+            onPressed: () {
+              loadProduct.toggleFavorStatus(auth.token, auth.userId);
+            },
+            child: Icon(UiIcons.heart,
+                color: loadProduct.isFavorite
+                    ? Colors.yellow
+                    : Theme.of(context).primaryColor),
             padding: EdgeInsets.symmetric(vertical: 14),
             color: Theme.of(context).accentColor,
             shape: StadiumBorder(),

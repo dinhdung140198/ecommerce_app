@@ -5,12 +5,12 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
 class ProductGrid extends StatelessWidget {
-  const ProductGrid({Key? key}) : super(key: key);
-
+  const ProductGrid({Key? key,this.isFavor}) : super(key: key);
+  final bool? isFavor ;
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context);
-    final products = productsData.items;
+    final products = isFavor!?productsData.favoriteItems:productsData.items;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
       child: MasonryGridView.count(
@@ -27,18 +27,3 @@ class ProductGrid extends StatelessWidget {
     );
   }
 }
-
-
-// return GridView.builder(
-//       padding: EdgeInsets.all(10.0),
-//       itemCount: products.length,
-//       itemBuilder: (context, index) => ChangeNotifierProvider.value(
-//         value: products[index],
-//         child: ProductItem(),
-//       ),
-//       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//           crossAxisCount: 2,
-//           childAspectRatio: 3 / 2,
-//           crossAxisSpacing: 12.0,
-//           mainAxisSpacing: 12.0),
-//     );

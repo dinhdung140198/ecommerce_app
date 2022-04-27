@@ -2,11 +2,13 @@ import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/providers/auth.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/orders.dart';
+import 'package:ecommerce_app/providers/sliders.dart';
 import 'package:ecommerce_app/route_generator.dart';
 import 'package:ecommerce_app/screens/auth.dart';
 import 'package:ecommerce_app/screens/cart.dart';
 import 'package:ecommerce_app/screens/checkout.dart';
 import 'package:ecommerce_app/screens/checkout_done.dart';
+import 'package:ecommerce_app/screens/favorite_list.dart';
 import 'package:ecommerce_app/screens/orders.dart';
 import 'package:ecommerce_app/widgets/product_detail.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          ChangeNotifierProvider.value(value: SliderList()),
           ChangeNotifierProvider.value(value: Auth()),
           ChangeNotifierProvider.value(value: Cart()),
           ChangeNotifierProxyProvider<Auth, Products>(create: (_) {
@@ -46,7 +49,9 @@ class MyApp extends StatelessWidget {
             title: 'Ecommerce App',
             initialRoute: '/',
             // onGenerateRoute: RouteGenerator.generatorRouter,
-            routes: {AuthScreen.routeName: (context) =>AuthScreen(),
+            routes: {
+              FavoriteScreen.routeName: (context) => FavoriteScreen(),
+              AuthScreen.routeName: (context) =>AuthScreen(),
               OrdersScreen.routeName: (context) =>OrdersScreen(),
               CheckoutDoneScreen.routeName: (context) => CheckoutDoneScreen(),
               CheckoutScreen.routeName: (context) => CheckoutScreen(),

@@ -1,29 +1,26 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/products.dart';
-import 'package:ecommerce_app/screens/cart.dart';
 import 'package:ecommerce_app/widgets/drawer_widget.dart';
 import 'package:ecommerce_app/widgets/product_grib.dart';
-import 'package:ecommerce_app/widgets/search_bar.dart';
 import 'package:ecommerce_app/widgets/shopping_cart_button.dart';
-import 'package:ecommerce_app/widgets/silders.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const routeName = '/home';
-  const HomeScreen({Key? key}) : super(key: key);
+class FavoriteScreen extends StatefulWidget {
+  static const routeName = '/favorite';
+  const FavoriteScreen({Key? key}) : super(key: key);
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _FavoriteScreenState createState() => _FavoriteScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _FavoriteScreenState extends State<FavoriteScreen> {
   final GlobalKey<ScaffoldState> _scafoldKey = GlobalKey<ScaffoldState>();
-  @override
-  void didChangeDependencies() {
-    Provider.of<Products>(context).fetchAndSendProducts();
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   Provider.of<Products>(context,listen: false).fetchAndSendProducts();
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
       key: _scafoldKey,
       drawer: DrawerWidget(),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
         title: Text(
-          'Home',
+          'Favorite',
           style: Theme.of(context).textTheme.headline4,
         ),
         leading: IconButton(
@@ -69,23 +64,13 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      body: ListView(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            child: SearchBarWidget(),
-          ),
-          SliderWidget(),
-          ProductGrid(
-            isFavor: false,
-          )
-        ],
-      ),
+      body: ProductGrid(isFavor: true,),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Theme.of(context).accentColor,
         backgroundColor: Colors.transparent,
         iconSize: 22,
+        
         elevation: 0,
         unselectedItemColor: Theme.of(context).hintColor.withOpacity(1),
         items: [

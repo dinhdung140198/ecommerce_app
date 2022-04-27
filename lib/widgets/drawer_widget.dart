@@ -1,16 +1,20 @@
-import 'package:ecommerce_app/config/ui_icons.dart';
-import 'package:ecommerce_app/providers/auth.dart';
-import 'package:ecommerce_app/screens/auth.dart';
-import 'package:ecommerce_app/screens/home.dart';
-import 'package:ecommerce_app/screens/orders.dart';
+import 'package:ecommerce_app/screens/favorite_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:ecommerce_app/config/ui_icons.dart';
+import 'package:ecommerce_app/providers/auth.dart';
+import 'package:ecommerce_app/providers/orders.dart';
+import 'package:ecommerce_app/screens/home.dart';
+import 'package:ecommerce_app/screens/orders.dart';
+
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final orders = Provider.of<Orders>(context);
     return Drawer(
       child: ListView(
         children: [
@@ -58,7 +62,7 @@ class DrawerWidget extends StatelessWidget {
               Navigator.of(context).pushNamed(OrdersScreen.routeName);
             },
             leading: Icon(
-              UiIcons.home,
+              UiIcons.inbox,
               color: Theme.of(context).focusColor.withOpacity(1),
             ),
             title: Text(
@@ -67,7 +71,7 @@ class DrawerWidget extends StatelessWidget {
             ),
             trailing: Chip(
               label: Text(
-                '8',
+                orders.orders.length.toString(),
                 style: TextStyle(color: Theme.of(context).focusColor),
               ),
               padding: EdgeInsets.symmetric(horizontal: 5),
@@ -77,13 +81,15 @@ class DrawerWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(FavoriteScreen.routeName);
+            },
             leading: Icon(
-              UiIcons.home,
+              UiIcons.heart,
               color: Theme.of(context).focusColor.withOpacity(1),
             ),
             title: Text(
-              'Wish List',
+              'Favorite List',
               style: Theme.of(context).textTheme.subhead,
             ),
           ),
