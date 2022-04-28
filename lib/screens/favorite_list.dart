@@ -29,6 +29,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       key: _scafoldKey,
       drawer: DrawerWidget(),
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: Text(
           'Favorite',
           style: Theme.of(context).textTheme.headline4,
@@ -76,11 +78,11 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(UiIcons.bell),
-            title: new Container(height: 0.0),
+            label: 'Notif'
           ),
           BottomNavigationBarItem(
             icon: Icon(UiIcons.user_1),
-            title: new Container(height: 0.0),
+            label: 'Account'
           ),
           BottomNavigationBarItem(
             icon: Container(
@@ -104,15 +106,15 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 color: Theme.of(context).primaryColor,
               ),
             ),
-            title: new Container(height: 5.0),
+            label: ''
           ),
           BottomNavigationBarItem(
             icon: Icon(UiIcons.chat),
-            title: new Container(height: 0.0),
+            label: 'Chat'
           ),
           BottomNavigationBarItem(
             icon: Icon(UiIcons.heart),
-            title: new Container(height: 0.0),
+            label: 'Favorite'
           )
         ],
       ),

@@ -79,7 +79,7 @@ class EmptyOrdersProductsWidget extends StatelessWidget {
             shape: StadiumBorder(),
             child: Text(
               'Start Shopping',
-              style: Theme.of(context).textTheme.title,
+              style: Theme.of(context).textTheme.headline6,
             ),
           ),
         ],

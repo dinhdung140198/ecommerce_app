@@ -27,7 +27,7 @@ class _InformationTabWigetState extends State<InformationTabWiget> {
                 widget.name!,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
-                style: Theme.of(context).textTheme.display2,
+                style: Theme.of(context).textTheme.headline3,
               )),
               Chip(
                 label: Row(
@@ -35,7 +35,7 @@ class _InformationTabWigetState extends State<InformationTabWiget> {
                   children: [
                     Text(
                       '3',
-                      style: Theme.of(context).textTheme.body2!.merge(
+                      style: Theme.of(context).textTheme.bodyText1!.merge(
                           TextStyle(color: Theme.of(context).primaryColor)),
                     ),
                     Icon(
@@ -59,14 +59,14 @@ class _InformationTabWigetState extends State<InformationTabWiget> {
             children: [
               Text(
                 "\$${widget.price!.toString()}",
-                style: Theme.of(context).textTheme.display1,
+                style: Theme.of(context).textTheme.headline4,
               ),
               SizedBox(
                 width: 10,
               ),
               Text(
                 "\$${(widget.price! + 10).toString()}",
-                style: Theme.of(context).textTheme.headline!.merge(TextStyle(
+                style: Theme.of(context).textTheme.headline5!.merge(TextStyle(
                     color: Theme.of(context).focusColor,
                     decoration: TextDecoration.lineThrough)),
               ),
@@ -99,7 +99,7 @@ class _InformationTabWigetState extends State<InformationTabWiget> {
                   Expanded(
                       child: Text(
                     'Select Color',
-                    style: Theme.of(context).textTheme.body2,
+                    style: Theme.of(context).textTheme.bodyText1,
                   )),
                   MaterialButton(
                     onPressed: () {},
@@ -107,7 +107,7 @@ class _InformationTabWigetState extends State<InformationTabWiget> {
                     minWidth: 0,
                     child: Text(
                       'Clear All',
-                      style: Theme.of(context).textTheme.body1,
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
                   )
                 ], 

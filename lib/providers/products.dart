@@ -8,6 +8,7 @@ class Products with ChangeNotifier {
   List<Product> _items = [];
   final String? authToken;
   final String? userId;
+ 
 
   Products(this.authToken, this.userId, this._items);
 
@@ -15,13 +16,37 @@ class Products with ChangeNotifier {
     return [..._items];
   }
 
-  List<Product> get favoriteItems{
-    return _items.where((prod) =>prod.isFavorite).toList();
+  List<Product> get favoriteItems {
+    return _items.where((prod) => prod.isFavorite).toList();
   }
-
+//  List<Product> _search(){
+//    return[..._items];
+//  }
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
+  // void filterSearchResult(String query) {
+  //   List<Product>dummySearchList;
+  //   dummySearchList=_items;
+  //   print(dummySearchList);
+  //   if (query.isNotEmpty) {
+  //     List<Product> searchList = [];
+  //     items.forEach(
+  //       (item) {
+  //         if (item.name!.contains(query)) {
+  //           searchList.add(item);
+  //         }
+  //       },
+  //     );
+  //     print(searchList);
+  //     items.clear();
+  //     items.addAll(searchList);
+  //   } else{
+  //     items.clear();
+  //     items.addAll(dummySearchList);
+  //   }
+  //   print(items);
+  // }
 
   Future<void> fetchAndSendProducts([bool filterByUser = false]) async {
     final filterString =

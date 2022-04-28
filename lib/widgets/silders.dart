@@ -14,14 +14,18 @@ class SliderWidget extends StatefulWidget {
   State<SliderWidget> createState() => _SliderWidgetState();
 }
 
-class _SliderWidgetState extends State<SliderWidget> {
+class _SliderWidgetState extends State<SliderWidget> {@override
+void didChangeDependencies() {
+  
+  super.didChangeDependencies();
+}
   int _current =0;
   @override
   Widget build(BuildContext context) {
-    final sliderList =Provider.of<SliderList>(context).list;
+    final sliderList =Provider.of<SliderList>(context,).list;
     return Stack(
       alignment: AlignmentDirectional.bottomEnd,
-//      fit: StackFit.expand,
+    //  fit: StackFit.expand,
       children: <Widget>[
         CarouselSlider(
           options: CarouselOptions(
@@ -40,7 +44,7 @@ class _SliderWidgetState extends State<SliderWidget> {
               builder: (BuildContext context) {
                 return Container(
                   margin:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                   height: 200,
                   decoration: BoxDecoration(
                     image: DecorationImage(
@@ -58,7 +62,7 @@ class _SliderWidgetState extends State<SliderWidget> {
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Container(
-                      // width: config.App(context).appWidth(40),
+                      width: config.App(context).appWidth(40),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisSize: MainAxisSize.max,
@@ -69,10 +73,10 @@ class _SliderWidgetState extends State<SliderWidget> {
                             style: Theme.of(context)
                                 .textTheme
                                 .headline6!
-                                .merge(TextStyle(height: 0.8)),
+                                .merge(TextStyle(height: 0.8,color: Colors.white)),
                             textAlign: TextAlign.right,
                             overflow: TextOverflow.fade,
-                            maxLines: 3,
+                            maxLines: 4,
                           ),
                           FlatButton(
                             onPressed: () {

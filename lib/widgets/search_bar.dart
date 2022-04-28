@@ -1,8 +1,20 @@
-import 'package:ecommerce_app/config/ui_icons.dart';
-import 'package:flutter/material.dart';
 
-class SearchBarWidget extends StatelessWidget {
-  const SearchBarWidget({Key? key}) : super(key: key);
+import 'package:ecommerce_app/config/ui_icons.dart';
+// import 'package:ecommerce_app/models/product.dart';
+import 'package:ecommerce_app/providers/products.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+class SearchBarWidget extends StatefulWidget {
+  final callback;
+  const SearchBarWidget({Key? key,required this.callback}) : super(key: key);
+
+  @override
+  _SearchBarWidgetState createState() => _SearchBarWidgetState();
+}
+
+class _SearchBarWidgetState extends State<SearchBarWidget> {
+  TextEditingController editingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +34,11 @@ class SearchBarWidget extends StatelessWidget {
         alignment: Alignment.centerRight,
         children: [
           TextField(
+            onChanged: (value){
+              print(value);
+            // Provider.of<Products>(context,listen: false).filterSearchResult(value);
+            widget.callback(value);
+          },controller: editingController,
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(12),
                 hintText: 'Search',

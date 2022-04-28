@@ -57,7 +57,7 @@ class OrderItemProduct extends StatelessWidget {
                           orderProduct!.name!,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
-                          style: Theme.of(context).textTheme.subhead,
+                          style: Theme.of(context).textTheme.subtitle1,
                         ),
                         SizedBox(height: 12),
                         Wrap(
@@ -84,7 +84,7 @@ class OrderItemProduct extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       Text("\$${orderProduct!.price!}",
-                          style: Theme.of(context).textTheme.display1),
+                          style: Theme.of(context).textTheme.headline4),
                       SizedBox(height: 6),
                       Chip(
                         padding: EdgeInsets.symmetric(horizontal: 5),
@@ -162,7 +162,7 @@ class OrderItemProducts extends StatelessWidget {
                         orderProduct!.name!,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
-                        style: Theme.of(context).textTheme.subhead,
+                        style: Theme.of(context).textTheme.subtitle1,
                       ),
                       SizedBox(height: 12),
                       Wrap(
@@ -178,7 +178,7 @@ class OrderItemProducts extends StatelessWidget {
                               SizedBox(width: 10),
                               Text(
                                 orderProduct!.id!,
-                                style: Theme.of(context).textTheme.body1,
+                                style: Theme.of(context).textTheme.bodyText2,
                                 overflow: TextOverflow.fade,
                                 softWrap: false,
                               ),
@@ -194,7 +194,7 @@ class OrderItemProducts extends StatelessWidget {
                               SizedBox(width: 10),
                               Text(
                                 'RBR1234567Q',
-                                style: Theme.of(context).textTheme.body1,
+                                style: Theme.of(context).textTheme.bodyText2,
                                 overflow: TextOverflow.fade,
                                 softWrap: false,
                               ),
@@ -211,7 +211,7 @@ class OrderItemProducts extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       Text("\$${orderProduct!.price!}",
-                          style: Theme.of(context).textTheme.display1),
+                          style: Theme.of(context).textTheme.headline4),
                       SizedBox(height: 6),
                       Chip(
                         padding: EdgeInsets.symmetric(horizontal: 5),

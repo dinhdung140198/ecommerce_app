@@ -15,24 +15,26 @@ class SliderList with ChangeNotifier {
         'https://flutter-update-89c84-default-rtdb.firebaseio.com/sliders.json');
     try {
       final response = await http.get(url);
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final extractedData = json.decode(response.body) as List;
+      // print(extractedData);
       if (extractedData == null) {
         return;
       }
       final List<Sliders> loadedData = [];
-      extractedData.forEach((key, value) {
+      extractedData.forEach((element) {
         loadedData.add(
           Sliders(
-            image: value['image'],
-            button: value['button'],
-            description: value['description'],
+            image: element['image'],
+            button: element['button'],
+            description: element['description'],
           ),
         );
       });
-      _listSlider=loadedData;
+      _listSlider = loadedData;
+      // print(loadedData);
       notifyListeners();
     } catch (error) {
-      throw(error);
+      throw (error);
     }
   }
 }

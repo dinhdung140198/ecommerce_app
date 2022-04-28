@@ -25,7 +25,7 @@ class CheckoutDoneScreen extends StatelessWidget {
         elevation: 0,
         title: Text(
           'Checkout',
-          style: Theme.of(context).textTheme.display1,
+          style: Theme.of(context).textTheme.headline4,
         ),
         actions: <Widget>[
           ShoppingCartButton(
@@ -115,7 +115,7 @@ class CheckoutDoneScreen extends StatelessWidget {
                 shape: StadiumBorder(),
                 child: Text(
                   'Your Orders',
-                  style: Theme.of(context).textTheme.title,
+                  style: Theme.of(context).textTheme.headline6,
                 ),
               ),
             ],

@@ -1,7 +1,7 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/products.dart';
-import 'package:ecommerce_app/screens/cart.dart';
+import 'package:ecommerce_app/providers/sliders.dart';
 import 'package:ecommerce_app/widgets/drawer_widget.dart';
 import 'package:ecommerce_app/widgets/product_grib.dart';
 import 'package:ecommerce_app/widgets/search_bar.dart';
@@ -18,15 +18,33 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool _isSearch =false;
   final GlobalKey<ScaffoldState> _scafoldKey = GlobalKey<ScaffoldState>();
   @override
   void didChangeDependencies() {
-    Provider.of<Products>(context).fetchAndSendProducts();
+    Provider.of<Products>(context,listen: false).fetchAndSendProducts();
+    Provider.of<SliderList>(context,listen: false).fetchSlider();
     super.didChangeDependencies();
   }
 
+  
   @override
   Widget build(BuildContext context) {
+    var valSearch;
+    void onChangedSearch(value){
+    if(value!=null){
+      setState(() {
+        _isSearch=true;
+      });
+      valSearch=value;
+    }
+    else{
+      setState(() {
+        _isSearch=false;
+      });
+      valSearch='';
+    }
+  }
     final cart = Provider.of<Cart>(context);
     return Scaffold(
       key: _scafoldKey,
@@ -73,11 +91,11 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 15),
-            child: SearchBarWidget(),
+            child: SearchBarWidget(callback: (val)=>onChangedSearch(val),),
           ),
           SliderWidget(),
           ProductGrid(
-            isFavor: false,
+            isFavor: false,value: valSearch,
           )
         ],
       ),
@@ -91,11 +109,11 @@ class _HomeScreenState extends State<HomeScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(UiIcons.bell),
-            title: new Container(height: 0.0),
+            label: 'Notif'
           ),
           BottomNavigationBarItem(
             icon: Icon(UiIcons.user_1),
-            title: new Container(height: 0.0),
+            label: 'Account'
           ),
           BottomNavigationBarItem(
             icon: Container(
@@ -119,15 +137,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Theme.of(context).primaryColor,
               ),
             ),
-            title: new Container(height: 5.0),
+            label: ''
           ),
           BottomNavigationBarItem(
             icon: Icon(UiIcons.chat),
-            title: new Container(height: 0.0),
+            label: 'Chat'
           ),
           BottomNavigationBarItem(
             icon: Icon(UiIcons.heart),
-            title: new Container(height: 0.0),
+            label: 'Favorite'
           )
         ],
       ),

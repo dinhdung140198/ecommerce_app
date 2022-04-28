@@ -83,7 +83,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   'Payment Mode',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.display1,
+                  style: Theme.of(context).textTheme.headline4,
                 ),
                 subtitle: Text(
                   'Select your prefered payment mode',

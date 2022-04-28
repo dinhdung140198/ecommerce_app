@@ -26,7 +26,7 @@ class _DetailsTabWidgetState extends State<DetailsTabWidget> {
             ),
             title: Text(
               'Description',
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.headline4,
             ),
           ),
         ),
@@ -45,7 +45,7 @@ class _DetailsTabWidgetState extends State<DetailsTabWidget> {
             ),
             title: Text(
               'Related Poducts',
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.headline4,
             ),
           ),
         ),

@@ -333,7 +333,7 @@ class _AuthScreenState extends State<AuthScreen>
                                       : 'SIGN UP',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .title!
+                                      .headline6!
                                       .merge(
                                         TextStyle(
                                             color:
@@ -346,7 +346,7 @@ class _AuthScreenState extends State<AuthScreen>
                         SizedBox(height: 50),
                         Text(
                           'Or using social media',
-                          style: Theme.of(context).textTheme.body1,
+                          style: Theme.of(context).textTheme.bodyText2,
                         ),
                         SizedBox(height: 20)
                       ],

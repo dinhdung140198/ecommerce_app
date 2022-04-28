@@ -35,14 +35,14 @@ class ProductItem extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: Text(
                 product.name!,
-                style: Theme.of(context).textTheme.body2,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: Text(
                 "\$${product.price.toString()}",
-                style: Theme.of(context).textTheme.title,
+                style: Theme.of(context).textTheme.headline6,
                 // textAlign: TextAlign.start,
               ),
             ),
@@ -53,7 +53,7 @@ class ProductItem extends StatelessWidget {
                   Expanded(
                       child: Text(
                     '100 Sale',
-                    style: Theme.of(context).textTheme.body1,
+                    style: Theme.of(context).textTheme.bodyText2,
                     overflow: TextOverflow.fade,
                     softWrap: false,
                   )),
@@ -64,7 +64,7 @@ class ProductItem extends StatelessWidget {
                   ),
                   Text(
                     product.rate.toString(),
-                    style: Theme.of(context).textTheme.body2,
+                    style: Theme.of(context).textTheme.bodyText1,
                   )
                 ],
                 crossAxisAlignment: CrossAxisAlignment.center,
