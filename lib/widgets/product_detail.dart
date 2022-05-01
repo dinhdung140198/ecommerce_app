@@ -63,7 +63,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
         .settings
         .arguments as String;
     final loadProduct = Provider.of<Products>(
-      context,
+      context,listen: false
     ).findById(productId);
     final cart = Provider.of<Cart>(context);
     // final favor = Provider.of<Product>(context);

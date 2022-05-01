@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/screens/edit_product.dart';
 import 'package:ecommerce_app/screens/favorite_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -169,14 +170,14 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('/Languages');
+              // Navigator.of(context).pushNamed(EditProductScreen.routeName);
             },
             leading: Icon(
               UiIcons.planet_earth,
               color: Theme.of(context).focusColor.withOpacity(1),
             ),
             title: Text(
-              "Languages",
+              "Manage Product",
               style: Theme.of(context).textTheme.subtitle1,
             ),
           ),

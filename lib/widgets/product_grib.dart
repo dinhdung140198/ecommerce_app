@@ -5,44 +5,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
-class ProductGrid extends StatelessWidget {
-  const ProductGrid({Key? key,this.isFavor,this.value}) : super(key: key);
-  final bool? isFavor ;
-  final String? value;
+class ProductGrid extends StatefulWidget {
+  const ProductGrid({Key? key, this.isFavor, this.value}) : super(key: key);
+  final bool? isFavor;
+  final String? value ;
+
   @override
-  // void didChangeDependencies() {
-  //   final productsData = Provider.of<Products>(context);
-  //   super.didChangeDependencies();
-    
-  // }
+  State<ProductGrid> createState() => _ProductGridState();
+}
+
+class _ProductGridState extends State<ProductGrid> {
+  
   @override
   Widget build(BuildContext context) {
-    final productsData = Provider.of<Products>(context);
-    final listsearch=productsData.items;
-    List<Product> filterSearchResult(String query) {
+    final productsData = Provider.of<Products>(context,listen: false);
+    List<Product>items=productsData.items;
     List<Product>dummySearchList;
     dummySearchList=productsData.items;
-    if (query.isNotEmpty) {
+    if (widget.value!.isNotEmpty) {
       List<Product> searchList = [];
-      listsearch.forEach(
+      items.forEach(
         (item) {
-          if (item.name!.contains(query)) {
+          if (item.name!.contains(widget.value!)) {
             searchList.add(item);
           }
         },
       );
-      listsearch.clear();
-      listsearch.addAll(searchList);
-      return listsearch;
+      items.clear();
+      items.addAll(searchList);
     } else{
-      listsearch.clear();
-      listsearch.addAll(dummySearchList);
+      items.clear();
+      items.addAll(dummySearchList);
     }
-    return listsearch;
-  }
-  final products = isFavor!?productsData.favoriteItems:filterSearchResult(value!);
+    final products = widget.isFavor! ? productsData.favoriteItems : items;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       child: MasonryGridView.count(
           primary: false,
           shrinkWrap: true,

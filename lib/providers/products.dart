@@ -8,7 +8,6 @@ class Products with ChangeNotifier {
   List<Product> _items = [];
   final String? authToken;
   final String? userId;
- 
 
   Products(this.authToken, this.userId, this._items);
 
@@ -19,34 +18,10 @@ class Products with ChangeNotifier {
   List<Product> get favoriteItems {
     return _items.where((prod) => prod.isFavorite).toList();
   }
-//  List<Product> _search(){
-//    return[..._items];
-//  }
+
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
-  // void filterSearchResult(String query) {
-  //   List<Product>dummySearchList;
-  //   dummySearchList=_items;
-  //   print(dummySearchList);
-  //   if (query.isNotEmpty) {
-  //     List<Product> searchList = [];
-  //     items.forEach(
-  //       (item) {
-  //         if (item.name!.contains(query)) {
-  //           searchList.add(item);
-  //         }
-  //       },
-  //     );
-  //     print(searchList);
-  //     items.clear();
-  //     items.addAll(searchList);
-  //   } else{
-  //     items.clear();
-  //     items.addAll(dummySearchList);
-  //   }
-  //   print(items);
-  // }
 
   Future<void> fetchAndSendProducts([bool filterByUser = false]) async {
     final filterString =
@@ -71,6 +46,7 @@ class Products with ChangeNotifier {
           price: prodData['price'],
           description: prodData['description'],
           urlImage: prodData['imageUrl'],
+          category: prodData['category'],
           rate: 3,
           isFavorite:
               favoriteData == null ? false : favoriteData[prodId] ?? false,
@@ -82,4 +58,54 @@ class Products with ChangeNotifier {
       throw (error);
     }
   }
+
+  // Future<void> addProduct(Product product) async {
+  //   var url = Uri.parse(
+  //       ('https://flutter-update-89c84-default-rtdb.firebaseio.com/categories.json?auth=$authToken'));
+  //   try {
+  //     final response = await http.post(
+  //       url,
+  //       body: json.encode(
+  //         {
+  //           'title': product.name,
+  //           'price': product.price,
+  //           'description': product.description,
+  //           'imageUrl': product.urlImage,
+  //           'creatorId': userId,
+  //         },
+  //       ),
+  //     );
+  //     final newProduct = Product(
+  //       name: product.name,
+  //       description: product.description,
+  //       urlImage: product.urlImage,
+  //       id: json.decode(response.body)['name'],
+  //       price: product.price
+  //     );
+  //     _items.add(newProduct);
+  //     notifyListeners();
+  //   } catch (error) {
+  //     throw(error);
+  //   }
+  // }
+
+  // Future<void> updateProduct(String id, Product newProduct) async {
+  //   final prodIndex = _items.indexWhere((prod) => prod.id == id);
+  //   if (prodIndex >= 0) {
+  //     final url = Uri.parse(
+  //         'https://flutter-update-89c84-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken');
+  //     await http.patch(url,
+  //         body: json.encode({
+  //           'title': newProduct.name,
+  //           'description': newProduct.description,
+  //           'imageUrl': newProduct.urlImage,
+  //           'price': newProduct.price
+  //         }));
+  //     _items[prodIndex] = newProduct;
+  //   } else {
+  //     print('...');
+  //   }
+
+  //   notifyListeners();
+  // }
 }

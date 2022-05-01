@@ -29,7 +29,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       key: _scafoldKey,
       drawer: DrawerWidget(),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor:Colors.transparent,
         elevation: 0,
         title: Text(
           'Favorite',

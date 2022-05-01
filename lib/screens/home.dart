@@ -19,30 +19,22 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _isSearch =false;
+    String valSearch='';
   final GlobalKey<ScaffoldState> _scafoldKey = GlobalKey<ScaffoldState>();
   @override
+  @override
   void didChangeDependencies() {
-    Provider.of<Products>(context,listen: false).fetchAndSendProducts();
+    Provider.of<Products>(context).fetchAndSendProducts();
     Provider.of<SliderList>(context,listen: false).fetchSlider();
     super.didChangeDependencies();
   }
-
-  
   @override
   Widget build(BuildContext context) {
-    var valSearch;
     void onChangedSearch(value){
     if(value!=null){
       setState(() {
-        _isSearch=true;
+        valSearch=value;
       });
-      valSearch=value;
-    }
-    else{
-      setState(() {
-        _isSearch=false;
-      });
-      valSearch='';
     }
   }
     final cart = Provider.of<Cart>(context);

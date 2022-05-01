@@ -10,6 +10,7 @@ class Product with ChangeNotifier {
   final String? description;
   final double? rate;
   final String? urlImage;
+  final String? category;
   bool isFavorite;
 
   Product(
@@ -19,7 +20,9 @@ class Product with ChangeNotifier {
       @required this.description,
       @required this.urlImage,
       @required this.rate,
+      @required this.category,
       this.isFavorite = false});
+      
   void _setFavorValue(bool newValue) {
     isFavorite = newValue;
     notifyListeners();
