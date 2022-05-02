@@ -1,5 +1,7 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
+import 'package:ecommerce_app/providers/categories.dart';
+import 'package:ecommerce_app/widgets/category_grib.dart';
 import 'package:ecommerce_app/widgets/drawer_widget.dart';
 import 'package:ecommerce_app/widgets/search_bar.dart';
 import 'package:ecommerce_app/widgets/shopping_cart_button.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CategoriesScreen extends StatefulWidget {
+  static const routeName = '/categories';
   const CategoriesScreen({Key? key}) : super(key: key);
 
   @override
@@ -15,7 +18,12 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   final GlobalKey<ScaffoldState> _scafolldKey = GlobalKey<ScaffoldState>();
-
+@override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    Provider.of<Categories>(context,listen: false).fetchCategory();
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     final cartMount = Provider.of<Cart>(context).itemCount;
@@ -67,7 +75,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 callback: '',
               ),
             ),
-            
+            CategoryGribWidget(),
           ],
         ),
       ),

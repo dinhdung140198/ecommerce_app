@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/screens/categories.dart';
 import 'package:ecommerce_app/screens/edit_product.dart';
 import 'package:ecommerce_app/screens/favorite_list.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +108,7 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('/Categories');
+              Navigator.of(context).pushNamed(CategoriesScreen.routeName);
             },
             leading: Icon(
               UiIcons.folder_1,

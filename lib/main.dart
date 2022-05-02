@@ -7,6 +7,7 @@ import 'package:ecommerce_app/providers/sliders.dart';
 import 'package:ecommerce_app/route_generator.dart';
 import 'package:ecommerce_app/screens/auth.dart';
 import 'package:ecommerce_app/screens/cart.dart';
+import 'package:ecommerce_app/screens/categories.dart';
 import 'package:ecommerce_app/screens/checkout.dart';
 import 'package:ecommerce_app/screens/checkout_done.dart';
 import 'package:ecommerce_app/screens/edit_product.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
             initialRoute: '/',
             // onGenerateRoute: RouteGenerator.generatorRouter,
             routes: {
+              CategoriesScreen.routeName: (context) => CategoriesScreen(),
               // EditProductScreen.routeName:(context) => EditProductScreen(),
               FavoriteScreen.routeName: (context) => FavoriteScreen(),
               AuthScreen.routeName: (context) =>AuthScreen(),
