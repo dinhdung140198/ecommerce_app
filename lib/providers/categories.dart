@@ -59,14 +59,16 @@ class Categories with ChangeNotifier {
                 name: prodValue['title'],
                 price: prodValue['price'],
                 description: prodValue['description'],
-                urlImage: prodValue['urlImage'],
+                urlImage: prodValue['imageUrl'],
                 category: prodValue['category'],
+                rate: 3,
               ),
             );
           }
         },
       );
       notifyListeners();
+      _productList.clear();
       _productList =loadProduct;
     } catch (error) {
       throw (error);

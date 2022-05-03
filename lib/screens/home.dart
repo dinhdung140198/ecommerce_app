@@ -22,11 +22,15 @@ class _HomeScreenState extends State<HomeScreen> {
     String valSearch='';
   final GlobalKey<ScaffoldState> _scafoldKey = GlobalKey<ScaffoldState>();
   @override
-  @override
   void didChangeDependencies() {
-    Provider.of<Products>(context).fetchAndSendProducts();
-    Provider.of<SliderList>(context,listen: false).fetchSlider();
+    Provider.of<Products>(context,listen: false).fetchAndSendProducts();
+    Provider.of<SliderList>(context,).fetchSlider();
     super.didChangeDependencies();
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
   }
-    final cart = Provider.of<Cart>(context);
+    final cart = Provider.of<Cart>(context,listen: false);
     return Scaffold(
       key: _scafoldKey,
       drawer: DrawerWidget(),
