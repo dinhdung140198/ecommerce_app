@@ -3,12 +3,14 @@ import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/products.dart';
 import 'package:ecommerce_app/widgets/drawer_widget.dart';
 import 'package:ecommerce_app/widgets/product_grib.dart';
+import 'package:ecommerce_app/widgets/search_bar.dart';
 import 'package:ecommerce_app/widgets/shopping_cart_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class FavoriteScreen extends StatefulWidget {
   static const routeName = '/favorite';
+
   const FavoriteScreen({Key? key}) : super(key: key);
   @override
   _FavoriteScreenState createState() => _FavoriteScreenState();
@@ -16,20 +18,23 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
   final GlobalKey<ScaffoldState> _scafoldKey = GlobalKey<ScaffoldState>();
-  // @override
-  // void didChangeDependencies() {
-  //   Provider.of<Products>(context,listen: false).fetchAndSendProducts();
-  //   super.didChangeDependencies();
-  // }
-
+  String valSearch = '';
   @override
   Widget build(BuildContext context) {
+    void onChangedSearch(value) {
+      if (value != null) {
+        setState(() {
+          valSearch = value;
+        });
+      }
+    }
+
     final cart = Provider.of<Cart>(context);
     return Scaffold(
       key: _scafoldKey,
       drawer: DrawerWidget(),
       appBar: AppBar(
-        backgroundColor:Colors.transparent,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
           'Favorite',
@@ -66,56 +71,50 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           )
         ],
       ),
-      body: ProductGrid(isFavor: true,),
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12.5),
+            child: SearchBarWidget(callback:(val)=>onChangedSearch(val)),
+          ),
+          ProductGrid(isFavor: true, value: valSearch),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Theme.of(context).accentColor,
         backgroundColor: Colors.transparent,
         iconSize: 22,
-        
         elevation: 0,
         unselectedItemColor: Theme.of(context).hintColor.withOpacity(1),
         items: [
+          BottomNavigationBarItem(icon: Icon(UiIcons.bell), label: 'Notif'),
+          BottomNavigationBarItem(icon: Icon(UiIcons.user_1), label: 'Account'),
           BottomNavigationBarItem(
-            icon: Icon(UiIcons.bell),
-            label: 'Notif'
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(UiIcons.user_1),
-            label: 'Account'
-          ),
-          BottomNavigationBarItem(
-            icon: Container(
-              width: 45,
-              height: 45,
-              decoration: BoxDecoration(
-                  color: Theme.of(context).accentColor,
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Theme.of(context).accentColor.withOpacity(0.4),
-                        blurRadius: 40,
-                        offset: Offset(0, 15)),
-                    BoxShadow(
-                        color: Theme.of(context).accentColor.withOpacity(0.4),
-                        blurRadius: 13,
-                        offset: Offset(0, 3))
-                  ]),
-              child: Icon(
-                UiIcons.home,
-                color: Theme.of(context).primaryColor,
+              icon: Container(
+                width: 45,
+                height: 45,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).accentColor,
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Theme.of(context).accentColor.withOpacity(0.4),
+                          blurRadius: 40,
+                          offset: Offset(0, 15)),
+                      BoxShadow(
+                          color: Theme.of(context).accentColor.withOpacity(0.4),
+                          blurRadius: 13,
+                          offset: Offset(0, 3))
+                    ]),
+                child: Icon(
+                  UiIcons.home,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
-            ),
-            label: ''
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(UiIcons.chat),
-            label: 'Chat'
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(UiIcons.heart),
-            label: 'Favorite'
-          )
+              label: ''),
+          BottomNavigationBarItem(icon: Icon(UiIcons.chat), label: 'Chat'),
+          BottomNavigationBarItem(icon: Icon(UiIcons.heart), label: 'Favorite')
         ],
       ),
     );

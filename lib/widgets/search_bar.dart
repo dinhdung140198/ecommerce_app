@@ -35,8 +35,6 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
         children: [
           TextField(
             onChanged: (value){
-              print(value);
-            // Provider.of<Products>(context,listen: false).filterSearchResult(value);
             widget.callback(value);
           },controller: editingController,
             decoration: InputDecoration(

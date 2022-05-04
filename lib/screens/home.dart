@@ -18,19 +18,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _isSearch =false;
+  // bool _isSearch =false;
     String valSearch='';
   final GlobalKey<ScaffoldState> _scafoldKey = GlobalKey<ScaffoldState>();
   @override
   void didChangeDependencies() {
     Provider.of<Products>(context,listen: false).fetchAndSendProducts();
-    Provider.of<SliderList>(context,).fetchSlider();
+    Provider.of<SliderList>(context,listen: false).fetchSlider();
     super.didChangeDependencies();
-  }
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
   }
   @override
   Widget build(BuildContext context) {

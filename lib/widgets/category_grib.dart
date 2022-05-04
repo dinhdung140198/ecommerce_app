@@ -38,7 +38,7 @@ class CategoryGribWidget extends StatelessWidget {
             alignment: AlignmentDirectional.topCenter,
             children: [
               Container(
-                margin: EdgeInsets.all(10),
+                margin: EdgeInsets.all(5),
                 alignment: AlignmentDirectional.topCenter,
                 padding: EdgeInsets.all(20),
                 width: double.infinity,
@@ -48,19 +48,17 @@ class CategoryGribWidget extends StatelessWidget {
                   boxShadow: [
                     BoxShadow(
                       color: Theme.of(context).hintColor.withOpacity(0.1),
-                      offset: Offset(0, 4),
+                      offset: Offset(0, 5),
                       blurRadius: 10,
                     ),
                   ],
-                  // image: DecorationImage(fit: BoxFit.fill,
-                  //     image: NetworkImage(categories[index].image!)),
+                  image: DecorationImage(fit: BoxFit.fill,
+                      image: NetworkImage(categories[index].image!)),
                   // gradient: LinearGradient(begin: Alignment.bottomLeft,end: Alignment.topRight,colors: [Colors.transparent])
                 ),
-                child: Hero(
-                    tag: '1', child: Image.network(categories[index].image!,width: 100,fit: BoxFit.fill,)),
               ),
               Container(
-                margin: EdgeInsets.only(top: 80, bottom: 10),
+                margin: EdgeInsets.only(top: 85, bottom: 10),
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 width: 140,
                 height: 80,

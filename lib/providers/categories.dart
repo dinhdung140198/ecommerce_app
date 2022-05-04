@@ -61,7 +61,7 @@ class Categories with ChangeNotifier {
                 description: prodValue['description'],
                 urlImage: prodValue['imageUrl'],
                 category: prodValue['category'],
-                rate: 3,
+                rate: prodValue['rate'],
               ),
             );
           }
@@ -73,5 +73,8 @@ class Categories with ChangeNotifier {
     } catch (error) {
       throw (error);
     }
+  }
+  void clear(){
+    _productList=[];
   }
 }

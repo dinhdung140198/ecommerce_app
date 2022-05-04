@@ -1,4 +1,3 @@
-import 'package:ecommerce_app/models/product.dart';
 import 'package:flutter/material.dart';
 
 class Category with ChangeNotifier {

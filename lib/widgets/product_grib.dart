@@ -19,9 +19,16 @@ class _ProductGridState extends State<ProductGrid> {
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context,listen: false);
-    List<Product>items=productsData.items;
+    List<Product>items;
     List<Product>dummySearchList;
-    dummySearchList=productsData.items;
+    if(!widget.isFavor!){
+      items=productsData.items;
+      dummySearchList=productsData.items;
+    }else{
+      items=productsData.favoriteItems;
+      dummySearchList=productsData.favoriteItems;
+    }
+    
     if (widget.value!.isNotEmpty) {
       List<Product> searchList = [];
       items.forEach(
@@ -37,7 +44,7 @@ class _ProductGridState extends State<ProductGrid> {
       items.clear();
       items.addAll(dummySearchList);
     }
-    final products = widget.isFavor! ? productsData.favoriteItems : items;
+    // final products = widget.isFavor! ? productsData.favoriteItems : items;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       child: MasonryGridView.count(
@@ -46,9 +53,9 @@ class _ProductGridState extends State<ProductGrid> {
           crossAxisCount: 2,
           mainAxisSpacing: 15.0,
           crossAxisSpacing: 15.0,
-          itemCount: products.length,
+          itemCount: items.length,
           itemBuilder: (context, index) => ChangeNotifierProvider.value(
-                value: products[index],
+                value: items[index],
                 child: ProductItem(),
               )),
     );

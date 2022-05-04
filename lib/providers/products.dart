@@ -47,7 +47,7 @@ class Products with ChangeNotifier {
           description: prodData['description'],
           urlImage: prodData['imageUrl'],
           category: prodData['category'],
-          rate: 3,
+          rate: prodData['rate'],
           isFavorite:
               favoriteData == null ? false : favoriteData[prodId] ?? false,
         ));

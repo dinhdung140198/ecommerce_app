@@ -10,6 +10,7 @@ class Auth with ChangeNotifier {
   DateTime? _expriryDate;
   String? _userId;
   Timer? _authTimer;
+  String? _userEmail;
 
   bool get isAuth {
     return token != null;
@@ -28,6 +29,11 @@ class Auth with ChangeNotifier {
     return _userId;
   }
 
+  String? get userEmail{
+    return _userEmail;
+  }
+
+
   Future<void> _authenticate(
       String? email, String? password, String? urlSegment) async {
     final url = Uri.parse(
@@ -43,6 +49,7 @@ class Auth with ChangeNotifier {
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
       }
+      _userEmail=responseData["email"];
       _token = responseData['idToken'];
       _userId = responseData['localId'];
       _expriryDate = DateTime.now()
