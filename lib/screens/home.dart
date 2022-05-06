@@ -2,6 +2,8 @@ import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/products.dart';
 import 'package:ecommerce_app/providers/sliders.dart';
+import 'package:ecommerce_app/providers/user.dart';
+import 'package:ecommerce_app/screens/account.dart';
 import 'package:ecommerce_app/widgets/drawer_widget.dart';
 import 'package:ecommerce_app/widgets/product_grib.dart';
 import 'package:ecommerce_app/widgets/search_bar.dart';
@@ -22,7 +24,13 @@ class _HomeScreenState extends State<HomeScreen> {
     String valSearch='';
   final GlobalKey<ScaffoldState> _scafoldKey = GlobalKey<ScaffoldState>();
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+  @override
   void didChangeDependencies() {
+    Provider.of<UserProvider>(context).fetchSetUser();
     Provider.of<Products>(context,listen: false).fetchAndSendProducts();
     Provider.of<SliderList>(context,listen: false).fetchSlider();
     super.didChangeDependencies();
@@ -37,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
     final cart = Provider.of<Cart>(context,listen: false);
+    final user =Provider.of<UserProvider>(context,listen: false).user;
     return Scaffold(
       key: _scafoldKey,
       drawer: DrawerWidget(),
@@ -65,10 +74,11 @@ class _HomeScreenState extends State<HomeScreen> {
               borderRadius: BorderRadius.circular(300),
             ),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(AccountScreen.routeName);
+              },
               child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://1.bp.blogspot.com/-wIaKEkcCTTk/XqjcK5-2a8I/AAAAAAAAk4k/opJSFhhMK2MXq51T3fXX8TaMUSW78alSgCEwYBhgL/s1600/hinh-nen-girl-xinh-4k-nu-cuoi-xinh-xan.jpg'),
+                backgroundImage: NetworkImage(user.avartar!),
                 // child: Image.network(
                 //   'https://toppng.com/uploads/preview/vu-thi-ha-user-pro-icon-115534024853ae3gswzwd.png',
                 //   fit: BoxFit.cover,

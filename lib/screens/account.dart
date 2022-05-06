@@ -1,20 +1,23 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
+import 'package:ecommerce_app/providers/user.dart';
 import 'package:ecommerce_app/screens/cart.dart';
 import 'package:ecommerce_app/screens/favorite_list.dart';
 import 'package:ecommerce_app/screens/orders.dart';
 import 'package:ecommerce_app/widgets/drawer_widget.dart';
-import 'package:ecommerce_app/widgets/search_bar.dart';
+import 'package:ecommerce_app/widgets/profile_accounts.dart';
 import 'package:ecommerce_app/widgets/shopping_cart_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AccountScreen extends StatelessWidget {
+  static const routeName ='/account';
   AccountScreen({Key? key}) : super(key: key);
   final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context).user;
     final cartCount = Provider.of<Cart>(context).itemCount;
     return Scaffold(
       drawer: DrawerWidget(),
@@ -279,7 +282,7 @@ class AccountScreen extends StatelessWidget {
                       'Profile Settings',
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
-                    trailing: ButtonTheme(padding:EdgeInsets.all(0),minWidth: 50.0,height: 25.0,child: , ),
+                    trailing: ButtonTheme(padding:EdgeInsets.all(0),minWidth: 50.0,height: 25.0,child: ProfileAccount(), ),
                   ),
                   ListTile(
                   onTap: () {},
@@ -289,7 +292,7 @@ class AccountScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                   trailing: Text(
-                    _user.name,
+                    user.name!,
                     style: TextStyle(color: Theme.of(context).focusColor),
                   ),
                 ),
@@ -301,7 +304,7 @@ class AccountScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                   trailing: Text(
-                    _user.email,
+                    user.email!,
                     style: TextStyle(color: Theme.of(context).focusColor),
                   ),
                 ),
@@ -313,7 +316,7 @@ class AccountScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                   trailing: Text(
-                    _user.gender,
+                    user.gender!,
                     style: TextStyle(color: Theme.of(context).focusColor),
                   ),
                 ),
@@ -325,7 +328,7 @@ class AccountScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                   trailing: Text(
-                    _user.getDateOfBirth(),
+                    user.dateOfBirth.toString(),
                     style: TextStyle(color: Theme.of(context).focusColor),
                   ),
                 ),

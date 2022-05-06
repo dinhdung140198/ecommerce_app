@@ -34,7 +34,7 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addUser(UserModel user) async {
+  Future<void> addUser() async {
     var url = Uri.parse(
         'https://flutter-update-89c84-default-rtdb.firebaseio.com/users/$userId.json?auth=$authToken');
     try {
@@ -42,23 +42,23 @@ class UserProvider with ChangeNotifier {
         url,
         body: json.encode(
           {
-            'name': user.name,
+            'name': '',
             'email': userEmail,
-            'gender': user.gender,
-            'dateOfbirth': user.dateOfBirth,
-            'avartar': user.avartar,
-            'address': user.address
+            'gender': '',
+            'dateOfbirth': DateTime.now(),
+            'avartar': 'https://ketnoiocop.vn/Content/images/user.png',
+            'address': ''
           },
         ),
       );
       final newUser = UserModel.advanced(
         json.decode(response.body)['name'],
-        user.name,
-        user.email,
-        user.avartar,
-        user.gender,
-        user.address,
-        user.dateOfBirth,
+        '',
+        userEmail,
+        'https://ketnoiocop.vn/Content/images/user.png',
+        '',
+        '',
+        DateTime.now(),
       );
       _user = newUser;
       notifyListeners();

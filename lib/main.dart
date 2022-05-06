@@ -1,9 +1,11 @@
 import 'package:ecommerce_app/models/product.dart';
+import 'package:ecommerce_app/models/user.dart';
 import 'package:ecommerce_app/providers/auth.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/categories.dart';
 import 'package:ecommerce_app/providers/orders.dart';
 import 'package:ecommerce_app/providers/sliders.dart';
+import 'package:ecommerce_app/providers/user.dart';
 import 'package:ecommerce_app/route_generator.dart';
 import 'package:ecommerce_app/screens/auth.dart';
 import 'package:ecommerce_app/screens/cart.dart';
@@ -43,10 +45,26 @@ class MyApp extends StatelessWidget {
           }),
           ChangeNotifierProxyProvider<Auth, Orders>(create: (_) {
             return Orders('', '', []);
-          }, update: (ctx, auth, previousOrders ){
+          }, update: (ctx, auth, previousOrders) {
             return Orders(auth.token, auth.userId,
                 previousOrders == null ? [] : previousOrders.orders);
-          })
+          }),
+          ChangeNotifierProxyProvider<Auth, UserProvider>(
+            create: (_) {
+              return UserProvider('', '', '',
+                  UserModel.advanced('', '', '', '', '', '', DateTime.now()));
+            },
+            update: (ctx, auth, previousUser) {
+              return UserProvider(
+                  auth.token,
+                  auth.userId,
+                  auth.userEmail,
+                  previousUser == null
+                      ? UserModel.advanced(
+                          '', '', '', '', '', '', DateTime.now())
+                      : previousUser.user);
+            },
+          ),
         ],
         child: Consumer<Auth>(
           builder: (ctx, auth, _) => MaterialApp(
@@ -55,12 +73,13 @@ class MyApp extends StatelessWidget {
             initialRoute: '/',
             // onGenerateRoute: RouteGenerator.generatorRouter,
             routes: {
-              CategoryProductsScreen.routeName: (context) => CategoryProductsScreen(),
+              CategoryProductsScreen.routeName: (context) =>
+                  CategoryProductsScreen(),
               CategoriesScreen.routeName: (context) => CategoriesScreen(),
               // EditProductScreen.routeName:(context) => EditProductScreen(),
               FavoriteScreen.routeName: (context) => FavoriteScreen(),
-              AuthScreen.routeName: (context) =>AuthScreen(),
-              OrdersScreen.routeName: (context) =>OrdersScreen(),
+              AuthScreen.routeName: (context) => AuthScreen(),
+              OrdersScreen.routeName: (context) => OrdersScreen(),
               CheckoutDoneScreen.routeName: (context) => CheckoutDoneScreen(),
               CheckoutScreen.routeName: (context) => CheckoutScreen(),
               CartScreen.routeName: (context) => CartScreen(),

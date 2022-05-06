@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/models/http_exception.dart';
 import 'package:ecommerce_app/providers/auth.dart';
+import 'package:ecommerce_app/providers/user.dart';
 import 'package:ecommerce_app/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -76,6 +77,7 @@ class _AuthScreenState extends State<AuthScreen>
       } else {
         await Provider.of<Auth>(context, listen: false)
             .signUp(_authData['email'], _authData['password']);
+        await Provider.of<UserProvider>(context,listen: false).addUser();
       }
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed';

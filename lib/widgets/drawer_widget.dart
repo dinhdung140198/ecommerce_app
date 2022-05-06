@@ -1,3 +1,5 @@
+import 'package:ecommerce_app/providers/user.dart';
+import 'package:ecommerce_app/screens/account.dart';
 import 'package:ecommerce_app/screens/categories.dart';
 import 'package:ecommerce_app/screens/edit_product.dart';
 import 'package:ecommerce_app/screens/favorite_list.dart';
@@ -17,19 +19,22 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final orders = Provider.of<Orders>(context);
+    final user =Provider.of<UserProvider>(context).user;
     return Drawer(
       child: ListView(
         children: [
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(AccountScreen.routeName);
+            },
             child: UserAccountsDrawerHeader(
-              accountEmail: Text('userEmail@hot.com'),
-              accountName: Text('DinhDung',
+              accountEmail: Text(user.email!),
+              accountName: Text(user.name!,
                   style: Theme.of(context).textTheme.headline6),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Theme.of(context).accentColor,
                 backgroundImage: NetworkImage(
-                    'https://1.bp.blogspot.com/-wIaKEkcCTTk/XqjcK5-2a8I/AAAAAAAAk4k/opJSFhhMK2MXq51T3fXX8TaMUSW78alSgCEwYBhgL/s1600/hinh-nen-girl-xinh-4k-nu-cuoi-xinh-xan.jpg'),
+                    user.avartar!),
               ),
               decoration: BoxDecoration(
                   color: Theme.of(context).hintColor.withOpacity(0.1)),
