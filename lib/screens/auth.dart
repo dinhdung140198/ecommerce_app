@@ -77,7 +77,7 @@ class _AuthScreenState extends State<AuthScreen>
       } else {
         await Provider.of<Auth>(context, listen: false)
             .signUp(_authData['email'], _authData['password']);
-        await Provider.of<UserProvider>(context,listen: false).addUser();
+            print('SignUP');
       }
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed';

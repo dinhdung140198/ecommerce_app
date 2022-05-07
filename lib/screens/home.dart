@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   @override
   void didChangeDependencies() {
-    Provider.of<UserProvider>(context).fetchSetUser();
+    Provider.of<UserProvider>(context,listen: false).fetchSetUser();
     Provider.of<Products>(context,listen: false).fetchAndSendProducts();
     Provider.of<SliderList>(context,listen: false).fetchSlider();
     super.didChangeDependencies();
@@ -46,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
     final cart = Provider.of<Cart>(context,listen: false);
     final user =Provider.of<UserProvider>(context,listen: false).user;
+    print(user);
     return Scaffold(
       key: _scafoldKey,
       drawer: DrawerWidget(),
@@ -80,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: CircleAvatar(
                 backgroundImage: NetworkImage(user.avartar!),
                 // child: Image.network(
-                //   'https://toppng.com/uploads/preview/vu-thi-ha-user-pro-icon-115534024853ae3gswzwd.png',
+                //   user.avartar!,
                 //   fit: BoxFit.cover,
                 // ),
               ),

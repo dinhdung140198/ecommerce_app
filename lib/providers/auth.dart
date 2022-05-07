@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/user.dart';
+
 class Auth with ChangeNotifier {
   String? _token;
   DateTime? _expriryDate;
@@ -62,6 +64,7 @@ class Auth with ChangeNotifier {
         'userId': _userId,
         'expiryDate': _expriryDate!.toIso8601String()
       });
+      
       prefs.setString('userData', userData);
     } catch (error) {
       throw error;
@@ -79,7 +82,9 @@ class Auth with ChangeNotifier {
     String? email,
     String? password,
   ) async {
-    return _authenticate(email, password, 'signUp');
+    return await _authenticate(email, password, 'signUp').then((_) {
+      addUser();
+    } );
   }
 
   Future<bool> tryAutoLogin() async {
@@ -99,6 +104,39 @@ class Auth with ChangeNotifier {
     notifyListeners();
     _autoLogout();
     return true;
+  }
+
+   Future<void> addUser() async {
+     print('add $_userEmail');
+    var url = Uri.parse(
+        'https://flutter-update-89c84-default-rtdb.firebaseio.com/users/$userId.json');
+    try {
+      await http.post(
+        url,
+        body: json.encode(
+          {
+            'name': 'add user',
+            'email': _userEmail,
+            'gender': 'selected gender',
+            'dateOfbirth': DateTime.now(),
+            'avartar': 'https://ketnoiocop.vn/Content/images/user.png',
+            'address': 'add your address'
+          },
+        ),
+      );
+      // final newUser = UserModel.advanced(
+      //   id: json.decode(response.body)['name'],
+      //   name: 'add user',
+      //   email: userEmail,
+      //   avartar: 'https://ketnoiocop.vn/Content/images/user.png',
+      //   gender: 'selected gender',
+      //   address: 'add your address',
+      //   dateOfBirth: DateTime.now(),
+      // );
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
   }
 
   Future<void> logout() async {

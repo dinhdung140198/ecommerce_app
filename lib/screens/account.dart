@@ -1,7 +1,6 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/user.dart';
-import 'package:ecommerce_app/screens/cart.dart';
 import 'package:ecommerce_app/screens/favorite_list.dart';
 import 'package:ecommerce_app/screens/orders.dart';
 import 'package:ecommerce_app/widgets/drawer_widget.dart';
@@ -11,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AccountScreen extends StatelessWidget {
-  static const routeName ='/account';
+  static const routeName = '/account';
   AccountScreen({Key? key}) : super(key: key);
   final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
 
@@ -20,8 +19,11 @@ class AccountScreen extends StatelessWidget {
     final user = Provider.of<UserProvider>(context).user;
     final cartCount = Provider.of<Cart>(context).itemCount;
     return Scaffold(
+      key: _scaffoldState,
       drawer: DrawerWidget(),
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: IconButton(
           onPressed: () {
             _scaffoldState.currentState!.openDrawer();
@@ -44,7 +46,7 @@ class AccountScreen extends StatelessWidget {
             height: 30,
             margin: EdgeInsets.only(top: 12.5, right: 12.5, bottom: 12.5),
             child: CircleAvatar(
-              backgroundImage: NetworkImage(''),
+              backgroundImage: NetworkImage(user.avartar!),
             ),
           )
         ],
@@ -54,29 +56,33 @@ class AccountScreen extends StatelessWidget {
           children: [
             // SearchBarWidget(callback: 'callback')
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'name user',
-                        textAlign: TextAlign.left,
-                        style: Theme.of(context).textTheme.headline3,
-                      ),
-                      Text(
-                        'email',
-                        style: Theme.of(context).textTheme.caption,
-                      )
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          user.name!,
+                          textAlign: TextAlign.left,
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
+                        Text(
+                          user.email!,
+                          style: Theme.of(context).textTheme.caption,
+                        )
+                      ],
+                    ),
                   ),
                   Container(
                     width: 55,
                     height: 55,
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(300)),
-                    child: CircleAvatar(backgroundImage: NetworkImage('Image')),
+                    child: CircleAvatar(
+                        backgroundImage: NetworkImage(user.avartar!)),
                   )
                 ],
               ),
@@ -207,7 +213,7 @@ class AccountScreen extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () {
-                      Navigator.of(context).pushNamed('/Orders');
+                      Navigator.of(context).pushNamed(OrdersScreen.routeName);
                     },
                     dense: true,
                     title: Text(
@@ -228,7 +234,7 @@ class AccountScreen extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () {
-                      Navigator.of(context).pushNamed('/Orders');
+                      Navigator.of(context).pushNamed(OrdersScreen.routeName);
                     },
                     dense: true,
                     title: Text(
@@ -249,7 +255,7 @@ class AccountScreen extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () {
-                      Navigator.of(context).pushNamed('/Orders');
+                      Navigator.of(context).pushNamed(OrdersScreen.routeName);
                     },
                     dense: true,
                     title: Text(
@@ -261,6 +267,7 @@ class AccountScreen extends StatelessWidget {
               ),
             ),
             Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
@@ -282,147 +289,152 @@ class AccountScreen extends StatelessWidget {
                       'Profile Settings',
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
-                    trailing: ButtonTheme(padding:EdgeInsets.all(0),minWidth: 50.0,height: 25.0,child: ProfileAccount(), ),
+                    trailing: ButtonTheme(
+                      padding: EdgeInsets.all(0),
+                      minWidth: 50.0,
+                      height: 25.0,
+                      child: ProfileAccount(),
+                    ),
                   ),
                   ListTile(
-                  onTap: () {},
-                  dense: true,
-                  title: Text(
-                    'Full name',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    onTap: () {},
+                    dense: true,
+                    title: Text(
+                      'Full name',
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                    trailing: Text(
+                      user.name!,
+                      style: TextStyle(color: Theme.of(context).focusColor),
+                    ),
                   ),
-                  trailing: Text(
-                    user.name!,
-                    style: TextStyle(color: Theme.of(context).focusColor),
+                  ListTile(
+                    onTap: () {},
+                    dense: true,
+                    title: Text(
+                      'Email',
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                    trailing: Text(
+                      user.email!,
+                      style: TextStyle(color: Theme.of(context).focusColor),
+                    ),
                   ),
-                ),
-                ListTile(
-                  onTap: () {},
-                  dense: true,
-                  title: Text(
-                    'Email',
-                    style: Theme.of(context).textTheme.bodyText2,
+                  ListTile(
+                    onTap: () {},
+                    dense: true,
+                    title: Text(
+                      'Gender',
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                    trailing: Text(
+                      user.gender!,
+                      style: TextStyle(color: Theme.of(context).focusColor),
+                    ),
                   ),
-                  trailing: Text(
-                    user.email!,
-                    style: TextStyle(color: Theme.of(context).focusColor),
+                  ListTile(
+                    onTap: () {},
+                    dense: true,
+                    title: Text(
+                      'Birth Date',
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                    trailing: Text(
+                      user.dateOfBirth.toString(),
+                      style: TextStyle(color: Theme.of(context).focusColor),
+                    ),
                   ),
-                ),
-                ListTile(
-                  onTap: () {},
-                  dense: true,
-                  title: Text(
-                    'Gender',
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                  trailing: Text(
-                    user.gender!,
-                    style: TextStyle(color: Theme.of(context).focusColor),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {},
-                  dense: true,
-                  title: Text(
-                    'Birth Date',
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                  trailing: Text(
-                    user.dateOfBirth.toString(),
-                    style: TextStyle(color: Theme.of(context).focusColor),
-                  ),
-                ),
                 ],
               ),
             ),
             Container(
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(6),
-              boxShadow: [
-                BoxShadow(
-                    color: Theme.of(context).hintColor.withOpacity(0.15),
-                    offset: Offset(0, 3),
-                    blurRadius: 10)
-              ],
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(6),
+                boxShadow: [
+                  BoxShadow(
+                      color: Theme.of(context).hintColor.withOpacity(0.15),
+                      offset: Offset(0, 3),
+                      blurRadius: 10)
+                ],
+              ),
+              child: ListView(
+                shrinkWrap: true,
+                primary: false,
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(UiIcons.settings_1),
+                    title: Text(
+                      'Account Settings',
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {},
+                    dense: true,
+                    title: Row(
+                      children: <Widget>[
+                        Icon(
+                          UiIcons.placeholder,
+                          size: 22,
+                          color: Theme.of(context).focusColor,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Shipping Adresses',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                      ],
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/Languages');
+                    },
+                    dense: true,
+                    title: Row(
+                      children: <Widget>[
+                        Icon(
+                          UiIcons.planet_earth,
+                          size: 22,
+                          color: Theme.of(context).focusColor,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Languages',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                      ],
+                    ),
+                    trailing: Text(
+                      'English',
+                      style: TextStyle(color: Theme.of(context).focusColor),
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/Help');
+                    },
+                    dense: true,
+                    title: Row(
+                      children: <Widget>[
+                        Icon(
+                          UiIcons.information,
+                          size: 22,
+                          color: Theme.of(context).focusColor,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Help & Support',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-            child: ListView(
-              shrinkWrap: true,
-              primary: false,
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(UiIcons.settings_1),
-                  title: Text(
-                    'Account Settings',
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                ),
-                ListTile(
-                  onTap: () {},
-                  dense: true,
-                  title: Row(
-                    children: <Widget>[
-                      Icon(
-                        UiIcons.placeholder,
-                        size: 22,
-                        color: Theme.of(context).focusColor,
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        'Shipping Adresses',
-                        style: Theme.of(context).textTheme.bodyText2,
-                      ),
-                    ],
-                  ),
-                ),
-                ListTile(
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/Languages');
-                  },
-                  dense: true,
-                  title: Row(
-                    children: <Widget>[
-                      Icon(
-                        UiIcons.planet_earth,
-                        size: 22,
-                        color: Theme.of(context).focusColor,
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        'Languages',
-                        style: Theme.of(context).textTheme.bodyText2,
-                      ),
-                    ],
-                  ),
-                  trailing: Text(
-                    'English',
-                    style: TextStyle(color: Theme.of(context).focusColor),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/Help');
-                  },
-                  dense: true,
-                  title: Row(
-                    children: <Widget>[
-                      Icon(
-                        UiIcons.information,
-                        size: 22,
-                        color: Theme.of(context).focusColor,
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        'Help & Support',
-                        style: Theme.of(context).textTheme.bodyText2,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
           ],
         ),
       ),

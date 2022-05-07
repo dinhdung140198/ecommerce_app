@@ -1,8 +1,10 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/models/user.dart';
+import 'package:ecommerce_app/providers/user.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ProfileAccount extends StatefulWidget {
   const ProfileAccount({Key? key}) : super(key: key);
@@ -12,11 +14,64 @@ class ProfileAccount extends StatefulWidget {
 }
 
 class _ProfileAccountState extends State<ProfileAccount> {
+  final _imageUrlController = TextEditingController();
+  final _imageUrlFocusNode = FocusNode();
   GlobalKey<FormState> _profileAccountFormKey = GlobalKey<FormState>();
-  var _editedUser = UserModel.advanced(id:null, name:'', email:'', avartar:'', gender:'', address:'', dateOfBirth:'');
+  var _editedUser = UserModel.advanced(
+      id: null,
+      name: '',
+      email: '',
+      avartar: '',
+      gender: '',
+      address: '',
+      dateOfBirth: DateTime.now());
+  var _initUser = {
+    'name': '',
+    'email': '',
+    'avartar': '',
+    'gender': '',
+    'address': '',
+    'dateOfBirth': DateTime.now().toString(),
+  };
+  @override
+  void initState() {
+    _imageUrlFocusNode.addListener(_updateImageUrl);
+    super.initState();
+  }
 
   @override
-  Widget build(BuildContext context) { 
+  void didChangeDependencies() {
+    _editedUser = Provider.of<UserProvider>(context).user;
+    _initUser = {
+      'name': _editedUser.name!,
+      'email': _editedUser.email!,
+      'avartar': _editedUser.avartar!,
+      'gender': _editedUser.gender!,
+      'address': _editedUser.address!,
+      'dateOfBirth': DateTime.now().toString(),
+    };
+    _imageUrlController.text = _editedUser.avartar!;
+    super.didChangeDependencies();
+  }
+
+  void _updateImageUrl() {
+    if (!_imageUrlFocusNode.hasFocus) {
+      if (_imageUrlController.text.isEmpty ||
+          (!_imageUrlController.text.startsWith('http') &&
+              !_imageUrlController.text.startsWith('https')) ||
+          (_imageUrlController.text.endsWith('pnp') &&
+              _imageUrlController.text.endsWith('jpg') &&
+              _imageUrlController.text.endsWith('jpeg'))) {
+        return;
+      }
+      setState(() {});
+    }
+  }
+
+  Future<void> _saveForm() async {}
+
+  @override
+  Widget build(BuildContext context) {
     return FlatButton(
         onPressed: () {
           showDialog(
@@ -49,58 +104,160 @@ class _ProfileAccountState extends State<ProfileAccount> {
                             keyboardType: TextInputType.text,
                             decoration:
                                 getInputDecoration(hintText: '', labelText: ''),
-                            initialValue: '',
+                            initialValue: _initUser['name'],
                             validator: (input) => input!.trim().length < 3
                                 ? 'Not a valid full name'
                                 : null,
-                            onSaved: (){},
+                            onSaved: (value) {
+                              _editedUser = UserModel.advanced(
+                                  name: value,
+                                  email: _editedUser.email,
+                                  avartar: _editedUser.avartar,
+                                  gender: _editedUser.gender,
+                                  address: _editedUser.address,
+                                  dateOfBirth: _editedUser.dateOfBirth);
+                            },
                           ),
                           TextFormField(
                             style:
                                 TextStyle(color: Theme.of(context).hintColor),
-                            decoration:
-                                getInputDecoration(hintText: '', labelText: ''),
-                            initialValue: '',
-                            validator: (input) => !input!.contains('@')
-                                ? 'Not a valid email'
-                                : null,
-                            onSaved: () {},
+                            decoration: getInputDecoration(
+                                hintText: _initUser['address'],
+                                labelText: 'Address'),
+                            initialValue: _initUser['address'],
+                            // validator: (input) => !input!.contains('@')
+                            //     ? 'Not a valid email'
+                            //     : null,
+                            onSaved: (value) {
+                              _editedUser = UserModel.advanced(
+                                  name: _editedUser.name,
+                                  email: _editedUser.email,
+                                  avartar: _editedUser.avartar,
+                                  gender: _editedUser.gender,
+                                  address: value,
+                                  dateOfBirth: _editedUser.dateOfBirth);
+                            },
                           ),
                           FormField<String>(
                             builder: (FormFieldState<String> state) {
                               return DropdownButtonFormField<String>(
                                 decoration: getInputDecoration(
-                                    hintText: '', labelText: ''),
+                                    hintText: _initUser['gender'], labelText:'Gender' ),
                                 hint: Text('Select Device'),
-                                value: '',
+                                value: _editedUser.gender,
                                 items: [
                                   DropdownMenuItem(
                                     child: Text('Male'),
-                                    value: '',
+                                    value: 'Male',
                                   ),
                                   DropdownMenuItem(
                                     child: Text('Female'),
-                                    value: '',
+                                    value: 'Female',
                                   )
                                 ],
-                                onChanged: (input) {},
+                                onChanged: (input) {
+                                  _editedUser.gender = input;
+                                },
+                                onSaved: (input) => _editedUser.gender = input,
                               );
                             },
                           ),
-                          FormField<String>(
-                              builder: (FormFieldState<String> state) {
-                            return DateTimeField(
-                              format: DateFormat('yyyy-MM-dd'),
-                              onShowPicker: (context, currentValue) {
-                                return showDatePicker(
-                                    context: context,
-                                    firstDate: DateTime(1900),
-                                    initialDate: currentValue ?? DateTime.now(),
-                                    lastDate: DateTime(2100));
-                              },
-                              onSaved: (input) => setState(() {}),
-                            );
-                          })
+                          // TextFormField(
+                          //   style:
+                          //       TextStyle(color: Theme.of(context).hintColor),
+                          //   decoration:
+                          //       getInputDecoration(hintText: '', labelText: ''),
+                          //   initialValue: '',
+                          //   onSaved: (value) {
+
+                          //   },
+                          // ),
+                          // FormField<String>(
+                          //   builder: (FormFieldState<String> state) {
+                          //     return DateTimeField(
+                          //       decoration: getInputDecoration(
+                          //           hintText:
+                          //               _editedUser.dateOfBirth.toString()),
+                          //       format: DateFormat('yyyy-MM-dd'),
+                          //       onShowPicker: (context, currentValue) {
+                          //         return showDatePicker(
+                          //             context: context,
+                          //             firstDate: DateTime(1900),
+                          //             initialDate:
+                          //                 currentValue ?? DateTime.now(),
+                          //             lastDate: DateTime(2100));
+                          //       },
+                          //       onSaved: (input) =>
+                          //           _editedUser.dateOfBirth = input,
+                          //     );
+                          //   },
+                          // ),
+                          // Row(
+                          //   crossAxisAlignment: CrossAxisAlignment.end,
+                          //   children: [
+                          //     Container(
+                          //       width: 80.0,
+                          //       height: 80.0,
+                          //       margin: EdgeInsets.only(top: 8, right: 10),
+                          //       decoration: BoxDecoration(
+                          //           border: Border.all(
+                          //         width: 1.0,
+                          //         color: Colors.grey,
+                          //       )),
+                          //       child: _imageUrlController.text.isEmpty
+                          //           ? Text('Enter a URL')
+                          //           : FittedBox(
+                          //               child: Image.network(
+                          //                   _imageUrlController.text),
+                          //               fit: BoxFit.fill,
+                          //             ),
+                          //     ),
+                          //     Expanded(
+                          //       child: TextFormField(
+                          //         // initialValue: _intitValues['imageUrl'],
+                          //         decoration:
+                          //             InputDecoration(labelText: 'Image URL'),
+                          //         keyboardType: TextInputType.url,
+                          //         textInputAction: TextInputAction.done,
+                          //         controller: _imageUrlController,
+                          //         focusNode: _imageUrlFocusNode,
+                          //         // onEditingComplete: (){
+                          //         //   setState(() {
+
+                          //         //   });
+                          //         // },
+                          //         onFieldSubmitted: (_) {
+                          //           _saveForm();
+                          //         },
+                          //         validator: (value) {
+                          //           if (value!.isEmpty) {
+                          //             return 'Please enter a image Url';
+                          //           }
+                          //           if (!value.startsWith('http') &&
+                          //               !value.startsWith('https')) {
+                          //             return 'Please enter a valid URL';
+                          //           }
+                          //           if (value.endsWith('pnp') &&
+                          //               value.endsWith('jpg') &&
+                          //               value.endsWith('jpeg')) {
+                          //             return 'Please enter a valid image URL';
+                          //           }
+                          //           return null;
+                          //         },
+                          //         onSaved: (value) {
+                          //           _editedUser = UserModel.advanced(
+                          //             name: _editedUser.name,
+                          //             email: _editedUser.email,
+                          //             avartar: value,
+                          //             gender: _editedUser.gender,
+                          //             address: _editedUser.address,
+                          //             dateOfBirth: _editedUser.dateOfBirth,
+                          //           );
+                          //         },
+                          //       ),
+                          //     )
+                          //   ],
+                          // )
                         ],
                       ),
                     ),
@@ -111,7 +268,10 @@ class _ProfileAccountState extends State<ProfileAccount> {
                       children: [
                         MaterialButton(
                           onPressed: () {},
-                          child: Text('Cancel',style:TextStyle(color: Colors.red),),
+                          child: Text(
+                            'Cancel',
+                            style: TextStyle(color: Colors.red),
+                          ),
                         ),
                         MaterialButton(
                           onPressed: () {},
@@ -124,7 +284,9 @@ class _ProfileAccountState extends State<ProfileAccount> {
                       ],
                       mainAxisAlignment: MainAxisAlignment.end,
                     ),
-                    SizedBox(height: 10,)
+                    SizedBox(
+                      height: 10,
+                    )
                   ],
                 );
               });

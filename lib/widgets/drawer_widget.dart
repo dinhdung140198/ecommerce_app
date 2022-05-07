@@ -12,14 +12,13 @@ import 'package:ecommerce_app/providers/orders.dart';
 import 'package:ecommerce_app/screens/home.dart';
 import 'package:ecommerce_app/screens/orders.dart';
 
-
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final orders = Provider.of<Orders>(context);
-    final user =Provider.of<UserProvider>(context).user;
+    final user = Provider.of<UserProvider>(context).user;
     return Drawer(
       child: ListView(
         children: [
@@ -34,7 +33,9 @@ class DrawerWidget extends StatelessWidget {
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Theme.of(context).accentColor,
                 backgroundImage: NetworkImage(
-                    user.avartar!),
+                  user.avartar!
+                  // 'https://toppng.com/uploads/preview/vu-thi-ha-user-pro-icon-115534024853ae3gswzwd.png',
+                ),
               ),
               decoration: BoxDecoration(
                   color: Theme.of(context).hintColor.withOpacity(0.1)),

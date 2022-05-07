@@ -9,11 +9,11 @@ class UserModel {
   String? avartar;
   String? address;
 
-  UserModel.init();
-  UserModel.basic(
-    this.name,
-    this.avartar,
-  );
-  UserModel.advanced(this.id,this.name, this.email, this.avartar, this.gender, this.address,
-      this.dateOfBirth,);
+  // UserModel.init();
+  // UserModel.basic(
+  //   this.name,
+  //   this.avartar,
+  // );
+  UserModel.advanced({this.id,this.name, this.email, this.avartar, this.gender, this.address,
+      this.dateOfBirth});
 }

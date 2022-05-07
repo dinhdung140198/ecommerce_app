@@ -7,6 +7,7 @@ import 'package:ecommerce_app/providers/orders.dart';
 import 'package:ecommerce_app/providers/sliders.dart';
 import 'package:ecommerce_app/providers/user.dart';
 import 'package:ecommerce_app/route_generator.dart';
+import 'package:ecommerce_app/screens/account.dart';
 import 'package:ecommerce_app/screens/auth.dart';
 import 'package:ecommerce_app/screens/cart.dart';
 import 'package:ecommerce_app/screens/categories.dart';
@@ -51,8 +52,20 @@ class MyApp extends StatelessWidget {
           }),
           ChangeNotifierProxyProvider<Auth, UserProvider>(
             create: (_) {
-              return UserProvider('', '', '',
-                  UserModel.advanced('', '', '', '', '', '', DateTime.now()));
+              return UserProvider(
+                '',
+                '',
+                '',
+                UserModel.advanced(
+                  id: '',
+                  name: '',
+                  email: '',
+                  avartar: '',
+                  gender: '',
+                  address: '',
+                  dateOfBirth: DateTime.now(),
+                ),
+              );
             },
             update: (ctx, auth, previousUser) {
               return UserProvider(
@@ -61,7 +74,14 @@ class MyApp extends StatelessWidget {
                   auth.userEmail,
                   previousUser == null
                       ? UserModel.advanced(
-                          '', '', '', '', '', '', DateTime.now())
+                          id: '',
+                          name: '',
+                          email: '',
+                          avartar: '',
+                          gender: '',
+                          address: '',
+                          dateOfBirth: DateTime.now(),
+                        )
                       : previousUser.user);
             },
           ),
@@ -73,6 +93,7 @@ class MyApp extends StatelessWidget {
             initialRoute: '/',
             // onGenerateRoute: RouteGenerator.generatorRouter,
             routes: {
+              AccountScreen.routeName: (context) => AccountScreen(),
               CategoryProductsScreen.routeName: (context) =>
                   CategoryProductsScreen(),
               CategoriesScreen.routeName: (context) => CategoriesScreen(),
