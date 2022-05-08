@@ -1,7 +1,6 @@
 import 'package:ecommerce_app/providers/user.dart';
 import 'package:ecommerce_app/screens/account.dart';
 import 'package:ecommerce_app/screens/categories.dart';
-import 'package:ecommerce_app/screens/edit_product.dart';
 import 'package:ecommerce_app/screens/favorite_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +17,7 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final orders = Provider.of<Orders>(context);
-    final user = Provider.of<UserProvider>(context).user;
+    final user = Provider.of<UserProvider>(context,listen: false).user;
     return Drawer(
       child: ListView(
         children: [

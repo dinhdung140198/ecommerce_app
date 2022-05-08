@@ -7,17 +7,24 @@ import 'package:ecommerce_app/widgets/drawer_widget.dart';
 import 'package:ecommerce_app/widgets/profile_accounts.dart';
 import 'package:ecommerce_app/widgets/shopping_cart_button.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class AccountScreen extends StatelessWidget {
+class AccountScreen extends StatefulWidget {
   static const routeName = '/account';
   AccountScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AccountScreen> createState() => _AccountScreenState();
+}
+
+class _AccountScreenState extends State<AccountScreen> {
   final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
-    final cartCount = Provider.of<Cart>(context).itemCount;
+    final cartCount = Provider.of<Cart>(context, listen: false).itemCount;
     return Scaffold(
       key: _scaffoldState,
       drawer: DrawerWidget(),
@@ -293,7 +300,11 @@ class AccountScreen extends StatelessWidget {
                       padding: EdgeInsets.all(0),
                       minWidth: 50.0,
                       height: 25.0,
-                      child: ProfileAccount(),
+                      child: ProfileAccount(
+                        onChanged: () {
+                          setState(() {});
+                        },
+                      ),
                     ),
                   ),
                   ListTile(
@@ -340,7 +351,7 @@ class AccountScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                     trailing: Text(
-                      user.dateOfBirth.toString(),
+                      DateFormat('yyyy-MM-dd').format(user.dateOfBirth!),
                       style: TextStyle(color: Theme.of(context).focusColor),
                     ),
                   ),

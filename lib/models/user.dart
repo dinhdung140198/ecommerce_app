@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class UserModel {
   String? id ;
@@ -16,4 +17,7 @@ class UserModel {
   // );
   UserModel.advanced({this.id,this.name, this.email, this.avartar, this.gender, this.address,
       this.dateOfBirth});
+  getDateOfBirth() {
+    return DateFormat('yyyy-MM-dd').format(this.dateOfBirth!);
+  }
 }

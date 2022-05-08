@@ -7,13 +7,15 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ProfileAccount extends StatefulWidget {
-  const ProfileAccount({Key? key}) : super(key: key);
+  ProfileAccount({Key? key,this.onChanged}) : super(key: key);
+  VoidCallback? onChanged;
 
   @override
   State<ProfileAccount> createState() => _ProfileAccountState();
 }
 
 class _ProfileAccountState extends State<ProfileAccount> {
+  final _addressFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
   final _imageUrlFocusNode = FocusNode();
   GlobalKey<FormState> _profileAccountFormKey = GlobalKey<FormState>();
@@ -33,6 +35,8 @@ class _ProfileAccountState extends State<ProfileAccount> {
     'address': '',
     'dateOfBirth': DateTime.now().toString(),
   };
+  var _isInit = true;
+
   @override
   void initState() {
     _imageUrlFocusNode.addListener(_updateImageUrl);
@@ -41,17 +45,29 @@ class _ProfileAccountState extends State<ProfileAccount> {
 
   @override
   void didChangeDependencies() {
-    _editedUser = Provider.of<UserProvider>(context).user;
-    _initUser = {
-      'name': _editedUser.name!,
-      'email': _editedUser.email!,
-      'avartar': _editedUser.avartar!,
-      'gender': _editedUser.gender!,
-      'address': _editedUser.address!,
-      'dateOfBirth': DateTime.now().toString(),
-    };
-    _imageUrlController.text = _editedUser.avartar!;
+    if (_isInit) {
+      _editedUser = Provider.of<UserProvider>(context).user;
+      _initUser = {
+        'name': _editedUser.name!,
+        'email': _editedUser.email!,
+        'avartar': _editedUser.avartar!,
+        'gender': _editedUser.gender!,
+        'address': _editedUser.address!,
+        'dateOfBirth': DateTime.now().toString(),
+      };
+      _imageUrlController.text = _editedUser.avartar!;
+    }
+    _isInit=false;
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _imageUrlFocusNode.removeListener(_updateImageUrl);
+    _addressFocusNode.dispose();
+    _imageUrlController.dispose();
+    _imageUrlFocusNode.dispose();
+    super.dispose();
   }
 
   void _updateImageUrl() {
@@ -68,7 +84,16 @@ class _ProfileAccountState extends State<ProfileAccount> {
     }
   }
 
-  Future<void> _saveForm() async {}
+  Future<void> _saveForm() async {
+    final isValid = _profileAccountFormKey.currentState!.validate();
+    if (!isValid) {
+      return;
+    }
+    _profileAccountFormKey.currentState!.save();
+    await Provider.of<UserProvider>(context, listen: false)
+        .updateUser(_editedUser);
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +127,10 @@ class _ProfileAccountState extends State<ProfileAccount> {
                             style:
                                 TextStyle(color: Theme.of(context).hintColor),
                             keyboardType: TextInputType.text,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context)
+                                  .requestFocus(_addressFocusNode);
+                            },
                             decoration:
                                 getInputDecoration(hintText: '', labelText: ''),
                             initialValue: _initUser['name'],
@@ -119,33 +148,40 @@ class _ProfileAccountState extends State<ProfileAccount> {
                             },
                           ),
                           TextFormField(
+                            keyboardType: TextInputType.text,
                             style:
                                 TextStyle(color: Theme.of(context).hintColor),
                             decoration: getInputDecoration(
                                 hintText: _initUser['address'],
                                 labelText: 'Address'),
                             initialValue: _initUser['address'],
-                            // validator: (input) => !input!.contains('@')
-                            //     ? 'Not a valid email'
-                            //     : null,
+                            textInputAction: TextInputAction.next,
+                            focusNode: _addressFocusNode,
                             onSaved: (value) {
                               _editedUser = UserModel.advanced(
-                                  name: _editedUser.name,
-                                  email: _editedUser.email,
-                                  avartar: _editedUser.avartar,
-                                  gender: _editedUser.gender,
-                                  address: value,
-                                  dateOfBirth: _editedUser.dateOfBirth);
+                                name: _editedUser.name,
+                                email: _editedUser.email,
+                                avartar: _editedUser.avartar,
+                                gender: _editedUser.gender,
+                                address: value,
+                                dateOfBirth: _editedUser.dateOfBirth,
+                              );
                             },
                           ),
                           FormField<String>(
                             builder: (FormFieldState<String> state) {
                               return DropdownButtonFormField<String>(
                                 decoration: getInputDecoration(
-                                    hintText: _initUser['gender'], labelText:'Gender' ),
-                                hint: Text('Select Device'),
+                                    hintText: _initUser['gender'],
+                                    labelText: 'Gender'),
+                                // hint: Text('Select Device'),
+
                                 value: _editedUser.gender,
                                 items: [
+                                  DropdownMenuItem(
+                                    child: Text('add gender'),
+                                    value: 'add gender',
+                                  ),
                                   DropdownMenuItem(
                                     child: Text('Male'),
                                     value: 'Male',
@@ -156,108 +192,103 @@ class _ProfileAccountState extends State<ProfileAccount> {
                                   )
                                 ],
                                 onChanged: (input) {
-                                  _editedUser.gender = input;
+                                  setState(() {
+                                    _editedUser.gender = input;
+                                  });
                                 },
                                 onSaved: (input) => _editedUser.gender = input,
                               );
                             },
                           ),
-                          // TextFormField(
-                          //   style:
-                          //       TextStyle(color: Theme.of(context).hintColor),
-                          //   decoration:
-                          //       getInputDecoration(hintText: '', labelText: ''),
-                          //   initialValue: '',
-                          //   onSaved: (value) {
-
-                          //   },
-                          // ),
-                          // FormField<String>(
-                          //   builder: (FormFieldState<String> state) {
-                          //     return DateTimeField(
-                          //       decoration: getInputDecoration(
-                          //           hintText:
-                          //               _editedUser.dateOfBirth.toString()),
-                          //       format: DateFormat('yyyy-MM-dd'),
-                          //       onShowPicker: (context, currentValue) {
-                          //         return showDatePicker(
-                          //             context: context,
-                          //             firstDate: DateTime(1900),
-                          //             initialDate:
-                          //                 currentValue ?? DateTime.now(),
-                          //             lastDate: DateTime(2100));
-                          //       },
-                          //       onSaved: (input) =>
-                          //           _editedUser.dateOfBirth = input,
-                          //     );
-                          //   },
-                          // ),
-                          // Row(
-                          //   crossAxisAlignment: CrossAxisAlignment.end,
-                          //   children: [
-                          //     Container(
-                          //       width: 80.0,
-                          //       height: 80.0,
-                          //       margin: EdgeInsets.only(top: 8, right: 10),
-                          //       decoration: BoxDecoration(
-                          //           border: Border.all(
-                          //         width: 1.0,
-                          //         color: Colors.grey,
-                          //       )),
-                          //       child: _imageUrlController.text.isEmpty
-                          //           ? Text('Enter a URL')
-                          //           : FittedBox(
-                          //               child: Image.network(
-                          //                   _imageUrlController.text),
-                          //               fit: BoxFit.fill,
-                          //             ),
-                          //     ),
-                          //     Expanded(
-                          //       child: TextFormField(
-                          //         // initialValue: _intitValues['imageUrl'],
-                          //         decoration:
-                          //             InputDecoration(labelText: 'Image URL'),
-                          //         keyboardType: TextInputType.url,
-                          //         textInputAction: TextInputAction.done,
-                          //         controller: _imageUrlController,
-                          //         focusNode: _imageUrlFocusNode,
-                          //         // onEditingComplete: (){
-                          //         //   setState(() {
-
-                          //         //   });
-                          //         // },
-                          //         onFieldSubmitted: (_) {
-                          //           _saveForm();
-                          //         },
-                          //         validator: (value) {
-                          //           if (value!.isEmpty) {
-                          //             return 'Please enter a image Url';
-                          //           }
-                          //           if (!value.startsWith('http') &&
-                          //               !value.startsWith('https')) {
-                          //             return 'Please enter a valid URL';
-                          //           }
-                          //           if (value.endsWith('pnp') &&
-                          //               value.endsWith('jpg') &&
-                          //               value.endsWith('jpeg')) {
-                          //             return 'Please enter a valid image URL';
-                          //           }
-                          //           return null;
-                          //         },
-                          //         onSaved: (value) {
-                          //           _editedUser = UserModel.advanced(
-                          //             name: _editedUser.name,
-                          //             email: _editedUser.email,
-                          //             avartar: value,
-                          //             gender: _editedUser.gender,
-                          //             address: _editedUser.address,
-                          //             dateOfBirth: _editedUser.dateOfBirth,
-                          //           );
-                          //         },
-                          //       ),
-                          //     )
-                          //   ],
-                          // )
+                          FormField<String>(
+                            builder: (FormFieldState<String> state) {
+                              return DateTimeField(
+                                onFieldSubmitted: ((value) =>
+                                    FocusScope.of(context)
+                                        .requestFocus(_imageUrlFocusNode)),
+                                decoration: getInputDecoration(
+                                    hintText:
+                                        _editedUser.dateOfBirth.toString()),
+                                format: DateFormat('yyyy-MM-dd'),
+                                initialValue: DateTime.parse(_initUser['dateOfBirth'].toString()),
+                                onShowPicker: (context, currentValue) {
+                                  return showDatePicker(
+                                      context: context,
+                                      firstDate: DateTime(1900),
+                                      initialDate:
+                                          currentValue ?? DateTime.now(),
+                                      lastDate: DateTime(2100));
+                                },
+                                onSaved: (input) {setState(() {
+                                      _editedUser.dateOfBirth = input;
+                                      widget.onChanged!();
+                                    });}
+                                    
+                                    
+                              );
+                            },
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                width: 80.0,
+                                height: 80.0,
+                                margin: EdgeInsets.only(top: 8, right: 10),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                  width: 1.0,
+                                  color: Colors.grey,
+                                )),
+                                child: _imageUrlController.text.isEmpty
+                                    ? Text('Enter a URL')
+                                    : FittedBox(
+                                        child: Image.network(
+                                            _imageUrlController.text),
+                                        fit: BoxFit.fill,
+                                      ),
+                              ),
+                              Expanded(
+                                child: TextFormField(
+                                  // initialValue: _intitValues['imageUrl'],
+                                  decoration:
+                                      InputDecoration(labelText: 'Image URL'),
+                                  keyboardType: TextInputType.url,
+                                  textInputAction: TextInputAction.done,
+                                  controller: _imageUrlController,
+                                  focusNode: _imageUrlFocusNode,
+                                  onFieldSubmitted: (_) {
+                                    _saveForm();
+                                  },
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter a image Url';
+                                    }
+                                    if (!value.startsWith('http') &&
+                                        !value.startsWith('https')) {
+                                      return 'Please enter a valid URL';
+                                    }
+                                    if (value.endsWith('pnp') &&
+                                        value.endsWith('jpg') &&
+                                        value.endsWith('jpeg')) {
+                                      return 'Please enter a valid image URL';
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    _editedUser = UserModel.advanced(
+                                      name: _editedUser.name,
+                                      email: _editedUser.email,
+                                      avartar: value,
+                                      gender: _editedUser.gender,
+                                      address: _editedUser.address,
+                                      dateOfBirth: _editedUser.dateOfBirth,
+                                    );
+                                  },
+                                ),
+                              )
+                            ],
+                          )
                         ],
                       ),
                     ),
@@ -267,14 +298,18 @@ class _ProfileAccountState extends State<ProfileAccount> {
                     Row(
                       children: [
                         MaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
                           child: Text(
                             'Cancel',
                             style: TextStyle(color: Colors.red),
                           ),
                         ),
                         MaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _saveForm();
+                          },
                           child: Text(
                             'Save',
                             style:

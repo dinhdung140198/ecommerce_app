@@ -55,7 +55,6 @@ class MyApp extends StatelessWidget {
               return UserProvider(
                 '',
                 '',
-                '',
                 UserModel.advanced(
                   id: '',
                   name: '',
@@ -71,7 +70,6 @@ class MyApp extends StatelessWidget {
               return UserProvider(
                   auth.token,
                   auth.userId,
-                  auth.userEmail,
                   previousUser == null
                       ? UserModel.advanced(
                           id: '',
