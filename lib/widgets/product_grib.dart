@@ -18,7 +18,7 @@ class _ProductGridState extends State<ProductGrid> {
   
   @override
   Widget build(BuildContext context) {
-    final productsData = Provider.of<Products>(context,listen: false);
+    final productsData = Provider.of<Products>(context);
     List<Product>items;
     List<Product>dummySearchList;
     if(!widget.isFavor!){

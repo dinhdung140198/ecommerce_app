@@ -118,7 +118,8 @@ class _AccountScreenState extends State<AccountScreen> {
                         children: [
                           Icon(UiIcons.heart),
                           Text(
-                            'Favorite List',
+                            'Favorite',
+                            maxLines: 1,
                             style: Theme.of(context).textTheme.bodyText2,
                           )
                         ],
@@ -401,7 +402,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                   ListTile(
                     onTap: () {
-                      Navigator.of(context).pushNamed('/Languages');
+                      Navigator.of(context).pushNamed('/');
                     },
                     dense: true,
                     title: Row(

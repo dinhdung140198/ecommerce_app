@@ -16,6 +16,7 @@ import 'package:ecommerce_app/screens/checkout.dart';
 import 'package:ecommerce_app/screens/checkout_done.dart';
 import 'package:ecommerce_app/screens/edit_product.dart';
 import 'package:ecommerce_app/screens/favorite_list.dart';
+import 'package:ecommerce_app/screens/flash.dart';
 import 'package:ecommerce_app/screens/orders.dart';
 import 'package:ecommerce_app/widgets/product_detail.dart';
 import 'package:flutter/material.dart';
@@ -139,7 +140,7 @@ class MyApp extends StatelessWidget {
                     builder: (ctx, authResultSnapshot) =>
                         authResultSnapshot.connectionState ==
                                 ConnectionState.waiting
-                            ? Text('Is authenticate')
+                            ? FlashScreen()
                             : AuthScreen()),
           ),
         ));

@@ -20,21 +20,23 @@ class UserProvider with ChangeNotifier {
     final url = Uri.parse(
         'https://flutter-update-89c84-default-rtdb.firebaseio.com/users/$userId.json?auth=$authToken');
     final response = await http.get(url);
-    final extractedUser = json.decode(response.body);
-    _user.id = userId;
-    _user.name = extractedUser['name'];
-    _user.avartar = extractedUser['avartar'];
-    _user.address = extractedUser['address'];
-    _user.gender = extractedUser['gender'];
-    _user.email = extractedUser['email'];
-    _user.dateOfBirth = DateTime.parse(extractedUser['dateOfBirth']);
+    final extractedUser = json.decode(response.body) as Map<String,dynamic>;
+    extractedUser.forEach((key, value) {
+    _user.id = key;
+    _user.name = value['name'];
+    _user.address = value['address'];
+    _user.gender = value['gender'];
+    _user.email = value['email'];
+    _user.avartar = value['avartar'];
+    _user.dateOfBirth = DateTime.parse(value['dateOfBirth']);
+     });
     notifyListeners();
   }
 
   Future<void> updateUser(UserModel user) async {
-    print(userId);
+
     final url = Uri.parse(
-        'https://flutter-update-89c84-default-rtdb.firebaseio.com/users/$userId.json?auth=$authToken');
+        'https://flutter-update-89c84-default-rtdb.firebaseio.com/users/$userId/${user.id}.json?auth=$authToken');
     await http.patch(url,
         body: json.encode({
           'name': user.name,
@@ -49,36 +51,3 @@ class UserProvider with ChangeNotifier {
   }
 }
 
-  // Future<void> addUser() async {
-  //   print(' Add user');
-  //   var url = Uri.parse(
-  //       'https://flutter-update-89c84-default-rtdb.firebaseio.com/users/$userId.json?auth=$authToken');
-  //   try {
-  //     final response = await http.post(
-  //       url,
-  //       body: json.encode(
-  //         {
-  //           'name': '',
-  //           'email': userEmail,
-  //           'gender': '',
-  //           'dateOfbirth': DateTime.now(),
-  //           'avartar': 'https://ketnoiocop.vn/Content/images/user.png',
-  //           'address': ''
-  //         },
-  //       ),
-  //     );
-  //     final newUser = UserModel.advanced(
-  //       id: json.decode(response.body)['name'],
-  //       name: '',
-  //       email: userEmail,
-  //       avartar: 'https://ketnoiocop.vn/Content/images/user.png',
-  //       gender: '',
-  //       address: '',
-  //       dateOfBirth: DateTime.now(),
-  //     );
-  //     _user = newUser;
-  //     notifyListeners();
-  //   } catch (error) {
-  //     throw (error);
-  //   }
-  // }

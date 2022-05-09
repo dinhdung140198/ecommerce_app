@@ -4,11 +4,14 @@ import 'package:ecommerce_app/providers/products.dart';
 import 'package:ecommerce_app/providers/sliders.dart';
 import 'package:ecommerce_app/providers/user.dart';
 import 'package:ecommerce_app/screens/account.dart';
+import 'package:ecommerce_app/screens/categories.dart';
+import 'package:ecommerce_app/screens/favorite_list.dart';
 import 'package:ecommerce_app/widgets/drawer_widget.dart';
 import 'package:ecommerce_app/widgets/product_grib.dart';
 import 'package:ecommerce_app/widgets/search_bar.dart';
 import 'package:ecommerce_app/widgets/shopping_cart_button.dart';
 import 'package:ecommerce_app/widgets/silders.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,19 +39,38 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<Products>(context, listen: false).fetchAndSendProducts();
-      Provider.of<SliderList>(context, listen: false).fetchSlider();
-      Provider.of<UserProvider>(context, listen: false).fetchSetUser();
-      setState(() {
-        _isLoading = false;
+      Provider.of<Products>(context,listen: false).fetchAndSendProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
       });
+      Provider.of<SliderList>(context, listen: false).fetchSlider();
+      Provider.of<UserProvider>(context,listen:false).fetchSetUser();
     }
     _isInit = false;
     super.didChangeDependencies();
   }
 
-  void _selectedTab(int tabItem){
-   
+  void _selectedTab(int tabItem) {
+    setState(() {
+      switch (tabItem) {
+        case 0:
+          Navigator.of(context).pushNamed('/');
+          break;
+        case 1:
+          Navigator.of(context).pushNamed(AccountScreen.routeName);
+          break;
+        case 2:
+          Navigator.of(context).pushNamed(HomeScreen.routeName);
+          break;
+        case 3:
+          Navigator.of(context).pushNamed(CategoriesScreen.routeName);
+          break;
+        case 4:
+          Navigator.of(context).pushNamed(FavoriteScreen.routeName);
+          break;
+      }
+    });
   }
 
   @override
@@ -62,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     final cart = Provider.of<Cart>(context, listen: false);
-    final user = Provider.of<UserProvider>(context, listen: false).user;
+    final user = Provider.of<UserProvider>(context).user;
     return Scaffold(
       key: _scafoldKey,
       drawer: DrawerWidget(),
@@ -103,7 +125,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: _isLoading
           ? Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: Theme.of(context).accentColor,
+              ),
             )
           : ListView(
               children: [
@@ -127,7 +151,8 @@ class _HomeScreenState extends State<HomeScreen> {
         iconSize: 22,
         elevation: 0,
         unselectedItemColor: Theme.of(context).hintColor.withOpacity(1),
-        onTap: (int i){
+        onTap: (int i) {
+          _selectedTab(i);
         },
         items: [
           BottomNavigationBarItem(icon: Icon(UiIcons.bell), label: 'Notif'),
@@ -155,7 +180,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               label: ''),
-          BottomNavigationBarItem(icon: Icon(UiIcons.chat), label: 'Chat'),
+          BottomNavigationBarItem(
+              icon: Icon(UiIcons.folder_1), label: 'Categories'),
           BottomNavigationBarItem(icon: Icon(UiIcons.heart), label: 'Favorite')
         ],
       ),

@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ProfileAccount extends StatefulWidget {
-  ProfileAccount({Key? key,this.onChanged}) : super(key: key);
+  ProfileAccount({Key? key, this.onChanged}) : super(key: key);
   VoidCallback? onChanged;
 
   @override
@@ -20,7 +20,7 @@ class _ProfileAccountState extends State<ProfileAccount> {
   final _imageUrlFocusNode = FocusNode();
   GlobalKey<FormState> _profileAccountFormKey = GlobalKey<FormState>();
   var _editedUser = UserModel.advanced(
-      id: null,
+      id: '',
       name: '',
       email: '',
       avartar: '',
@@ -57,7 +57,7 @@ class _ProfileAccountState extends State<ProfileAccount> {
       };
       _imageUrlController.text = _editedUser.avartar!;
     }
-    _isInit=false;
+    _isInit = false;
     super.didChangeDependencies();
   }
 
@@ -131,14 +131,15 @@ class _ProfileAccountState extends State<ProfileAccount> {
                               FocusScope.of(context)
                                   .requestFocus(_addressFocusNode);
                             },
-                            decoration:
-                                getInputDecoration(hintText: '', labelText: ''),
-                            initialValue: _initUser['name'],
+                            decoration: getInputDecoration(
+                                hintText: _initUser['name'], labelText: 'Name'),
+                            initialValue: _editedUser.name,
                             validator: (input) => input!.trim().length < 3
                                 ? 'Not a valid full name'
                                 : null,
                             onSaved: (value) {
                               _editedUser = UserModel.advanced(
+                                  id: _editedUser.id,
                                   name: value,
                                   email: _editedUser.email,
                                   avartar: _editedUser.avartar,
@@ -154,11 +155,12 @@ class _ProfileAccountState extends State<ProfileAccount> {
                             decoration: getInputDecoration(
                                 hintText: _initUser['address'],
                                 labelText: 'Address'),
-                            initialValue: _initUser['address'],
+                            initialValue: _editedUser.address,
                             textInputAction: TextInputAction.next,
                             focusNode: _addressFocusNode,
                             onSaved: (value) {
                               _editedUser = UserModel.advanced(
+                                id: _editedUser.id,
                                 name: _editedUser.name,
                                 email: _editedUser.email,
                                 avartar: _editedUser.avartar,
@@ -179,8 +181,8 @@ class _ProfileAccountState extends State<ProfileAccount> {
                                 value: _editedUser.gender,
                                 items: [
                                   DropdownMenuItem(
-                                    child: Text('add gender'),
-                                    value: 'add gender',
+                                    child: Text('no gender'),
+                                    value: 'no gender',
                                   ),
                                   DropdownMenuItem(
                                     child: Text('Male'),
@@ -203,29 +205,29 @@ class _ProfileAccountState extends State<ProfileAccount> {
                           FormField<String>(
                             builder: (FormFieldState<String> state) {
                               return DateTimeField(
-                                onFieldSubmitted: ((value) =>
-                                    FocusScope.of(context)
-                                        .requestFocus(_imageUrlFocusNode)),
-                                decoration: getInputDecoration(
-                                    hintText:
-                                        _editedUser.dateOfBirth.toString()),
-                                format: DateFormat('yyyy-MM-dd'),
-                                initialValue: DateTime.parse(_initUser['dateOfBirth'].toString()),
-                                onShowPicker: (context, currentValue) {
-                                  return showDatePicker(
-                                      context: context,
-                                      firstDate: DateTime(1900),
-                                      initialDate:
-                                          currentValue ?? DateTime.now(),
-                                      lastDate: DateTime(2100));
-                                },
-                                onSaved: (input) {setState(() {
+                                  onFieldSubmitted: ((value) =>
+                                      FocusScope.of(context)
+                                          .requestFocus(_imageUrlFocusNode)),
+                                  decoration: getInputDecoration(
+                                      hintText:
+                                          _editedUser.dateOfBirth.toString()),
+                                  format: DateFormat('yyyy-MM-dd'),
+                                  initialValue: DateTime.parse(
+                                      _initUser['dateOfBirth'].toString()),
+                                  onShowPicker: (context, currentValue) {
+                                    return showDatePicker(
+                                        context: context,
+                                        firstDate: DateTime(1900),
+                                        initialDate:
+                                            currentValue ?? DateTime.now(),
+                                        lastDate: DateTime(2100));
+                                  },
+                                  onSaved: (input) {
+                                    setState(() {
                                       _editedUser.dateOfBirth = input;
                                       widget.onChanged!();
-                                    });}
-                                    
-                                    
-                              );
+                                    });
+                                  });
                             },
                           ),
                           Row(
@@ -277,6 +279,7 @@ class _ProfileAccountState extends State<ProfileAccount> {
                                   },
                                   onSaved: (value) {
                                     _editedUser = UserModel.advanced(
+                                      id: _editedUser.id,
                                       name: _editedUser.name,
                                       email: _editedUser.email,
                                       avartar: value,

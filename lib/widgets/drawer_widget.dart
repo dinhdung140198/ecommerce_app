@@ -17,7 +17,7 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final orders = Provider.of<Orders>(context);
-    final user = Provider.of<UserProvider>(context,listen: false).user;
+    final user = Provider.of<UserProvider>(context).user;
     return Drawer(
       child: ListView(
         children: [
@@ -31,10 +31,7 @@ class DrawerWidget extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline6),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Theme.of(context).accentColor,
-                backgroundImage: NetworkImage(
-                  user.avartar!
-                  // 'https://toppng.com/uploads/preview/vu-thi-ha-user-pro-icon-115534024853ae3gswzwd.png',
-                ),
+                backgroundImage: NetworkImage(user.avartar!),
               ),
               decoration: BoxDecoration(
                   color: Theme.of(context).hintColor.withOpacity(0.1)),
@@ -129,11 +126,11 @@ class DrawerWidget extends StatelessWidget {
               Navigator.of(context).pushNamed('/Brands');
             },
             leading: Icon(
-              UiIcons.folder_1,
+              UiIcons.folder,
               color: Theme.of(context).focusColor.withOpacity(1),
             ),
             title: Text(
-              "Brands",
+              "Manage Products",
               style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
@@ -183,7 +180,7 @@ class DrawerWidget extends StatelessWidget {
               color: Theme.of(context).focusColor.withOpacity(1),
             ),
             title: Text(
-              "Manage Product",
+              "Languages",
               style: Theme.of(context).textTheme.subtitle1,
             ),
           ),

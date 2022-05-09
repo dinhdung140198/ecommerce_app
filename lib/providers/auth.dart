@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ecommerce_app/models/http_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
@@ -107,7 +108,6 @@ class Auth with ChangeNotifier {
   }
 
    Future<void> addUser() async {
-     print('add $_userEmail');
     var url = Uri.parse(
         'https://flutter-update-89c84-default-rtdb.firebaseio.com/users/$userId.json');
     try {
@@ -117,22 +117,13 @@ class Auth with ChangeNotifier {
           {
             'name': 'add user',
             'email': _userEmail,
-            'gender': 'selected gender',
-            'dateOfbirth': DateTime.now(),
+            'gender': 'no gender',
+            'dateOfBirth': DateFormat('yyyy-MM-dd').format(DateTime.now()),
             'avartar': 'https://ketnoiocop.vn/Content/images/user.png',
             'address': 'add your address'
           },
         ),
       );
-      // final newUser = UserModel.advanced(
-      //   id: json.decode(response.body)['name'],
-      //   name: 'add user',
-      //   email: userEmail,
-      //   avartar: 'https://ketnoiocop.vn/Content/images/user.png',
-      //   gender: 'selected gender',
-      //   address: 'add your address',
-      //   dateOfBirth: DateTime.now(),
-      // );
       notifyListeners();
     } catch (error) {
       throw (error);

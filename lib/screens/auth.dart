@@ -1,8 +1,6 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/models/http_exception.dart';
 import 'package:ecommerce_app/providers/auth.dart';
-import 'package:ecommerce_app/providers/user.dart';
-import 'package:ecommerce_app/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +17,8 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen>
     with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
+  final _passwordFocusNode = FocusNode();
+  final _comfirmFocusNode  =FocusNode();
   AuthMode _authMode = AuthMode.Login;
   bool _showPassword = false;
   Map<String, String> _authData = {'email': '', 'password': ''};
@@ -41,7 +41,9 @@ class _AuthScreenState extends State<AuthScreen>
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    _passwordFocusNode.dispose();
+    _comfirmFocusNode.dispose();
+    _passwordController.dispose();
     super.dispose();
     _controller!.dispose();
   }
@@ -168,6 +170,10 @@ class _AuthScreenState extends State<AuthScreen>
                           style:
                               TextStyle(color: Theme.of(context).accentColor),
                           keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (value){
+                            FocusScope.of(context).requestFocus(_passwordFocusNode);
+                          },
                           validator: (value) {
                             if (value!.isEmpty || !value.contains('@')) {
                               return 'Invalid email';
@@ -204,6 +210,9 @@ class _AuthScreenState extends State<AuthScreen>
                           style:
                               TextStyle(color: Theme.of(context).accentColor),
                           keyboardType: TextInputType.text,
+                          textInputAction:_authMode==AuthMode.Login?TextInputAction.done: TextInputAction.next,
+                          onFieldSubmitted: (value)=>_authMode==AuthMode.Login?_submit():FocusScope.of(context).requestFocus(_comfirmFocusNode),
+                          focusNode: _passwordFocusNode,
                           controller: _passwordController,
                           obscureText: !_showPassword,
                           validator: (value) {
@@ -269,6 +278,9 @@ class _AuthScreenState extends State<AuthScreen>
                                 style: TextStyle(
                                     color: Theme.of(context).accentColor),
                                 keyboardType: TextInputType.emailAddress,
+                                textInputAction: TextInputAction.done,
+                                focusNode: _comfirmFocusNode,
+                                onFieldSubmitted: (_)=>_submit(),
                                 obscureText: !_showPassword,
                                 validator: _authMode == AuthMode.Signup
                                     ? (value) {

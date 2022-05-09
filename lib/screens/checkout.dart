@@ -21,11 +21,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   var _isLoading = false;
   @override
   Widget build(BuildContext context) {
-    // final cart = ModalRoute.of(
-    //   context,
-    // )!
-    //     .settings
-    //     .arguments as Cart;
     final cart = Provider.of<Cart>(context);
     return Scaffold(
       appBar: AppBar(
