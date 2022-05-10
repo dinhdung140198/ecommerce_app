@@ -1,6 +1,5 @@
-import 'package:ecommerce_app/config/ui_icons.dart';
-import 'package:ecommerce_app/providers/auth.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
+import 'package:ecommerce_app/providers/user.dart';
 import 'package:ecommerce_app/widgets/drawer_widget.dart';
 import 'package:ecommerce_app/widgets/order_product.dart';
 import 'package:ecommerce_app/widgets/shopping_cart_button.dart';
@@ -20,6 +19,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
+    final user = Provider.of<UserProvider>(context,listen:false).user;
     return DefaultTabController(
       initialIndex: 0,
       length: 4,
@@ -53,8 +53,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               child: InkWell(
                 onTap: () {},
                 child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://1.bp.blogspot.com/-wIaKEkcCTTk/XqjcK5-2a8I/AAAAAAAAk4k/opJSFhhMK2MXq51T3fXX8TaMUSW78alSgCEwYBhgL/s1600/hinh-nen-girl-xinh-4k-nu-cuoi-xinh-xan.jpg'),
+                  backgroundImage: NetworkImage(user.avartar!),
                   // child: Image.network(
                   //   'https://toppng.com/uploads/preview/vu-thi-ha-user-pro-icon-115534024853ae3gswzwd.png',
                   //   fit: BoxFit.cover,

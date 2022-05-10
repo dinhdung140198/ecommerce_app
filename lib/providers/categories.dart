@@ -57,11 +57,11 @@ class Categories with ChangeNotifier {
               Product(
                 id: prodId,
                 name: prodValue['title'],
-                price: prodValue['price'],
+                price:prodValue['price'],
                 description: prodValue['description'],
                 urlImage: prodValue['imageUrl'],
                 category: prodValue['category'],
-                rate: prodValue['rate'],
+                rate:prodValue['rate'],
               ),
             );
           }

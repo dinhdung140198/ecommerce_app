@@ -1,6 +1,5 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/models/cart.dart';
-import 'package:ecommerce_app/widgets/product_detail.dart';
 import 'package:flutter/material.dart';
 
 class OrderItemProduct extends StatelessWidget {
@@ -31,7 +30,7 @@ class OrderItemProduct extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Hero(
-              tag: 'orderProduct.name',
+              tag: '1',
               // tag: widget.heroTag + widget.order.product.id,
               child: Container(
                 height: 60,

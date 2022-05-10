@@ -1,6 +1,8 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/orders.dart';
+import 'package:ecommerce_app/providers/user.dart';
+import 'package:ecommerce_app/screens/account.dart';
 import 'package:ecommerce_app/screens/checkout_done.dart';
 import 'package:ecommerce_app/widgets/credit_card.dart';
 import 'package:ecommerce_app/widgets/shopping_cart_button.dart';
@@ -22,6 +24,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
+    final user= Provider.of<UserProvider>(context,listen: false).user;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -51,10 +54,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             margin: EdgeInsets.only(top: 12.5, bottom: 12.5, right: 20),
             child: InkWell(
               borderRadius: BorderRadius.circular(300),
-              onTap: () {},
+              onTap: () => Navigator.of(context).pushNamed(AccountScreen.routeName),
               child: CircleAvatar(
                 backgroundImage: NetworkImage(
-                    'https://1.bp.blogspot.com/-wIaKEkcCTTk/XqjcK5-2a8I/AAAAAAAAk4k/opJSFhhMK2MXq51T3fXX8TaMUSW78alSgCEwYBhgL/s1600/hinh-nen-girl-xinh-4k-nu-cuoi-xinh-xan.jpg'),
+                    user.avartar!),
               ),
             ),
           )
@@ -106,6 +109,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 child: Image.network(
                   'https://www.goldtek.vn/wp-content/uploads/2020/12/logo-momo.png',
                   height: 28,
+                  // width: 50,
                 ),
               ),
             ),

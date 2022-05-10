@@ -2,6 +2,8 @@ import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/models/route_argument.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/categories.dart';
+import 'package:ecommerce_app/providers/user.dart';
+import 'package:ecommerce_app/screens/account.dart';
 import 'package:ecommerce_app/widgets/shopping_cart_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +26,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   void didChangeDependencies() {
     category = ModalRoute.of(context)!.settings.arguments as RouteArgument;
@@ -34,6 +37,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   @override
   Widget build(BuildContext context) {
     final cartCount = Provider.of<Cart>(context).itemCount;
+    final user = Provider.of<UserProvider>(context).user;
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -60,10 +64,9 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                 margin: EdgeInsets.only(top: 12.5, bottom: 12.5, right: 12.5),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(300),
-                  onTap: () {},
+                  onTap: () => Navigator.of(context).pushNamed(AccountScreen.routeName),
                   child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        'https://chico.ca.us/sites/main/files/imagecache/lightbox/main-images/dog_license.jpg'),
+                    backgroundImage: NetworkImage(user.avartar!),
                   ),
                 ),
               )

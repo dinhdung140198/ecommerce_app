@@ -1,11 +1,11 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
-import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/providers/auth.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/products.dart';
+import 'package:ecommerce_app/providers/user.dart';
+import 'package:ecommerce_app/screens/account.dart';
 import 'package:ecommerce_app/screens/cart.dart';
 import 'package:ecommerce_app/widgets/details_tab_widget.dart';
-import 'package:ecommerce_app/widgets/drawer_widget.dart';
 import 'package:ecommerce_app/widgets/information_tab_wiget.dart';
 import 'package:ecommerce_app/widgets/shopping_cart_button.dart';
 import 'package:flutter/material.dart';
@@ -62,11 +62,10 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
     )!
         .settings
         .arguments as String;
-    final loadProduct = Provider.of<Products>(
-      context,listen: false
-    ).findById(productId);
+    final loadProduct =
+        Provider.of<Products>(context, listen: false).findById(productId);
     final cart = Provider.of<Cart>(context);
-    // final favor = Provider.of<Product>(context);
+    final user = Provider.of<UserProvider>(context).user;
     final auth = Provider.of<Auth>(context);
     return Scaffold(
       key: _scaffoldkey,
@@ -168,11 +167,10 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
                 child: InkWell(
                   borderRadius: BorderRadius.circular(300),
                   onTap: () {
-                    Navigator.of(context).pushNamed(CartScreen.routeName);
+                    Navigator.of(context).pushNamed(AccountScreen.routeName);
                   },
                   child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        'https://1.bp.blogspot.com/-wIaKEkcCTTk/XqjcK5-2a8I/AAAAAAAAk4k/opJSFhhMK2MXq51T3fXX8TaMUSW78alSgCEwYBhgL/s1600/hinh-nen-girl-xinh-4k-nu-cuoi-xinh-xan.jpg'),
+                    backgroundImage: NetworkImage(user.avartar!),
                   ),
                 ),
                 margin: EdgeInsets.only(top: 12.5, bottom: 12.5, right: 20),
