@@ -32,10 +32,9 @@ class Auth with ChangeNotifier {
     return _userId;
   }
 
-  String? get userEmail{
+  String? get userEmail {
     return _userEmail;
   }
-
 
   Future<void> _authenticate(
       String? email, String? password, String? urlSegment) async {
@@ -52,7 +51,7 @@ class Auth with ChangeNotifier {
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
       }
-      _userEmail=responseData["email"];
+      _userEmail = responseData["email"];
       _token = responseData['idToken'];
       _userId = responseData['localId'];
       _expriryDate = DateTime.now()
@@ -65,7 +64,7 @@ class Auth with ChangeNotifier {
         'userId': _userId,
         'expiryDate': _expriryDate!.toIso8601String()
       });
-      
+
       prefs.setString('userData', userData);
     } catch (error) {
       throw error;
@@ -85,7 +84,7 @@ class Auth with ChangeNotifier {
   ) async {
     return await _authenticate(email, password, 'signUp').then((_) {
       addUser();
-    } );
+    });
   }
 
   Future<bool> tryAutoLogin() async {
@@ -107,7 +106,22 @@ class Auth with ChangeNotifier {
     return true;
   }
 
-   Future<void> addUser() async {
+  Future<void> resetPassword(String? email, String? password) async {
+    var url = Uri.parse(
+        'https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=AIzaSyAkPhfcDqj13SFnVl4d-RBmucKk3wYxf-c');
+    try {
+     final response= await http.post(
+        url,
+        body: json.encode({"oobCode": email, "newPassword": password}),
+      );
+      if(response.statusCode==200){
+        final responseData =json.decode(response.body);
+        print('ok');
+      }
+    } catch (error) {}
+  }
+
+  Future<void> addUser() async {
     var url = Uri.parse(
         'https://flutter-update-89c84-default-rtdb.firebaseio.com/users/$userId.json');
     try {

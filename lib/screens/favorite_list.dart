@@ -134,7 +134,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 ),
               ),
               label: ''),
-          BottomNavigationBarItem(icon: Icon(UiIcons.chat), label: 'Chat'),
+          BottomNavigationBarItem(icon: Icon(UiIcons.folder_1), label: 'Categories'),
           BottomNavigationBarItem(icon: Icon(UiIcons.heart), label: 'Favorite')
         ],
       ),

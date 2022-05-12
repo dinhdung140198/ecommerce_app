@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/user.dart';
+import 'package:ecommerce_app/screens/account.dart';
 import 'package:ecommerce_app/widgets/drawer_widget.dart';
 import 'package:ecommerce_app/widgets/order_product.dart';
 import 'package:ecommerce_app/widgets/shopping_cart_button.dart';
@@ -51,7 +52,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 borderRadius: BorderRadius.circular(300),
               ),
               child: InkWell(
-                onTap: () {},
+                onTap: () => Navigator.of(context).pushNamed(AccountScreen.routeName),
                 child: CircleAvatar(
                   backgroundImage: NetworkImage(user.avartar!),
                   // child: Image.network(

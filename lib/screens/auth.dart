@@ -4,6 +4,8 @@ import 'package:ecommerce_app/providers/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/reset_password.dart';
+
 enum AuthMode { Signup, Login }
 
 class AuthScreen extends StatefulWidget {
@@ -18,7 +20,7 @@ class _AuthScreenState extends State<AuthScreen>
     with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _passwordFocusNode = FocusNode();
-  final _comfirmFocusNode  =FocusNode();
+  final _comfirmFocusNode = FocusNode();
   AuthMode _authMode = AuthMode.Login;
   bool _showPassword = false;
   Map<String, String> _authData = {'email': '', 'password': ''};
@@ -74,12 +76,12 @@ class _AuthScreenState extends State<AuthScreen>
     });
     try {
       if (_authMode == AuthMode.Login) {
-        await Provider.of<Auth>(context,listen: false)
+        await Provider.of<Auth>(context, listen: false)
             .signIn(_authData['email'], _authData['password']);
       } else {
         await Provider.of<Auth>(context, listen: false)
             .signUp(_authData['email'], _authData['password']);
-            print('SignUP');
+        print('SignUP');
       }
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed';
@@ -171,8 +173,9 @@ class _AuthScreenState extends State<AuthScreen>
                               TextStyle(color: Theme.of(context).accentColor),
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
-                          onFieldSubmitted: (value){
-                            FocusScope.of(context).requestFocus(_passwordFocusNode);
+                          onFieldSubmitted: (value) {
+                            FocusScope.of(context)
+                                .requestFocus(_passwordFocusNode);
                           },
                           validator: (value) {
                             if (value!.isEmpty || !value.contains('@')) {
@@ -210,8 +213,14 @@ class _AuthScreenState extends State<AuthScreen>
                           style:
                               TextStyle(color: Theme.of(context).accentColor),
                           keyboardType: TextInputType.text,
-                          textInputAction:_authMode==AuthMode.Login?TextInputAction.done: TextInputAction.next,
-                          onFieldSubmitted: (value)=>_authMode==AuthMode.Login?_submit():FocusScope.of(context).requestFocus(_comfirmFocusNode),
+                          textInputAction: _authMode == AuthMode.Login
+                              ? TextInputAction.done
+                              : TextInputAction.next,
+                          onFieldSubmitted: (value) =>
+                              _authMode == AuthMode.Login
+                                  ? _submit()
+                                  : FocusScope.of(context)
+                                      .requestFocus(_comfirmFocusNode),
                           focusNode: _passwordFocusNode,
                           controller: _passwordController,
                           obscureText: !_showPassword,
@@ -267,20 +276,17 @@ class _AuthScreenState extends State<AuthScreen>
                           height: 20,
                         ),
                         _authMode == AuthMode.Login
-                            ? FlatButton(
-                                onPressed: () {},
-                                child: Text(
-                                  'Forgot your password ?',
-                                  style: Theme.of(context).textTheme.bodyText2,
-                                ),
-                              )
+                            ? ButtonTheme(
+                                child: ResetPasswordWidget(
+                                email: _authData['email'],
+                              ))
                             : TextFormField(
                                 style: TextStyle(
                                     color: Theme.of(context).accentColor),
                                 keyboardType: TextInputType.emailAddress,
                                 textInputAction: TextInputAction.done,
                                 focusNode: _comfirmFocusNode,
-                                onFieldSubmitted: (_)=>_submit(),
+                                onFieldSubmitted: (_) => _submit(),
                                 obscureText: !_showPassword,
                                 validator: _authMode == AuthMode.Signup
                                     ? (value) {
