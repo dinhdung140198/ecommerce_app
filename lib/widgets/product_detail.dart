@@ -4,7 +4,6 @@ import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/products.dart';
 import 'package:ecommerce_app/providers/user.dart';
 import 'package:ecommerce_app/screens/account.dart';
-import 'package:ecommerce_app/screens/cart.dart';
 import 'package:ecommerce_app/widgets/details_tab_widget.dart';
 import 'package:ecommerce_app/widgets/information_tab_wiget.dart';
 import 'package:ecommerce_app/widgets/shopping_cart_button.dart';

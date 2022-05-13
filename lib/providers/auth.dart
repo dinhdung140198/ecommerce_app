@@ -106,20 +106,42 @@ class Auth with ChangeNotifier {
     return true;
   }
 
-  Future<void> resetPassword(String? email, String? password) async {
+   Future<void> changePassword(String newPassword) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    print(newPassword);
+    _token = sharedPreferences.getString("token");
     var url = Uri.parse(
-        'https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=AIzaSyAkPhfcDqj13SFnVl4d-RBmucKk3wYxf-c');
+        'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAkPhfcDqj13SFnVl4d-RBmucKk3wYxf-c');
     try {
-     final response= await http.post(
+      await http.post(
         url,
-        body: json.encode({"oobCode": email, "newPassword": password}),
+        body: json.encode(
+          {
+            'idToken': _token,
+            'password': newPassword,
+            'returnSecureToken': true,
+          },
+        ),
       );
-      if(response.statusCode==200){
-        final responseData =json.decode(response.body);
-        print('ok');
-      }
-    } catch (error) {}
+    } catch (error) {
+      throw error;
+    }
   }
+
+  // Future<void> resetPassword(String? email, String? password) async {
+  //   var url = Uri.parse(
+  //       'https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=AIzaSyAkPhfcDqj13SFnVl4d-RBmucKk3wYxf-c');
+  //   try {
+  //    final response= await http.post(
+  //       url,
+  //       body: json.encode({"oobCode": email, "newPassword": password}),
+  //     );
+  //     if(response.statusCode==200){
+  //       final responseData =json.decode(response.body);
+  //       print('ok');
+  //     }
+  //   } catch (error) {}
+  // }
 
   Future<void> addUser() async {
     var url = Uri.parse(

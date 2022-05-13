@@ -1,5 +1,6 @@
-import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/providers/auth.dart';
+import 'package:email_auth/email_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,9 +13,14 @@ class ResetPasswordWidget extends StatefulWidget {
 }
 
 class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
+  final TextEditingController _otpController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final _passwordFocusNode = FocusNode();
   GlobalKey<FormState> _profileAccountFormKey = GlobalKey<FormState>();
   String? _password;
+  EmailAuth? emailAuth;
+  bool submitValid = false;
+  bool isVerify = false;
 
   @override
   void dispose() {
@@ -28,9 +34,29 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
       return;
     }
     _profileAccountFormKey.currentState!.save();
-    await Provider.of<Auth>(context, listen: false)
-        .resetPassword(widget.email, _password);
+    await Provider.of<Auth>(context, listen: false).changePassword(_password!);
     Navigator.pop(context);
+  }
+
+  void verify() {
+    print(emailAuth!.validateOtp(
+        recipientMail: _emailController.value.text,
+        userOtp: _otpController.value.text));
+    setState(() {
+      isVerify = true;
+    });
+  }
+
+  void sendOtp() async {
+    print("otp");
+    // EmailAuth.se = "Company Name";
+    bool result = await emailAuth!
+        .sendOtp(recipientMail: _emailController.value.text, otpLength: 5);
+    if (result) {
+      setState(() {
+        submitValid = true;
+      });
+    }
   }
 
   @override
@@ -51,7 +77,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                       width: 10,
                     ),
                     Text(
-                      'Reset password ?',
+                      'Change password ?',
                       style: Theme.of(context).textTheme.bodyText2,
                     )
                   ],
@@ -62,6 +88,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                     child: Column(
                       children: [
                         TextFormField(
+                          controller: _emailController,
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.text,
                           onFieldSubmitted: (value) {
@@ -87,12 +114,24 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                           decoration: getInputDecoration(
                               hintText: 'Add new password',
                               labelText: 'NewPassword'),
-                          textInputAction: TextInputAction.next,
+                          textInputAction: TextInputAction.done,
                           focusNode: _passwordFocusNode,
                           onSaved: (value) {
                             _password = value;
                           },
                         ),
+                        (submitValid)
+                            ? TextFormField(
+                                controller: _otpController,
+                                style: TextStyle(
+                                    color: Theme.of(context).hintColor),
+                                decoration: getInputDecoration(
+                                    hintText: 'OTP', labelText: 'OTP'),
+                                textInputAction: TextInputAction.next,
+                              )
+                            : Container(
+                                height: 1,
+                              )
                       ],
                     ),
                   ),
@@ -100,6 +139,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                     height: 20,
                   ),
                   Row(
+                    
                     children: [
                       MaterialButton(
                         onPressed: () {
@@ -111,15 +151,32 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                         ),
                       ),
                       MaterialButton(
-                        onPressed: () {
-                          _saveForm();
-                        },
+                        onPressed: () => sendOtp(),
                         child: Text(
-                          'Reset',
+                          'OTP',
                           style:
                               TextStyle(color: Theme.of(context).accentColor),
                         ),
-                      )
+                      ),
+                      (!isVerify)
+                          ? MaterialButton(
+                              onPressed: () => verify,
+                              child: Text(
+                                'Verify',
+                                style: TextStyle(
+                                    color: Theme.of(context).accentColor),
+                              ),
+                            )
+                          : MaterialButton(
+                              onPressed: () {
+                                _saveForm();
+                              },
+                              child: Text(
+                                'Change',
+                                style: TextStyle(
+                                    color: Theme.of(context).accentColor),
+                              ),
+                            )
                     ],
                     mainAxisAlignment: MainAxisAlignment.end,
                   ),
