@@ -128,20 +128,20 @@ class Auth with ChangeNotifier {
     }
   }
 
-  // Future<void> resetPassword(String? email, String? password) async {
-  //   var url = Uri.parse(
-  //       'https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=AIzaSyAkPhfcDqj13SFnVl4d-RBmucKk3wYxf-c');
-  //   try {
-  //    final response= await http.post(
-  //       url,
-  //       body: json.encode({"oobCode": email, "newPassword": password}),
-  //     );
-  //     if(response.statusCode==200){
-  //       final responseData =json.decode(response.body);
-  //       print('ok');
-  //     }
-  //   } catch (error) {}
-  // }
+  Future<void> resetPassword(String? email, String? password) async {
+    var url = Uri.parse(
+        'https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=AIzaSyAkPhfcDqj13SFnVl4d-RBmucKk3wYxf-c');
+    try {
+     final response= await http.post(
+        url,
+        body: json.encode({"oobCode": email, "newPassword": password}),
+      );
+      if(response.statusCode==200){
+        final responseData =json.decode(response.body);
+        print('ok');
+      }
+    } catch (error) {}
+  }
 
   Future<void> addUser() async {
     var url = Uri.parse(

@@ -277,8 +277,20 @@ class _AuthScreenState extends State<AuthScreen>
                         ),
                         _authMode == AuthMode.Login
                             ? ButtonTheme(
-                                child: ResetPasswordWidget(
-                                email: _authData['email'],
+                                child: FlatButton(
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return ResetPasswordWidget(
+                                          email: _authData['email'],
+                                        );
+                                      });
+                                },
+                                child: Text(
+                                  'Forgot your password ?',
+                                  style: Theme.of(context).textTheme.bodyText2,
+                                ),
                               ))
                             : TextFormField(
                                 style: TextStyle(
