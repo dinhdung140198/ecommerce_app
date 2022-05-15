@@ -1,8 +1,10 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
+import 'package:ecommerce_app/providers/auth.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/user.dart';
 import 'package:ecommerce_app/screens/favorite_list.dart';
 import 'package:ecommerce_app/screens/orders.dart';
+import 'package:ecommerce_app/widgets/change_password.dart';
 import 'package:ecommerce_app/widgets/drawer_widget.dart';
 import 'package:ecommerce_app/widgets/profile_accounts.dart';
 import 'package:ecommerce_app/widgets/shopping_cart_button.dart';
@@ -356,6 +358,23 @@ class _AccountScreenState extends State<AccountScreen> {
                       style: TextStyle(color: Theme.of(context).focusColor),
                     ),
                   ),
+                  Consumer<Auth>(builder: (_,auth,__)=>ListTile(
+                    onTap: () {
+                      showDialog(context: context, builder: (context){
+                        return ChangePasswordWidget(email: user.email,);
+                      });
+                    },
+                    dense: true,
+                    title: Text(
+                      'Change password',
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                    trailing: Text(
+                      '**********',
+                      style: TextStyle(color: Theme.of(context).focusColor),
+                    ),
+                  )),
+                  
                 ],
               ),
             ),
@@ -394,10 +413,16 @@ class _AccountScreenState extends State<AccountScreen> {
                         ),
                         SizedBox(width: 10),
                         Text(
-                          'Shipping Adresses',
+                          'Ship Addresses',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                       ],
+                    ),
+                    trailing: Text(
+                      user.address!,
+                      style: TextStyle(color: Theme.of(context).focusColor),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
                     ),
                   ),
                   ListTile(

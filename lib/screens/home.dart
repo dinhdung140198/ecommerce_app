@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
 
-    final cart = Provider.of<Cart>(context, listen: false);
+    final cart = Provider.of<Cart>(context);
     final user = Provider.of<UserProvider>(context).user;
     return Scaffold(
       key: _scafoldKey,

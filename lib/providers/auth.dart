@@ -106,10 +106,11 @@ class Auth with ChangeNotifier {
     return true;
   }
 
-   Future<void> changePassword(String newPassword) async {
+  Future<void> changePassword(String newPassword) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    print(newPassword);
-    _token = sharedPreferences.getString("token");
+    final extractedUserData =
+        (json.decode(sharedPreferences.getString('userData')!))
+            as Map<String, dynamic>;
     var url = Uri.parse(
         'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAkPhfcDqj13SFnVl4d-RBmucKk3wYxf-c');
     try {
@@ -117,30 +118,42 @@ class Auth with ChangeNotifier {
         url,
         body: json.encode(
           {
-            'idToken': _token,
-            'password': newPassword,
+            'idToken': extractedUserData['token'],
+            "password": newPassword,
             'returnSecureToken': true,
           },
         ),
       );
+      notifyListeners();
     } catch (error) {
       throw error;
     }
+    logout();
   }
 
-  Future<void> resetPassword(String? email, String? password) async {
+  Future<void> resetPassword(String? email) async {
+    // print(email);/
     var url = Uri.parse(
-        'https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=AIzaSyAkPhfcDqj13SFnVl4d-RBmucKk3wYxf-c');
+        'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyAkPhfcDqj13SFnVl4d-RBmucKk3wYxf-c');
     try {
-     final response= await http.post(
+      final response = await http.post(
         url,
-        body: json.encode({"oobCode": email, "newPassword": password}),
+        body: json.encode({"requestType":"PASSWORD_RESET","email":"dinhdung.jr@gmail.com"}),
       );
-      if(response.statusCode==200){
-        final responseData =json.decode(response.body);
-        print('ok');
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print(responseData);
+        // url =Uri.parse('https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=AIzaSyAkPhfcDqj13SFnVl4d-RBmucKk3wYxf-c');
+        //  final resp=await http.post(
+        // url,
+        // body: json.encode({"oobCode":,"newPassword":'12345678'}));
+        // print(resp.statusCode);
       }
-    } catch (error) {}
+       notifyListeners();
+    } catch (error) {
+      print(error);
+    }
   }
 
   Future<void> addUser() async {

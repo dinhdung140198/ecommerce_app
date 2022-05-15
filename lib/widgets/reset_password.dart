@@ -40,12 +40,13 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
   // }
 
   Future<void> _saveForm() async {
-    final isValid = _profileAccountFormKey.currentState!.validate();
-    if (!isValid) {
-      return;
-    }
-    _profileAccountFormKey.currentState!.save();
-    await Provider.of<Auth>(context, listen: false).changePassword(_password!);
+
+    // final isValid = _profileAccountFormKey.currentState!.validate();
+    // if (!isValid) {
+    //   return;
+    // }
+    // _profileAccountFormKey.currentState!.save();
+    await Provider.of<Auth>(context, listen: false).resetPassword('dinhdung.jr@gmail.com');
     Navigator.pop(context);
   }
 
@@ -88,57 +89,57 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
         ],
       ),
       children: [
-        Form(
-          key: _profileAccountFormKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _emailController,
-                style: TextStyle(color: Theme.of(context).hintColor),
-                keyboardType: TextInputType.text,
-                onFieldSubmitted: (value) {
-                  FocusScope.of(context).requestFocus(_passwordFocusNode);
-                },
-                decoration: getInputDecoration(
-                    hintText: widget.email, labelText: 'Email'),
-                // initialValue: widget.email==null?'':widget.email,
-                validator: (value) {
-                  if (value!.isEmpty || !value.contains('@')) {
-                    return 'Invalid email';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  widget.email = value;
-                },
-              ),
-              (!submitValid)
-                  ? Container(
-                      height: 1,
-                    )
-                  : ((!isVerify)
-                      ? TextFormField(
-                          controller: _otpController,
-                          style: TextStyle(color: Theme.of(context).hintColor),
-                          decoration: getInputDecoration(
-                              hintText: 'OTP', labelText: 'OTP'),
-                          textInputAction: TextInputAction.next,
-                        )
-                      : TextFormField(
-                          keyboardType: TextInputType.text,
-                          style: TextStyle(color: Theme.of(context).hintColor),
-                          decoration: getInputDecoration(
-                              hintText: 'Add new password',
-                              labelText: 'NewPassword'),
-                          textInputAction: TextInputAction.done,
-                          focusNode: _passwordFocusNode,
-                          onSaved: (value) {
-                            _password = value;
-                          },
-                        )),
-            ],
-          ),
-        ),
+        // Form(
+        //   key: _profileAccountFormKey,
+        //   child: Column(
+        //     children: [
+        //       TextFormField(
+        //         controller: _emailController,
+        //         style: TextStyle(color: Theme.of(context).hintColor),
+        //         keyboardType: TextInputType.text,
+        //         onFieldSubmitted: (value) {
+        //           FocusScope.of(context).requestFocus(_passwordFocusNode);
+        //         },
+        //         decoration: getInputDecoration(
+        //             hintText: widget.email, labelText: 'Email'),
+        //         // initialValue: widget.email==null?'':widget.email,
+        //         validator: (value) {
+        //           if (value!.isEmpty || !value.contains('@')) {
+        //             return 'Invalid email';
+        //           }
+        //           return null;
+        //         },
+        //         onSaved: (value) {
+        //           widget.email = value;
+        //         },
+        //       ),
+        //       (!submitValid)
+        //           ? Container(
+        //               height: 1,
+        //             )
+        //           : ((!isVerify)
+        //               ? TextFormField(
+        //                   controller: _otpController,
+        //                   style: TextStyle(color: Theme.of(context).hintColor),
+        //                   decoration: getInputDecoration(
+        //                       hintText: 'OTP', labelText: 'OTP'),
+        //                   textInputAction: TextInputAction.next,
+        //                 )
+        //               : TextFormField(
+        //                   keyboardType: TextInputType.text,
+        //                   style: TextStyle(color: Theme.of(context).hintColor),
+        //                   decoration: getInputDecoration(
+        //                       hintText: 'Add new password',
+        //                       labelText: 'NewPassword'),
+        //                   textInputAction: TextInputAction.done,
+        //                   focusNode: _passwordFocusNode,
+        //                   onSaved: (value) {
+        //                     _password = value;
+        //                   },
+        //                 )),
+        //     ],
+        //   ),
+        // ),
         SizedBox(
           height: 20,
         ),
@@ -146,40 +147,41 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
           children: [
             MaterialButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                _saveForm();
+                // Navigator.of(context).pop();
               },
               child: Text(
                 'Cancel',
                 style: TextStyle(color: Colors.red),
               ),
             ),
-            (!submitValid)?MaterialButton(
-              onPressed: () => sendOtp(),
-              child: Text(
-                'OTP',
-                style: TextStyle(color: Theme.of(context).accentColor),
-              ),
-            ):
-            ((!isVerify)
-                ? MaterialButton(
-                    onPressed: () => verify(),
-                    child: Text(
-                      'Verify',
-                      style: TextStyle(color: Theme.of(context).accentColor),
-                    ),
-                  )
-                : MaterialButton(
-                    onPressed: () {
-                      _saveForm();
-                    },
-                    child: Text(
-                      'Change',
-                      style: TextStyle(color: Theme.of(context).accentColor),
-                    ),
-                  ))
-          ],
-          mainAxisAlignment: MainAxisAlignment.end,
-        ),
+          //   (!submitValid)?MaterialButton(
+          //     onPressed: () => sendOtp(),
+          //     child: Text(
+          //       'OTP',
+          //       style: TextStyle(color: Theme.of(context).accentColor),
+          //     ),
+          //   ):
+          //   ((!isVerify)
+          //       ? MaterialButton(
+          //           onPressed: () => verify(),
+          //           child: Text(
+          //             'Verify',
+          //             style: TextStyle(color: Theme.of(context).accentColor),
+          //           ),
+          //         )
+          //       : MaterialButton(
+          //           onPressed: () {
+          //             _saveForm();
+          //           },
+          //           child: Text(
+          //             'Change',
+          //             style: TextStyle(color: Theme.of(context).accentColor),
+          //           ),
+          //         ))
+          // ],
+          // mainAxisAlignment: MainAxisAlignment.end,
+      ]),
         SizedBox(
           height: 10,
         )
