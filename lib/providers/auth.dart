@@ -169,7 +169,8 @@ class Auth with ChangeNotifier {
             'gender': 'no gender',
             'dateOfBirth': DateFormat('yyyy-MM-dd').format(DateTime.now()),
             'avartar': 'https://ketnoiocop.vn/Content/images/user.png',
-            'address': 'add your address'
+            'address': 'add your address',
+            'phone':'0000000000'
           },
         ),
       );

@@ -29,6 +29,7 @@ class UserProvider with ChangeNotifier {
     _user.email = value['email'];
     _user.avartar = value['avartar'];
     _user.dateOfBirth = DateTime.parse(value['dateOfBirth']);
+    _user.phone=value['phone'];
      });
     notifyListeners();
   }
@@ -44,7 +45,8 @@ class UserProvider with ChangeNotifier {
           'gender': user.gender,
           'dateOfBirth': DateFormat('yyyy-MM-dd').format(user.dateOfBirth!),
           'avartar': user.avartar,
-          'address': user.address
+          'address': user.address,
+          'phone': user.phone,
         }));
     _user = user;
     notifyListeners();

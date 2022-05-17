@@ -14,7 +14,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
-    final user =Provider.of<UserProvider>(context,listen: false).user;
+    final user =Provider.of<UserProvider>(context).user;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,

@@ -1,19 +1,24 @@
 import 'package:ecommerce_app/models/product.dart';
+import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/widgets/product_detail.dart';
+import 'package:ecommerce_app/widgets/rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../config/ui_icons.dart';
 
 class ProductItem extends StatelessWidget {
   const ProductItem({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Product>(context,listen: false);
+    final product = Provider.of<Product>(context);
     return InkWell(
       highlightColor: Colors.transparent,
       splashColor: Theme.of(context).accentColor.withOpacity(0.08),
       onTap: () {
-        Navigator.of(context).pushNamed(ProductDetailWidget.routeName,arguments: product.id);
+        Navigator.of(context)
+            .pushNamed(ProductDetailWidget.routeName, arguments: product.id);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -49,25 +54,46 @@ class ProductItem extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Expanded(
-                      child: Text(
-                    '100 Sale',
-                    style: Theme.of(context).textTheme.bodyText2,
-                    overflow: TextOverflow.fade,
-                    softWrap: false,
-                  )),
-                  Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                    size: 18,
+                  IconButton(
+                    onPressed: () => Provider.of<Cart>(context, listen: false)
+                        .addItem(product.id!, product.price!, product.name!,
+                            product.urlImage!),
+                    icon: Icon(
+                      UiIcons.shopping_cart,
+                      color: Theme.of(context).hintColor,
+                    ),
+                  ),
+                  // Text(
+                  //   '100 Sale',
+                  //   style: Theme.of(context).textTheme.bodyText2,
+                  //   overflow: TextOverflow.fade,
+                  //   softWrap: false,
+                  // ),
+                  // ),
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return RatingBarWidget(
+                              product: product,
+                            );
+                          });
+                    },
+                    icon: Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                      size: 18,
+                    ),
                   ),
                   Text(
                     product.rate.toString(),
                     style: Theme.of(context).textTheme.bodyText1,
                   )
                 ],
-                crossAxisAlignment: CrossAxisAlignment.center,
               ),
             ),
             SizedBox(height: 15)

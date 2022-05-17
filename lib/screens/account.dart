@@ -338,6 +338,18 @@ class _AccountScreenState extends State<AccountScreen> {
                     onTap: () {},
                     dense: true,
                     title: Text(
+                      'Phone',
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                    trailing: Text(
+                      user.phone!,
+                      style: TextStyle(color: Theme.of(context).focusColor),
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {},
+                    dense: true,
+                    title: Text(
                       'Gender',
                       style: Theme.of(context).textTheme.bodyText2,
                     ),

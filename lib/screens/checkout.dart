@@ -24,7 +24,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
-    final user= Provider.of<UserProvider>(context,listen: false).user;
+    final user = Provider.of<UserProvider>(context, listen: false).user;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -54,10 +54,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             margin: EdgeInsets.only(top: 12.5, bottom: 12.5, right: 20),
             child: InkWell(
               borderRadius: BorderRadius.circular(300),
-              onTap: () => Navigator.of(context).pushNamed(AccountScreen.routeName),
+              onTap: () =>
+                  Navigator.of(context).pushNamed(AccountScreen.routeName),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    user.avartar!),
+                backgroundImage: NetworkImage(user.avartar!),
               ),
             ),
           )
@@ -136,7 +136,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   width: 320,
                   child: FlatButton(
                     onPressed: (cart.totalAmount <= 0 || _isLoading)
-                        ? null
+                        ? (){}
                         // ignore: unnecessary_statements
                         : () async {
                             print(cart.items.values.toList());
@@ -162,7 +162,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: _isLoading
-                          ? CircularProgressIndicator()
+                          ? CircularProgressIndicator(strokeWidth: 100,)
                           : Text(
                               'Confirm Payment',
                               textAlign: TextAlign.start,

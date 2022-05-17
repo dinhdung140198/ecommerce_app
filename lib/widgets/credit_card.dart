@@ -49,8 +49,8 @@ class CreditCardsWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Image.network(
-                  'https://png.pngitem.com/pimgs/s/282-2820422_black-logo-png-black-visa-logo-png-transparent.png',
+                Image.asset(
+                  'images/visa.png',
                   height: 22,
                   width: 100,
                 ),

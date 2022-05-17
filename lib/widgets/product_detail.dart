@@ -280,8 +280,8 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
               offstage: 0 != _tabIndex,
               child: Column(
                 children: [
-                  InformationTabWiget(
-                      name: loadProduct.name, price: loadProduct.price)
+                  InformationTabWiget(product: loadProduct,
+                      )
                 ],
               ),
             ),

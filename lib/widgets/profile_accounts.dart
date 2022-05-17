@@ -16,6 +16,7 @@ class ProfileAccount extends StatefulWidget {
 
 class _ProfileAccountState extends State<ProfileAccount> {
   final _addressFocusNode = FocusNode();
+  final _phoneFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
   final _imageUrlFocusNode = FocusNode();
   GlobalKey<FormState> _profileAccountFormKey = GlobalKey<FormState>();
@@ -25,6 +26,7 @@ class _ProfileAccountState extends State<ProfileAccount> {
       email: '',
       avartar: '',
       gender: '',
+      phone: '',
       address: '',
       dateOfBirth: DateTime.now());
   var _initUser = {
@@ -33,6 +35,7 @@ class _ProfileAccountState extends State<ProfileAccount> {
     'avartar': '',
     'gender': '',
     'address': '',
+    'phone':'',
     'dateOfBirth': DateTime.now().toString(),
   };
   var _isInit = true;
@@ -67,6 +70,7 @@ class _ProfileAccountState extends State<ProfileAccount> {
     _addressFocusNode.dispose();
     _imageUrlController.dispose();
     _imageUrlFocusNode.dispose();
+    _phoneFocusNode.dispose();
     super.dispose();
   }
 
@@ -129,7 +133,7 @@ class _ProfileAccountState extends State<ProfileAccount> {
                             keyboardType: TextInputType.text,
                             onFieldSubmitted: (value) {
                               FocusScope.of(context)
-                                  .requestFocus(_addressFocusNode);
+                                  .requestFocus(_phoneFocusNode);
                             },
                             decoration: getInputDecoration(
                                 hintText: _initUser['name'], labelText: 'Name'),
@@ -141,11 +145,43 @@ class _ProfileAccountState extends State<ProfileAccount> {
                               _editedUser = UserModel.advanced(
                                   id: _editedUser.id,
                                   name: value,
+                                  phone: _editedUser.phone,
                                   email: _editedUser.email,
                                   avartar: _editedUser.avartar,
                                   gender: _editedUser.gender,
                                   address: _editedUser.address,
                                   dateOfBirth: _editedUser.dateOfBirth);
+                            },
+                          ),
+                          TextFormField(
+                            keyboardType: TextInputType.phone,
+                            style:
+                                TextStyle(color: Theme.of(context).hintColor),
+                            decoration: getInputDecoration(
+                                hintText: _initUser['phone'],
+                                labelText: 'Phone Number'),
+                            initialValue: _editedUser.phone,
+                            textInputAction: TextInputAction.next,
+                            focusNode: _phoneFocusNode,
+                            validator: (input) => (input!.trim().length >= 9 &&
+                                    input.trim().length <= 11)
+                                ? 'Not valid phone number'
+                                : null,
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context)
+                                  .requestFocus(_addressFocusNode);
+                            },
+                            onSaved: (value) {
+                              _editedUser = UserModel.advanced(
+                                id: _editedUser.id,
+                                phone: value,
+                                name: _editedUser.name,
+                                email: _editedUser.email,
+                                avartar: _editedUser.avartar,
+                                gender: _editedUser.gender,
+                                address: _editedUser.address,
+                                dateOfBirth: _editedUser.dateOfBirth,
+                              );
                             },
                           ),
                           TextFormField(
@@ -162,6 +198,7 @@ class _ProfileAccountState extends State<ProfileAccount> {
                               _editedUser = UserModel.advanced(
                                 id: _editedUser.id,
                                 name: _editedUser.name,
+                                phone:_editedUser.phone ,
                                 email: _editedUser.email,
                                 avartar: _editedUser.avartar,
                                 gender: _editedUser.gender,
@@ -176,8 +213,6 @@ class _ProfileAccountState extends State<ProfileAccount> {
                                 decoration: getInputDecoration(
                                     hintText: _initUser['gender'],
                                     labelText: 'Gender'),
-                                // hint: Text('Select Device'),
-
                                 value: _editedUser.gender,
                                 items: [
                                   DropdownMenuItem(
@@ -280,6 +315,7 @@ class _ProfileAccountState extends State<ProfileAccount> {
                                   onSaved: (value) {
                                     _editedUser = UserModel.advanced(
                                       id: _editedUser.id,
+                                      phone: _editedUser.phone,
                                       name: _editedUser.name,
                                       email: _editedUser.email,
                                       avartar: value,

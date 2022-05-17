@@ -1,11 +1,10 @@
-import 'package:ecommerce_app/config/ui_icons.dart';
+import 'package:ecommerce_app/models/product.dart';
+import 'package:ecommerce_app/widgets/rating_bar.dart';
 import 'package:flutter/material.dart';
 
 class InformationTabWiget extends StatefulWidget {
-  final String? name;
-  final double? price;
-  const InformationTabWiget(
-      {Key? key, @required this.name, @required this.price})
+  final Product? product;
+  const InformationTabWiget({Key? key, @required this.product})
       : super(key: key);
 
   @override
@@ -24,30 +23,40 @@ class _InformationTabWigetState extends State<InformationTabWiget> {
             children: [
               Expanded(
                   child: Text(
-                widget.name!,
+                widget.product!.name!,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 style: Theme.of(context).textTheme.headline3,
               )),
-              Chip(
-                label: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '3',
-                      style: Theme.of(context).textTheme.bodyText1!.merge(
-                          TextStyle(color: Theme.of(context).primaryColor)),
-                    ),
-                    Icon(
-                      Icons.star_border,
-                      color: Theme.of(context).primaryColor,
-                      size: 16,
-                    )
-                  ],
+              InkWell(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => RatingBarWidget(
+                            product: widget.product,
+                          ));
+                },
+                child: Chip(
+                  label: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.product!.rate!.toString(),
+                        style: Theme.of(context).textTheme.bodyText1!.merge(
+                            TextStyle(color: Theme.of(context).primaryColor)),
+                      ),
+                      Icon(
+                        Icons.star_border,
+                        color: Theme.of(context).primaryColor,
+                        size: 16,
+                      )
+                    ],
+                  ),
+                  padding: EdgeInsets.all(0),
+                  backgroundColor:
+                      Theme.of(context).accentColor.withOpacity(0.9),
+                  shape: StadiumBorder(),
                 ),
-                padding: EdgeInsets.all(0),
-                backgroundColor: Theme.of(context).accentColor.withOpacity(0.9),
-                shape: StadiumBorder(),
               )
             ],
           ),
@@ -58,14 +67,14 @@ class _InformationTabWigetState extends State<InformationTabWiget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "\$${widget.price!.toString()}",
+                "\$${widget.product!.price!.toString()}",
                 style: Theme.of(context).textTheme.headline4,
               ),
               SizedBox(
                 width: 10,
               ),
               Text(
-                "\$${(widget.price! + 10).toString()}",
+                "\$${(widget.product!.price! + 10).toString()}",
                 style: Theme.of(context).textTheme.headline5!.merge(TextStyle(
                     color: Theme.of(context).focusColor,
                     decoration: TextDecoration.lineThrough)),
@@ -110,10 +119,11 @@ class _InformationTabWigetState extends State<InformationTabWiget> {
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                   )
-                ], 
+                ],
               ),
-                SizedBox(height: 10,)
-                
+              SizedBox(
+                height: 10,
+              )
             ],
           ),
         )

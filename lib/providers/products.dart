@@ -59,6 +59,27 @@ class Products with ChangeNotifier {
     }
   }
 
+   Future<void> updateProduct(String id, Product newProduct) async {
+    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    if (prodIndex >= 0) {
+      final url = Uri.parse(
+          'https://flutter-update-89c84-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken');
+      await http.patch(url,
+          body: json.encode({
+            'title': newProduct.name,
+            'description': newProduct.description,
+            'imageUrl': newProduct.urlImage,
+            'price': newProduct.price,
+            'rate':newProduct.rate,
+          }));
+      _items[prodIndex] = newProduct;
+    } else {
+      print('...');
+    }
+
+    notifyListeners();
+  }
+
   // Future<void> addProduct(Product product) async {
   //   var url = Uri.parse(
   //       ('https://flutter-update-89c84-default-rtdb.firebaseio.com/categories.json?auth=$authToken'));
