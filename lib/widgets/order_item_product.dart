@@ -14,7 +14,7 @@ class OrderItemProduct extends StatelessWidget {
       focusColor: Theme.of(context).accentColor,
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
-        // Navigator.of(context).pushNamed(ProductDetailWidget.routeName,arguments: orderProduct!.);
+        Navigator.of(context).pushNamed(ProductDetailWidget.routeName,arguments: orderProduct!.productId);
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -30,10 +30,7 @@ class OrderItemProduct extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Hero(
-              tag: '1',
-              // tag: widget.heroTag + widget.order.product.id,
-              child: Container(
+              Container(
                 height: 60,
                 width: 60,
                 decoration: BoxDecoration(
@@ -43,7 +40,6 @@ class OrderItemProduct extends StatelessWidget {
                       fit: BoxFit.cover),
                 ),
               ),
-            ),
             SizedBox(width: 10),
             Flexible(
               child: Row(

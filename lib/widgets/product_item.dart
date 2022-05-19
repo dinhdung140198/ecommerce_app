@@ -80,6 +80,7 @@ class ProductItem extends StatelessWidget {
                           builder: (context) {
                             return RatingBarWidget(
                               product: product,
+                              flag: 'product',
                             );
                           });
                     },

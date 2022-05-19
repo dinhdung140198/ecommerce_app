@@ -73,16 +73,6 @@ class DrawerWidget extends StatelessWidget {
               'My Order',
               style: Theme.of(context).textTheme.subtitle1,
             ),
-            trailing: Chip(
-              label: Text(
-                orders.orders.length.toString(),
-                style: TextStyle(color: Theme.of(context).focusColor),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              backgroundColor: Colors.transparent,
-              shape: StadiumBorder(
-                  side: BorderSide(color: Theme.of(context).focusColor)),
-            ),
           ),
           ListTile(
             onTap: () {

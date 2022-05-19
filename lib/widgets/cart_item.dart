@@ -33,11 +33,11 @@ class CartItemWidget extends StatelessWidget {
           color: Theme.of(context).primaryColor,
           size: 40,
         ),
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.only(left: 20),
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.only(right: 20),
         margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
       ),
-      direction: DismissDirection.startToEnd,
+      direction: DismissDirection.endToStart,
       confirmDismiss: (directon) {
         return showDialog(
           context: context,

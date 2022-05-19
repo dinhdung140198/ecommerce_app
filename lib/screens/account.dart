@@ -206,7 +206,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         Navigator.of(context).pushNamed(OrdersScreen.routeName),
                     dense: true,
                     title: Text(
-                      'Unpaid',
+                      'Ship yet',
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                     trailing: Chip(
@@ -227,7 +227,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     },
                     dense: true,
                     title: Text(
-                      'To be shipped',
+                      'shipping',
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                     trailing: Chip(

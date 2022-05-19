@@ -7,7 +7,7 @@ import 'package:ecommerce_app/models/product.dart';
 
 class Categories with ChangeNotifier {
   List<Category> _categoryList = [];
-  List<Product> _productList =[];
+  List<Product> _productList = [];
 
   List<Category> get categoryList {
     return [..._categoryList];
@@ -30,10 +30,10 @@ class Categories with ChangeNotifier {
       extractedData.forEach((cateId, cateVal) {
         loadCategories.add(
           Category(
-            id: cateId,
-            nameCategory: cateVal['name'],
-            image: cateVal['image'],
-          ),
+              id: cateId,
+              nameCategory: cateVal['name'],
+              image: cateVal['image'],
+              rate: cateVal['rate']),
         );
       });
       _categoryList = loadCategories;
@@ -57,24 +57,42 @@ class Categories with ChangeNotifier {
               Product(
                 id: prodId,
                 name: prodValue['title'],
-                price:prodValue['price'],
+                price: prodValue['price'],
                 description: prodValue['description'],
                 urlImage: prodValue['imageUrl'],
                 category: prodValue['category'],
-                rate:prodValue['rate'],
+                rate: prodValue['rate'],
               ),
             );
           }
         },
       );
-      notifyListeners();
-      _productList.clear();
-      _productList =loadProduct;
+      _productList = loadProduct;
     } catch (error) {
       throw (error);
     }
+    notifyListeners();
   }
-  void clear(){
-    _productList=[];
+
+  Future<void> updateProduct(String id, Category newProduct) async {
+    final prodIndex = _categoryList.indexWhere((category) => category.id == id);
+    if (prodIndex >= 0) {
+      final url = Uri.parse(
+          'https://flutter-update-89c84-default-rtdb.firebaseio.com/categories/$id.json');
+      await http.patch(url,
+          body: json.encode({
+            'name': newProduct.nameCategory,
+            'image': newProduct.image,
+            'rate': newProduct.rate,
+          }));
+      _categoryList[prodIndex] = newProduct;
+    } else {
+      print('Category List is empty');
+    }
+    notifyListeners();
+  }
+
+  void clear() {
+    _productList = [];
   }
 }

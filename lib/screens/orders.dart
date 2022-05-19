@@ -96,7 +96,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   ),
                   child: Align(
                     alignment: Alignment.center,
-                    child: Text('Unpaid'),
+                    child: Text('Not ship yet'),
                   ),
                 ),
               ),
@@ -124,7 +124,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   ),
                   child: Align(
                     alignment: Alignment.center,
-                    child: Text('Paid'),
+                    child: Text('Shipped'),
                   ),
                 ),
               ),
@@ -133,10 +133,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
         ),
         body: TabBarView(
           children: [
-            OrdersProductsWidget(),
-            OrdersProductsWidget(),
-            OrdersProductsWidget(),
-            OrdersProductsWidget()
+            OrdersProductsWidget(orderStatus: "All",),
+            OrdersProductsWidget(orderStatus: 'yet',),
+            OrdersProductsWidget(orderStatus: 'shipping',),
+            OrdersProductsWidget(orderStatus: 'shipped',)
           ],
         ),
       ),

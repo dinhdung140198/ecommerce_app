@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/config/app_config.dart' as config;
 import 'package:ecommerce_app/config/ui_icons.dart';
+import 'package:ecommerce_app/screens/home.dart';
 import 'package:flutter/material.dart';
 
 class EmptyOrdersProductsWidget extends StatelessWidget {
@@ -66,13 +67,13 @@ class EmptyOrdersProductsWidget extends StatelessWidget {
             child: Text(
               'D\'ont have any orderd item',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline3!.merge(TextStyle(fontWeight: FontWeight.w300)),
+              style: Theme.of(context).textTheme.headline4!.merge(TextStyle(fontWeight: FontWeight.w300)),
             ),
           ),
-          SizedBox(height: 50),
+          SizedBox(height: 30),
           FlatButton(
             onPressed: () {
-              Navigator.of(context).pushNamed('/Tabs', arguments: 2);
+              Navigator.of(context).pushNamed(HomeScreen.routeName);
             },
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
             color: Theme.of(context).focusColor.withOpacity(0.15),

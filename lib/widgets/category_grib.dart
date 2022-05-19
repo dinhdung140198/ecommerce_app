@@ -1,6 +1,6 @@
 import 'package:ecommerce_app/providers/categories.dart';
-// import 'package:ecommerce_app/screens/categories.dart';
 import 'package:ecommerce_app/screens/category_products.dart';
+import 'package:ecommerce_app/widgets/rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +12,7 @@ class CategoryGribWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categories = Provider.of<Categories>(context).categoryList;
+        final categories = Provider.of<Categories>(context).categoryList;
     return MasonryGridView.count(
       primary: false,
       shrinkWrap: true,
@@ -52,16 +52,16 @@ class CategoryGribWidget extends StatelessWidget {
                       blurRadius: 10,
                     ),
                   ],
-                  image: DecorationImage(fit: BoxFit.fill,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
                       image: NetworkImage(categories[index].image!)),
-                  // gradient: LinearGradient(begin: Alignment.bottomLeft,end: Alignment.topRight,colors: [Colors.transparent])
                 ),
               ),
               Container(
                 margin: EdgeInsets.only(top: 85, bottom: 10),
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 width: 140,
-                height: 80,
+                height: 90,
                 decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.circular(6),
@@ -76,8 +76,9 @@ class CategoryGribWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      categories[index].nameCategory!,
-                      style: Theme.of(context).textTheme.bodyText1,
+                      'Category',
+                      style: Theme.of(context).textTheme.bodyText2!.merge(
+                          TextStyle(color: Theme.of(context).accentColor)),
                       overflow: TextOverflow.fade,
                       softWrap: false,
                       maxLines: 1,
@@ -87,23 +88,34 @@ class CategoryGribWidget extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            'no products',
-                            style: Theme.of(context).textTheme.bodyText2,
+                            categories[index].nameCategory!,
+                            style: Theme.of(context).textTheme.bodyText1,
                             overflow: TextOverflow.fade,
                             softWrap: false,
                           ),
                         ),
-                        Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                          size: 18,
+                        IconButton(
+                          onPressed: (() {
+                            showDialog(
+                                context: context,
+                                builder: (contex) {
+                                  return RatingBarWidget(
+                                      product: categories[index],
+                                      flag: 'category');
+                                });
+                          }),
+                          icon: Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                            size: 18,
+                          ),
                         ),
                         Text(
-                          '4',
+                          categories[index].rate!.toString(),
                           style: Theme.of(context).textTheme.bodyText1,
                         )
                       ],
-                    )
+                    ),
                   ],
                 ),
               )

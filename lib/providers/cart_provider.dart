@@ -35,6 +35,7 @@ class Cart with ChangeNotifier {
           productId,
           (existingCartItem) => CartItem(
               id: existingCartItem.id,
+              productId: productId,
               name: existingCartItem.name,
               price: existingCartItem.price,
               urlImage: existingCartItem.urlImage,
@@ -44,6 +45,7 @@ class Cart with ChangeNotifier {
           productId,
           () => CartItem(
               id: DateTime.now().toString(),
+              productId: productId,
               urlImage: urlImage,
               name: name,
               price: price,
@@ -65,6 +67,7 @@ class Cart with ChangeNotifier {
       _items.update(
           productId,
           (existingCartItem) => CartItem(
+              productId: productId,
               id: existingCartItem.id,
               name: existingCartItem.name,
               price: existingCartItem.price,

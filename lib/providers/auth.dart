@@ -132,7 +132,6 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> resetPassword(String? email) async {
-    // print(email);/
     var url = Uri.parse(
         'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyAkPhfcDqj13SFnVl4d-RBmucKk3wYxf-c');
     try {

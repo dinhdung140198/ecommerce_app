@@ -31,7 +31,7 @@ class _CategoryProductGridState extends State<CategoryProductGrid> {
 
   @override
   Widget build(BuildContext context) {
-    final productsData = Provider.of<Categories>(context, listen: false);
+    final productsData = Provider.of<Categories>(context);
     List<Product> items = productsData.productList;
     List<Product> dummySearchList;
     dummySearchList = productsData.productList;

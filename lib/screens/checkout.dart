@@ -24,7 +24,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
-    final user = Provider.of<UserProvider>(context, listen: false).user;
+    final user = Provider.of<UserProvider>(context).user;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -74,6 +74,121 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               child: ListTile(
                 contentPadding: EdgeInsets.symmetric(vertical: 0),
                 leading: Icon(
+                  UiIcons.information,
+                  color: Theme.of(context).hintColor,
+                ),
+                title: Text(
+                  'Information Shipping',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                subtitle: Text(
+                  'Check your order information ',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.caption,
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(6),
+                boxShadow: [
+                  BoxShadow(
+                      color: Theme.of(context).hintColor.withOpacity(0.15),
+                      offset: Offset(0, 3),
+                      blurRadius: 10)
+                ],
+              ),
+              child: ListView(
+                shrinkWrap: true,
+                primary: false,
+                children: <Widget>[
+                  ListTile(
+                    onTap: () {},
+                    dense: true,
+                    title: Row(
+                      children: <Widget>[
+                        Icon(
+                          UiIcons.placeholder,
+                          size: 22,
+                          color: Theme.of(context).focusColor,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Ship Addresses',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                      ],
+                    ),
+                    trailing: Text(
+                      user.address!,
+                      style: TextStyle(color: Theme.of(context).focusColor),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/');
+                    },
+                    dense: true,
+                    title: Row(
+                      children: <Widget>[
+                        Icon(
+                          UiIcons.phone_call,
+                          size: 22,
+                          color: Theme.of(context).focusColor,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Phone',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                      ],
+                    ),
+                    trailing: Text(
+                      user.phone!,
+                      style: TextStyle(color: Theme.of(context).focusColor),
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/Help');
+                    },
+                    dense: true,
+                    title: Row(
+                      children: [
+                        Icon(
+                          UiIcons.mail,
+                          size: 22,
+                          color: Theme.of(context).focusColor,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Email',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                      ],
+                    ),
+                    trailing: Text(
+                      user.email!,
+                      style: TextStyle(color: Theme.of(context).focusColor),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            Padding(
+              padding: EdgeInsets.only(left: 20, right: 10),
+              child: ListTile(
+                contentPadding: EdgeInsets.symmetric(vertical: 0),
+                leading: Icon(
                   UiIcons.credit_card,
                   color: Theme.of(context).hintColor,
                 ),
@@ -98,79 +213,94 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               'Or Checkout With',
               style: Theme.of(context).textTheme.caption,
             ),
-            SizedBox(height: 40),
-            SizedBox(
-              width: 320,
-              child: FlatButton(
-                onPressed: () {},
-                padding: EdgeInsets.symmetric(vertical: 12),
-                color: Theme.of(context).focusColor.withOpacity(0.2),
-                shape: StadiumBorder(),
-                child: Image.network(
-                  'https://www.goldtek.vn/wp-content/uploads/2020/12/logo-momo.png',
-                  height: 28,
-                  // width: 50,
+            SizedBox(height: 30),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 45,
+                  height: 45,
+                  child: InkWell(
+                    onTap: () {},
+                    child: CircleAvatar(
+                      child: Image.network(
+                        'https://www.goldtek.vn/wp-content/uploads/2020/12/logo-momo.png',
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(height: 20),
-            SizedBox(
-              width: 320,
-              child: FlatButton(
-                onPressed: () {},
-                padding: EdgeInsets.symmetric(vertical: 12),
-                color: Theme.of(context).focusColor.withOpacity(0.2),
-                shape: StadiumBorder(),
-                child: Image.network(
-                  'https://cdn.jobhopin.com/avatars/3aec1f1b-9d57-4e26-8109-7435e79c23d7.png',
-                  height: 28,
+                SizedBox(width: 20),
+                SizedBox(
+                  width: 45,
+                  height: 45,
+                  child: InkWell(
+                    onTap: () {},
+                    child: Image.network(
+                      'https://cdn.jobhopin.com/avatars/3aec1f1b-9d57-4e26-8109-7435e79c23d7.png',
+                    ),
+                  ),
                 ),
-              ),
+                SizedBox(width: 20),
+                SizedBox(
+                  width: 45,
+                  height: 45,
+                  child: InkWell(
+                    onTap: () {},
+                    child: Image.network(
+                        'https://apkjett.com/wp-content/uploads/2021/10/cash-pay.png'),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             Stack(
               fit: StackFit.loose,
               alignment: AlignmentDirectional.centerEnd,
               children: <Widget>[
                 SizedBox(
                   width: 320,
-                  child: FlatButton(
-                    onPressed: (cart.totalAmount <= 0 || _isLoading)
-                        ? (){}
-                        // ignore: unnecessary_statements
-                        : () async {
-                            print(cart.items.values.toList());
-                            setState(() {
-                              _isLoading = true;
-                            });
-                            await Provider.of<Orders>(context, listen: false)
-                                .addOrder(
-                              cart.items.values.toList(),
-                              cart.totalAmount,
-                            );
-                            cart.clear();
-                            setState(() {
-                              _isLoading = false;
-                            });
-                            Navigator.of(context)
-                                .pushNamed(CheckoutDoneScreen.routeName);
-                          },
-                    padding: EdgeInsets.symmetric(vertical: 14),
-                    color: Theme.of(context).accentColor,
-                    shape: StadiumBorder(),
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: _isLoading
-                          ? CircularProgressIndicator(strokeWidth: 100,)
-                          : Text(
+                  child: _isLoading
+                      ? CircularProgressIndicator(
+                          // strokeWidth: 10,
+                          )
+                      : FlatButton(
+                          onPressed: (cart.totalAmount <= 0 || _isLoading)
+                              ? () {}
+                              : () async {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+                                  await Provider.of<Orders>(context,
+                                          listen: false)
+                                      .addOrder(
+                                    cart.items.values.toList(),
+                                    cart.totalAmount,
+                                    user.address!,
+                                    user.email!,
+                                    user.phone!,
+                                  );
+                                  cart.clear();
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                  Navigator.of(context)
+                                      .pushNamed(CheckoutDoneScreen.routeName);
+                                },
+                          padding: EdgeInsets.symmetric(vertical: 14),
+                          color: Theme.of(context).accentColor,
+                          shape: StadiumBorder(),
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
                               'Confirm Payment',
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor),
                             ),
-                    ),
-                  ),
+                          ),
+                        ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),

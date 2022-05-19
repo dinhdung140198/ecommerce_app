@@ -1,13 +1,17 @@
+import 'package:ecommerce_app/providers/categories.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
+import '../models/category.dart';
 import '../models/product.dart';
 import '../providers/products.dart';
 
 class RatingBarWidget extends StatefulWidget {
-  final Product? product;
-  const RatingBarWidget({Key? key, this.product}) : super(key: key);
+  final dynamic product;
+  final String? flag;
+  const RatingBarWidget({Key? key, @required this.product, @required this.flag})
+      : super(key: key);
 
   @override
   State<RatingBarWidget> createState() => _RatingBarWidgetState();
@@ -15,24 +19,37 @@ class RatingBarWidget extends StatefulWidget {
 
 class _RatingBarWidgetState extends State<RatingBarWidget> {
   Product? productRate;
-  double? _rating ;
+  Category? categoryRate;
+  double? _rating;
   @override
   void initState() {
     _rating = widget.product!.rate;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    productRate = Product(
+    if (widget.flag == 'product') {
+      productRate = Product(
+          id: widget.product!.id,
+          name: widget.product!.name,
+          price: widget.product!.price,
+          description: widget.product!.description,
+          urlImage: widget.product!.urlImage,
+          rate: _rating,
+          category: widget.product!.category);
+      Provider.of<Products>(context)
+          .updateProduct(widget.product!.id!, productRate!);
+    }
+    if (widget.flag == 'category') {
+      categoryRate = Category(
         id: widget.product!.id,
-        name: widget.product!.name,
-        price: widget.product!.price,
-        description: widget.product!.description,
-        urlImage: widget.product!.urlImage,
+        nameCategory: widget.product!.nameCategory,
+        image: widget.product!.image,
         rate: _rating,
-        category: widget.product!.category);
-    Provider.of<Products>(context)
-        .updateProduct(widget.product!.id!, productRate!);
+      );
+      Provider.of<Categories>(context).updateProduct(widget.product!.id, categoryRate!);
+    }
     return Center(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),

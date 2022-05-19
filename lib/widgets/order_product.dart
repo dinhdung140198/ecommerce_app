@@ -4,13 +4,13 @@ import 'package:ecommerce_app/widgets/empty_order_product.dart';
 import 'package:ecommerce_app/widgets/order_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class OrdersProductsWidget extends StatefulWidget {
+  String? orderStatus;
   @override
   _OrdersProductsWidgetState createState() => _OrdersProductsWidgetState();
 
-  OrdersProductsWidget({Key? key}) : super(key: key);
+  OrdersProductsWidget({Key? key,@required this.orderStatus}) : super(key: key);
 }
 
 class _OrdersProductsWidgetState extends State<OrdersProductsWidget> {
@@ -19,19 +19,13 @@ class _OrdersProductsWidgetState extends State<OrdersProductsWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Provider.of<Orders>(context, listen: false).fetchAndSetOrders(),
+        future: Provider.of<Orders>(context, listen: false).fetchAndSetOrders(widget.orderStatus!),
         builder: (ctx, dataSnapshot) {
           if (dataSnapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
-          //else {
-          //   if (dataSnapshot.error != null) {
-          //     return Center(
-          //       child: Text(dataSnapshot.error.toString()),
-          //     );
-          //   } 
           else {
               return Consumer<Orders>(
                 builder: (ctx, orderData, child) => SingleChildScrollView(

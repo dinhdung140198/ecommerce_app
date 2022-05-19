@@ -19,18 +19,18 @@ class CategoryProductsScreen extends StatefulWidget {
 }
 
 class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
-  // int _tabIndex=0;
   late RouteArgument category;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
     category = ModalRoute.of(context)!.settings.arguments as RouteArgument;
-    Provider.of<Categories>(context).getProductByCategories(category.name!);
+    final categoriesProduct = Provider.of<Categories>(context, listen: false);
+    categoriesProduct.clear();
+    categoriesProduct.getProductByCategories(category.name!);
     super.didChangeDependencies();
   }
 
@@ -64,7 +64,8 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                 margin: EdgeInsets.only(top: 12.5, bottom: 12.5, right: 12.5),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(300),
-                  onTap: () => Navigator.of(context).pushNamed(AccountScreen.routeName),
+                  onTap: () =>
+                      Navigator.of(context).pushNamed(AccountScreen.routeName),
                   child: CircleAvatar(
                     backgroundImage: NetworkImage(user.avartar!),
                   ),

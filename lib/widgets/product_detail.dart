@@ -181,7 +181,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.parallax,
               background: Hero(
-                  tag: productId,
+                  tag: 'productId',
                   child: Stack(
                     fit: StackFit.expand,
                     children: [

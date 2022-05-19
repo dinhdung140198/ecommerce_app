@@ -34,6 +34,7 @@ class _InformationTabWigetState extends State<InformationTabWiget> {
                       context: context,
                       builder: (context) => RatingBarWidget(
                             product: widget.product,
+                            flag: 'product',
                           ));
                 },
                 child: Chip(
