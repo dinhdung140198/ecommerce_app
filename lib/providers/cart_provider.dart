@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:ecommerce_app/models/cart.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Cart with ChangeNotifier {
   Map<String, CartItem> _items = {};
@@ -28,6 +31,19 @@ class Cart with ChangeNotifier {
     }
     return count;
   }
+
+  // Future<void> fetchCartProduct() async{
+  //   var url = Uri.parse('https://flutter-update-89c84-default-rtdb.firebaseio.com/cart/$userId.json?$authToken');
+  //   try {
+  //     final response = await http.get(url);
+  //     final extractedData = json.decode(response.body) as Map<String ,dynamic>;
+  //     // final extractedData.forEach((prodId, value) { 
+
+  //     // });
+  //   } catch (error) {
+  //     throw(error);
+  //   }
+  // }
 
   void addItem(String productId, double price, String name, String urlImage) {
     if (_items.containsKey(productId)) {

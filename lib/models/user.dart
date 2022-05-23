@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class UserModel {
@@ -11,7 +10,7 @@ class UserModel {
   String? address;
   String? phone;
 
-  // UserModel.init();
+  UserModel.init();
   // UserModel.basic(
   //   this.name,
   //   this.avartar,

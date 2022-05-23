@@ -29,15 +29,6 @@ class _ProfileAccountState extends State<ProfileAccount> {
       phone: '',
       address: '',
       dateOfBirth: DateTime.now());
-  var _initUser = {
-    'name': '',
-    'email': '',
-    'avartar': '',
-    'gender': '',
-    'address': '',
-    'phone':'',
-    'dateOfBirth': DateTime.now().toString(),
-  };
   var _isInit = true;
 
   @override
@@ -50,14 +41,6 @@ class _ProfileAccountState extends State<ProfileAccount> {
   void didChangeDependencies() {
     if (_isInit) {
       _editedUser = Provider.of<UserProvider>(context).user;
-      _initUser = {
-        'name': _editedUser.name!,
-        'email': _editedUser.email!,
-        'avartar': _editedUser.avartar!,
-        'gender': _editedUser.gender!,
-        'address': _editedUser.address!,
-        'dateOfBirth': DateTime.now().toString(),
-      };
       _imageUrlController.text = _editedUser.avartar!;
     }
     _isInit = false;
@@ -136,7 +119,7 @@ class _ProfileAccountState extends State<ProfileAccount> {
                                   .requestFocus(_phoneFocusNode);
                             },
                             decoration: getInputDecoration(
-                                hintText: _initUser['name'], labelText: 'Name'),
+                                hintText: _editedUser.name, labelText: 'Name'),
                             initialValue: _editedUser.name,
                             validator: (input) => input!.trim().length < 3
                                 ? 'Not a valid full name'
@@ -158,15 +141,15 @@ class _ProfileAccountState extends State<ProfileAccount> {
                             style:
                                 TextStyle(color: Theme.of(context).hintColor),
                             decoration: getInputDecoration(
-                                hintText: _initUser['phone'],
+                                hintText: _editedUser.phone,
                                 labelText: 'Phone Number'),
                             initialValue: _editedUser.phone,
                             textInputAction: TextInputAction.next,
                             focusNode: _phoneFocusNode,
-                            validator: (input) => (input!.trim().length >= 9 &&
-                                    input.trim().length <= 11)
-                                ? 'Not valid phone number'
-                                : null,
+                            validator: (input) => (input!.length >= 9 &&
+                                    input.length <= 11)
+                                ? null
+                                :'Not valid phone number',
                             onFieldSubmitted: (value) {
                               FocusScope.of(context)
                                   .requestFocus(_addressFocusNode);
@@ -189,7 +172,7 @@ class _ProfileAccountState extends State<ProfileAccount> {
                             style:
                                 TextStyle(color: Theme.of(context).hintColor),
                             decoration: getInputDecoration(
-                                hintText: _initUser['address'],
+                                hintText: _editedUser.address,
                                 labelText: 'Address'),
                             initialValue: _editedUser.address,
                             textInputAction: TextInputAction.next,
@@ -211,7 +194,7 @@ class _ProfileAccountState extends State<ProfileAccount> {
                             builder: (FormFieldState<String> state) {
                               return DropdownButtonFormField<String>(
                                 decoration: getInputDecoration(
-                                    hintText: _initUser['gender'],
+                                    hintText: _editedUser.gender,
                                     labelText: 'Gender'),
                                 value: _editedUser.gender,
                                 items: [
@@ -248,7 +231,7 @@ class _ProfileAccountState extends State<ProfileAccount> {
                                           _editedUser.dateOfBirth.toString()),
                                   format: DateFormat('yyyy-MM-dd'),
                                   initialValue: DateTime.parse(
-                                      _initUser['dateOfBirth'].toString()),
+                                      _editedUser.dateOfBirth.toString()),
                                   onShowPicker: (context, currentValue) {
                                     return showDatePicker(
                                         context: context,

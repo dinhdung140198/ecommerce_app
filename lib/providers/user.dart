@@ -19,23 +19,26 @@ class UserProvider with ChangeNotifier {
   Future<void> fetchSetUser() async {
     final url = Uri.parse(
         'https://flutter-update-89c84-default-rtdb.firebaseio.com/users/$userId.json?auth=$authToken');
-    final response = await http.get(url);
-    final extractedUser = json.decode(response.body) as Map<String,dynamic>;
-    extractedUser.forEach((key, value) {
-    _user.id = key;
-    _user.name = value['name'];
-    _user.address = value['address'];
-    _user.gender = value['gender'];
-    _user.email = value['email'];
-    _user.avartar = value['avartar'];
-    _user.dateOfBirth = DateTime.parse(value['dateOfBirth']);
-    _user.phone=value['phone'];
-     });
+    try {
+      final response = await http.get(url);
+      final extractedUser = json.decode(response.body) as Map<String, dynamic>;
+      extractedUser.forEach((key, value) {
+        _user.id = key;
+        _user.name = value['name'];
+        _user.address = value['address'];
+        _user.gender = value['gender'];
+        _user.email = value['email'];
+        _user.avartar = value['avartar'];
+        _user.dateOfBirth = DateTime.parse(value['dateOfBirth']);
+        _user.phone = value['phone'];
+      });
+    } catch (error) {
+      throw(error);
+    }
     notifyListeners();
   }
 
   Future<void> updateUser(UserModel user) async {
-
     final url = Uri.parse(
         'https://flutter-update-89c84-default-rtdb.firebaseio.com/users/$userId/${user.id}.json?auth=$authToken');
     await http.patch(url,
@@ -52,4 +55,3 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 }
-

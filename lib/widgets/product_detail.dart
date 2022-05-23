@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
+import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/providers/auth.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/products.dart';
@@ -23,7 +24,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
   TabController? _tabController;
   int _tabIndex = 0;
   int count = 0;
-  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
+  // final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -62,13 +63,12 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
         .settings
         .arguments as String;
     final loadProduct =
-        Provider.of<Products>(context, listen: false).findById(productId);
+        Provider.of<Products>(context,listen: false).findById(productId);
     final cart = Provider.of<Cart>(context);
     final user = Provider.of<UserProvider>(context).user;
     final auth = Provider.of<Auth>(context);
     return Scaffold(
-      key: _scaffoldkey,
-      // drawer: DrawerWidget(),
+      // key: _scaffoldkey,
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
@@ -80,19 +80,21 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
                   offset: Offset(0, -2)),
             ]),
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          FlatButton(
-            height: 50,
-            minWidth: 55,
-            onPressed: () {
-              loadProduct.toggleFavorStatus(auth.token, auth.userId);
-            },
-            child: Icon(UiIcons.heart,
-                color: loadProduct.isFavorite
-                    ? Colors.yellow
-                    : Theme.of(context).primaryColor),
-            padding: EdgeInsets.symmetric(vertical: 14),
-            color: Theme.of(context).accentColor,
-            shape: StadiumBorder(),
+          Consumer<Products>(
+            builder: ((context, product, _) => FlatButton(
+              height: 50,
+              minWidth: 55,
+              onPressed: () {
+                product.findById(productId).toggleFavorStatus(auth.token, auth.userId);
+              },
+              child: Icon(UiIcons.heart,
+                  color: product.findById(productId).isFavorite
+                      ? Color.fromARGB(255, 239, 228, 8)
+                      : Theme.of(context).primaryColor),
+              padding: EdgeInsets.symmetric(vertical: 14),
+              color: Theme.of(context).accentColor,
+              shape: StadiumBorder(),
+            )),
           ),
           SizedBox(
             width: 10,

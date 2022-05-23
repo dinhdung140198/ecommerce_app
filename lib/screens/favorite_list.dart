@@ -91,7 +91,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           )
         ],
       ),
-      body: Column(
+      body: ListView(
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12.5),

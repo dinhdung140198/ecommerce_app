@@ -1,5 +1,3 @@
-// import 'package:carousel_slider/carousel_options.dart';
-// import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecommerce_app/providers/sliders.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/config/app_config.dart' as config;
@@ -80,7 +78,6 @@ void didChangeDependencies() {
                           ),
                           FlatButton(
                             onPressed: () {
-//                              Navigator.of(context).pushNamed('/Checkout');
                             },
                             padding: EdgeInsets.symmetric(vertical: 5),
                             color: Theme.of(context).accentColor,

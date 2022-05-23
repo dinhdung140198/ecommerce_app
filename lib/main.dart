@@ -1,4 +1,3 @@
-import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/models/user.dart';
 import 'package:ecommerce_app/providers/auth.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
@@ -6,7 +5,6 @@ import 'package:ecommerce_app/providers/categories.dart';
 import 'package:ecommerce_app/providers/orders.dart';
 import 'package:ecommerce_app/providers/sliders.dart';
 import 'package:ecommerce_app/providers/user.dart';
-import 'package:ecommerce_app/route_generator.dart';
 import 'package:ecommerce_app/screens/account.dart';
 import 'package:ecommerce_app/screens/auth.dart';
 import 'package:ecommerce_app/screens/cart.dart';
@@ -14,17 +12,18 @@ import 'package:ecommerce_app/screens/categories.dart';
 import 'package:ecommerce_app/screens/category_products.dart';
 import 'package:ecommerce_app/screens/checkout.dart';
 import 'package:ecommerce_app/screens/checkout_done.dart';
-import 'package:ecommerce_app/screens/edit_product.dart';
 import 'package:ecommerce_app/screens/favorite_list.dart';
 import 'package:ecommerce_app/screens/flash.dart';
 import 'package:ecommerce_app/screens/orders.dart';
 import 'package:ecommerce_app/widgets/product_detail.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'package:ecommerce_app/providers/products.dart';
 import 'package:ecommerce_app/screens/home.dart';
 import 'package:ecommerce_app/config/app_config.dart' as config;
+
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+
 
 void main() {
   runApp(MyApp());
@@ -56,6 +55,7 @@ class MyApp extends StatelessWidget {
               return UserProvider(
                 '',
                 '',
+                // UserModel.init()
                 UserModel.advanced(
                   id: '',
                   name: '',
@@ -72,7 +72,9 @@ class MyApp extends StatelessWidget {
                   auth.token,
                   auth.userId,
                   previousUser == null
-                      ? UserModel.advanced(
+                      ? 
+                      // UserModel.init()
+                      UserModel.advanced(
                           id: '',
                           name: '',
                           email: '',
@@ -90,13 +92,11 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Ecommerce App',
             initialRoute: '/',
-            // onGenerateRoute: RouteGenerator.generatorRouter,
             routes: {
               AccountScreen.routeName: (context) => AccountScreen(),
               CategoryProductsScreen.routeName: (context) =>
                   CategoryProductsScreen(),
               CategoriesScreen.routeName: (context) => CategoriesScreen(),
-              // EditProductScreen.routeName:(context) => EditProductScreen(),
               FavoriteScreen.routeName: (context) => FavoriteScreen(),
               AuthScreen.routeName: (context) => AuthScreen(),
               OrdersScreen.routeName: (context) => OrdersScreen(),

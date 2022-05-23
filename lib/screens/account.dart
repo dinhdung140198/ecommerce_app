@@ -63,7 +63,6 @@ class _AccountScreenState extends State<AccountScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // SearchBarWidget(callback: 'callback')
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Row(
@@ -463,7 +462,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                   ListTile(
                     onTap: () {
-                      Navigator.of(context).pushNamed('/Help');
+                      // Navigator.of(context).pushNamed('/Help');
                     },
                     dense: true,
                     title: Row(
