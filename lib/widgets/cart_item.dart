@@ -10,6 +10,8 @@ class CartItemWidget extends StatelessWidget {
   final String? name;
   final int? quantity;
   final double? price;
+  final Color? color;
+  final String? size;
   final String? urlImage;
   const CartItemWidget(
       {Key? key,
@@ -18,6 +20,8 @@ class CartItemWidget extends StatelessWidget {
       @required this.name,
       @required this.quantity,
       @required this.price,
+      @required this.color,
+      @required this.size,
       @required this.urlImage})
       : super(key: key);
 
@@ -59,7 +63,8 @@ class CartItemWidget extends StatelessWidget {
           ),
         );
       },
-      onDismissed: (direction) => Provider.of<Cart>(context,listen: false).removeItem(productId!),
+      onDismissed: (direction) =>
+          Provider.of<Cart>(context, listen: false).removeItem(productId!),
       child: InkWell(
         splashColor: Theme.of(context).accentColor,
         focusColor: Theme.of(context).accentColor,
@@ -111,7 +116,20 @@ class CartItemWidget extends StatelessWidget {
                         ),
                         Text(
                           '\$$price',
-                          style: Theme.of(context).textTheme.headline4,
+                          style: Theme.of(context).textTheme.headline5,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text('Color:',style: Theme.of(context).textTheme.subtitle1,),
+                            Container(
+                              width: 15,
+                              height: 15,
+                              decoration: BoxDecoration(shape: BoxShape.circle,color: color),
+                            ),
+                            SizedBox(width: 15,),
+                            Text('Size: $size',style: Theme.of(context).textTheme.subtitle1,)
+                          ],
                         )
                       ],
                     ),
@@ -122,8 +140,7 @@ class CartItemWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       IconButton(
-                        onPressed: () =>
-                            cart.addItem(productId!, price!, name!, urlImage!),
+                        onPressed: () => cart.addItem(productId: productId!),
                         iconSize: 30,
                         padding: EdgeInsets.symmetric(horizontal: 5),
                         icon: Icon(Icons.add_circle_outline),

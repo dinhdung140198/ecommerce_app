@@ -1,6 +1,10 @@
 import 'package:ecommerce_app/models/product.dart';
+import 'package:ecommerce_app/providers/select_color.dart';
 import 'package:ecommerce_app/widgets/rating_bar.dart';
+import 'package:ecommerce_app/widgets/select_color.dart';
+import 'package:ecommerce_app/widgets/selected_size.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class InformationTabWiget extends StatefulWidget {
   final Product? product;
@@ -36,6 +40,7 @@ class _InformationTabWigetState extends State<InformationTabWiget> {
                             product: widget.product,
                             flag: 'product',
                           ));
+                  setState(() {});
                 },
                 child: Chip(
                   label: Row(
@@ -75,7 +80,7 @@ class _InformationTabWigetState extends State<InformationTabWiget> {
                 width: 10,
               ),
               Text(
-                "\$${(widget.product!.price! + 10).toString()}",
+                "\$${(widget.product!.price! + 5).toStringAsFixed(2).toString()}",
                 style: Theme.of(context).textTheme.headline5!.merge(TextStyle(
                     color: Theme.of(context).focusColor,
                     decoration: TextDecoration.lineThrough)),
@@ -122,12 +127,52 @@ class _InformationTabWigetState extends State<InformationTabWiget> {
                   )
                 ],
               ),
-              SizedBox(
-                height: 10,
-              )
+              SizedBox(height: 10),
+              SelectColorWidget(colors: widget.product!.colors),
+              
             ],
           ),
-        )
+        ),
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          margin: EdgeInsets.symmetric(vertical: 20),
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor.withOpacity(0.9),
+            boxShadow: [
+              BoxShadow(
+                  color: Theme.of(context).focusColor.withOpacity(0.15),
+                  blurRadius: 5,
+                  offset: Offset(0, 2)),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      'Select Size',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ),
+                  MaterialButton(
+                    onPressed: () {},
+                    padding: EdgeInsets.all(0),
+                    minWidth: 0,
+                    child: Text(
+                      'Clear All',
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 10),
+              SelectSizeWidget(sizes: widget.product!.sizes)
+            ],
+          ),
+        ),
       ],
     );
   }

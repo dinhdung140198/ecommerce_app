@@ -133,7 +133,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
         ),
         body: TabBarView(
           children: [
-            OrdersProductsWidget(orderStatus: "All",),
+            OrdersProductsWidget(orderStatus: 'All',),
             OrdersProductsWidget(orderStatus: 'yet',),
             OrdersProductsWidget(orderStatus: 'shipping',),
             OrdersProductsWidget(orderStatus: 'shipped',)

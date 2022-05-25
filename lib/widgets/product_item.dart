@@ -59,8 +59,8 @@ class ProductItem extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () => Provider.of<Cart>(context, listen: false)
-                        .addItem(product.id!, product.price!, product.name!,
-                            product.urlImage!),
+                        .addItem(productId:product.id!, price:product.price!, name:product.name!,
+                            urlImage:product.urlImage!),
                     icon: Icon(
                       UiIcons.shopping_cart,
                       color: Theme.of(context).hintColor,

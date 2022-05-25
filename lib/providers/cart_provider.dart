@@ -1,8 +1,8 @@
 import 'dart:convert';
-
-import 'package:ecommerce_app/models/cart.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:ecommerce_app/models/cart.dart';
 
 class Cart with ChangeNotifier {
   Map<String, CartItem> _items = {};
@@ -19,7 +19,7 @@ class Cart with ChangeNotifier {
     _items.forEach((key, cartItem) {
       total += (cartItem.price! * cartItem.quantity!);
     });
-    return total;
+    return double.parse(total.toStringAsFixed(2));
   }
 
   int? productCount(String productId) {
@@ -32,39 +32,31 @@ class Cart with ChangeNotifier {
     return count;
   }
 
-  // Future<void> fetchCartProduct() async{
-  //   var url = Uri.parse('https://flutter-update-89c84-default-rtdb.firebaseio.com/cart/$userId.json?$authToken');
-  //   try {
-  //     final response = await http.get(url);
-  //     final extractedData = json.decode(response.body) as Map<String ,dynamic>;
-  //     // final extractedData.forEach((prodId, value) { 
-
-  //     // });
-  //   } catch (error) {
-  //     throw(error);
-  //   }
-  // }
-
-  void addItem(String productId, double price, String name, String urlImage) {
+  void addItem({String? productId, double? price, String? name, String? urlImage,
+      Color? color, String? size}) {
     if (_items.containsKey(productId)) {
       _items.update(
-          productId,
+          productId!,
           (existingCartItem) => CartItem(
               id: existingCartItem.id,
               productId: productId,
               name: existingCartItem.name,
               price: existingCartItem.price,
               urlImage: existingCartItem.urlImage,
+              color: existingCartItem.color,
+              size: existingCartItem.size,
               quantity: existingCartItem.quantity! + 1));
     } else {
       _items.putIfAbsent(
-          productId,
+          productId!,
           () => CartItem(
               id: DateTime.now().toString(),
               productId: productId,
               urlImage: urlImage,
               name: name,
               price: price,
+              color: color,
+              size: size,
               quantity: 1));
     }
     notifyListeners();
@@ -88,6 +80,8 @@ class Cart with ChangeNotifier {
               name: existingCartItem.name,
               price: existingCartItem.price,
               urlImage: existingCartItem.urlImage,
+              color: existingCartItem.color,
+              size: existingCartItem.size,
               quantity: existingCartItem.quantity! - 1));
     } else {
       _items.remove(productId);
@@ -100,3 +94,17 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 }
+
+
+  // Future<void> fetchCartProduct() async{
+  //   var url = Uri.parse('https://flutter-update-89c84-default-rtdb.firebaseio.com/cart/$userId.json?$authToken');
+  //   try {
+  //     final response = await http.get(url);
+  //     final extractedData = json.decode(response.body) as Map<String ,dynamic>;
+  //     // final extractedData.forEach((prodId, value) { 
+
+  //     // });
+  //   } catch (error) {
+  //     throw(error);
+  //   }
+  // }

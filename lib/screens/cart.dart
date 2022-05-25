@@ -93,6 +93,8 @@ class CartScreen extends StatelessWidget {
                           name: cart.items.values.toList()[i].name,
                           quantity: cart.items.values.toList()[i].quantity,
                           price: cart.items.values.toList()[i].price,
+                          color: cart.items.values.toList()[i].color,
+                          size: cart.items.values.toList()[i].size,
                           urlImage: cart.items.values.toList()[i].urlImage),
                       separatorBuilder: (context, index) {
                         return SizedBox(height: 15);

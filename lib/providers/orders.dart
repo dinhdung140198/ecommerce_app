@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ecommerce_app/config/extention.dart';
 import 'package:ecommerce_app/models/cart.dart';
 import 'package:ecommerce_app/models/order.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class Orders with ChangeNotifier {
     return [..._order];
   }
 
-  Future<void> fetchAndSetOrders(String orderStatus) async {
+  Future<void> fetchAndSetOrders(String orderStatus ) async {
     final url = Uri.parse(
         'https://flutter-update-89c84-default-rtdb.firebaseio.com/orders/$userId.json?auth=$authToken');
     final response = await http.get(
@@ -30,6 +31,7 @@ class Orders with ChangeNotifier {
     extractedData.forEach((orderId, orderData) {
       if (orderStatus == 'All') {
         loadOrder.add(
+          // OrderItem.fromJson(orderId, orderData)
           OrderItem(
             id: orderId,
             amount: orderData['amount'],
@@ -40,13 +42,14 @@ class Orders with ChangeNotifier {
             products: (orderData['products'] as List<dynamic>)
                 .map(
                   (item) => CartItem(
-                    id: item['id'],
-                    productId: item['productId'],
-                    name: item['title'],
-                    price: item['price'],
-                    quantity: item['quantity'],
-                    urlImage: item['urlImage'],
-                  ),
+                      id: item['id'],
+                      productId: item['productId'],
+                      name: item['title'],
+                      price: item['price'],
+                      quantity: item['quantity'],
+                      urlImage: item['urlImage'],
+                      size: item['size'],
+                      color: HexColor.fromHex(item['color'])),
                 )
                 .toList(),
             dateTime: DateTime.parse(orderData['dateTime']),
@@ -55,6 +58,7 @@ class Orders with ChangeNotifier {
       } else {
         if (orderData['orderStatus'] == orderStatus) {
           loadOrder.add(
+            // OrderItem.fromJson(orderId, orderData)
             OrderItem(
               id: orderId,
               amount: orderData['amount'],
@@ -65,13 +69,14 @@ class Orders with ChangeNotifier {
               products: (orderData['products'] as List<dynamic>)
                   .map(
                     (item) => CartItem(
-                      id: item['id'],
-                      productId: item['productId'],
-                      name: item['title'],
-                      price: item['price'],
-                      quantity: item['quantity'],
-                      urlImage: item['urlImage'],
-                    ),
+                        id: item['id'],
+                        productId: item['productId'],
+                        name: item['title'],
+                        price: item['price'],
+                        quantity: item['quantity'],
+                        urlImage: item['urlImage'],
+                        size: item['size'],
+                        color: HexColor.fromHex(item['color'])),
                   )
                   .toList(),
               dateTime: DateTime.parse(orderData['dateTime']),
@@ -89,25 +94,16 @@ class Orders with ChangeNotifier {
     final url = Uri.parse(
         'https://flutter-update-89c84-default-rtdb.firebaseio.com/orders/$userId.json?auth=$authToken');
     final timeStamp = DateTime.now();
-    final response = await http.post(url,
-        body: json.encode({
-          'amount': total,
-          'dateTime': timeStamp.toIso8601String(),
-          'shipAddress': shipAddress,
-          'email': email,
-          'phone': phone,
-          'orderStatus': 'shipping',
-          'products': cartProduct
-              .map((cp) => {
-                    'id': cp.id,
-                    'productId': cp.productId,
-                    'title': cp.name,
-                    'quantity': cp.quantity,
-                    'price': cp.price,
-                    'urlImage': cp.urlImage
-                  })
-              .toList(),
-        }));
+    OrderItem orderItem = OrderItem(
+        amount: total,
+        products: cartProduct,
+        dateTime: timeStamp,
+        shipAddress: shipAddress,
+        orderStatus: 'shipping',
+        phone: phone,
+        email: email);
+    final response =
+        await http.post(url, body: json.encode(orderItem.toJson()));
     _order.insert(
       0,
       OrderItem(
@@ -124,3 +120,25 @@ class Orders with ChangeNotifier {
     notifyListeners();
   }
 }
+
+
+// {
+//           'amount': total,
+//           'dateTime': timeStamp.toIso8601String(),
+//           'shipAddress': shipAddress,
+//           'email': email,
+//           'phone': phone,
+//           'orderStatus': 'shipping',
+//           'products': cartProduct
+//               .map((cp) => {
+//                     'id': cp.id,
+//                     'productId': cp.productId,
+//                     'title': cp.name,
+//                     'quantity': cp.quantity,
+//                     'price': cp.price,
+//                     'urlImage': cp.urlImage,
+//                     'color': cp.color!.toHex(),
+//                     'size': cp.size
+//                   })
+//               .toList(),
+//         }

@@ -1,8 +1,11 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
+import 'package:ecommerce_app/config/extention.dart';
 import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/providers/auth.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/products.dart';
+import 'package:ecommerce_app/providers/select_color.dart';
+import 'package:ecommerce_app/providers/select_size.dart';
 import 'package:ecommerce_app/providers/user.dart';
 import 'package:ecommerce_app/screens/account.dart';
 import 'package:ecommerce_app/widgets/details_tab_widget.dart';
@@ -63,10 +66,12 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
         .settings
         .arguments as String;
     final loadProduct =
-        Provider.of<Products>(context,listen: false).findById(productId);
+        Provider.of<Products>(context, listen: false).findById(productId);
     final cart = Provider.of<Cart>(context);
     final user = Provider.of<UserProvider>(context).user;
     final auth = Provider.of<Auth>(context);
+    final color = Provider.of<SelectColor>(context);
+    final size = Provider.of<SelectSize>(context);
     return Scaffold(
       // key: _scaffoldkey,
       bottomNavigationBar: Container(
@@ -82,19 +87,21 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Consumer<Products>(
             builder: ((context, product, _) => FlatButton(
-              height: 50,
-              minWidth: 55,
-              onPressed: () {
-                product.findById(productId).toggleFavorStatus(auth.token, auth.userId);
-              },
-              child: Icon(UiIcons.heart,
-                  color: product.findById(productId).isFavorite
-                      ? Color.fromARGB(255, 239, 228, 8)
-                      : Theme.of(context).primaryColor),
-              padding: EdgeInsets.symmetric(vertical: 14),
-              color: Theme.of(context).accentColor,
-              shape: StadiumBorder(),
-            )),
+                  height: 50,
+                  minWidth: 55,
+                  onPressed: () {
+                    product
+                        .findById(productId)
+                        .toggleFavorStatus(auth.token, auth.userId);
+                  },
+                  child: Icon(UiIcons.heart,
+                      color: product.findById(productId).isFavorite!
+                          ? Color.fromARGB(255, 239, 228, 8)
+                          : Theme.of(context).primaryColor),
+                  padding: EdgeInsets.symmetric(vertical: 14),
+                  color: Theme.of(context).accentColor,
+                  shape: StadiumBorder(),
+                )),
           ),
           SizedBox(
             width: 10,
@@ -102,8 +109,15 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
           FlatButton(
               shape: StadiumBorder(),
               color: Theme.of(context).accentColor,
-              onPressed: () => cart.addItem(productId, loadProduct.price!,
-                  loadProduct.name!, loadProduct.urlImage!),
+              onPressed: () => cart.addItem(
+                  productId: productId,
+                  price: loadProduct.price!,
+                  name: loadProduct.name!,
+                  urlImage: loadProduct.urlImage!,
+                  color:
+                  // Colors.red,
+                  color.getColor,
+                  size: size.getSize),
               child: Container(
                 child: Row(
                   children: [
@@ -130,10 +144,14 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
                     ),
                     IconButton(
                       onPressed: () => cart.addItem(
-                          productId,
-                          loadProduct.price!,
-                          loadProduct.name!,
-                          loadProduct.urlImage!),
+                          productId: productId,
+                          price: loadProduct.price!,
+                          name: loadProduct.name!,
+                          urlImage: loadProduct.urlImage!,
+                          color: 
+                          // Colors.red,
+                          color.getColor,
+                          size: size.getSize),
                       icon: Icon(Icons.add_circle_outline),
                       color: Theme.of(context).primaryColor,
                       iconSize: 30,
@@ -282,8 +300,9 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
               offstage: 0 != _tabIndex,
               child: Column(
                 children: [
-                  InformationTabWiget(product: loadProduct,
-                      )
+                  InformationTabWiget(
+                    product: loadProduct,
+                  )
                 ],
               ),
             ),

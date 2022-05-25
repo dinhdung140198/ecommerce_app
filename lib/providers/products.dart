@@ -16,7 +16,7 @@ class Products with ChangeNotifier {
   }
 
   List<Product> get favoriteItems {
-    return _items.where((prod) => prod.isFavorite).toList();
+    return _items.where((prod) => prod.isFavorite!).toList();
   }
 
   Product findById(String id) {
@@ -40,17 +40,10 @@ class Products with ChangeNotifier {
       final favoriteData = json.decode(favoriteResponse.body);
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
-        loadedProducts.add(Product(
-          id: prodId,
-          name: prodData['title'],
-          price: prodData['price'],
-          description: prodData['description'],
-          urlImage: prodData['imageUrl'],
-          category: prodData['category'],
-          rate: prodData['rate'],
-          isFavorite:
-              favoriteData == null ? false : favoriteData[prodId] ?? false,
-        ));
+        Product product = Product.fromJson(prodId, prodData);
+        product.isFavorite =
+            favoriteData == null ? false : favoriteData[prodId] ?? false;
+        loadedProducts.add(product);
       });
       _items = loadedProducts;
       notifyListeners();
@@ -59,19 +52,12 @@ class Products with ChangeNotifier {
     }
   }
 
-   Future<void> updateProduct(String id, Product newProduct) async {
+  Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       final url = Uri.parse(
           'https://flutter-update-89c84-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken');
-      await http.patch(url,
-          body: json.encode({
-            'title': newProduct.name,
-            'description': newProduct.description,
-            'imageUrl': newProduct.urlImage,
-            'price': newProduct.price,
-            'rate':newProduct.rate,
-          }));
+      await http.patch(url, body: json.encode(newProduct.toJson()));
       _items[prodIndex] = newProduct;
     } else {
       print('...');

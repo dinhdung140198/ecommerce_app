@@ -53,17 +53,7 @@ class Categories with ChangeNotifier {
       extractedData.forEach(
         (prodId, prodValue) {
           if (prodValue['category'] == category) {
-            loadProduct.add(
-              Product(
-                id: prodId,
-                name: prodValue['title'],
-                price: prodValue['price'],
-                description: prodValue['description'],
-                urlImage: prodValue['imageUrl'],
-                category: prodValue['category'],
-                rate: prodValue['rate'],
-              ),
-            );
+            loadProduct.add(Product.fromJson(prodId, prodValue));
           }
         },
       );

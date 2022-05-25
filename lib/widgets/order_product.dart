@@ -15,7 +15,6 @@ class OrdersProductsWidget extends StatefulWidget {
 
 class _OrdersProductsWidgetState extends State<OrdersProductsWidget> {
   String layout = 'list';
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(

@@ -3,6 +3,8 @@ import 'package:ecommerce_app/providers/auth.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/categories.dart';
 import 'package:ecommerce_app/providers/orders.dart';
+import 'package:ecommerce_app/providers/select_color.dart';
+import 'package:ecommerce_app/providers/select_size.dart';
 import 'package:ecommerce_app/providers/sliders.dart';
 import 'package:ecommerce_app/providers/user.dart';
 import 'package:ecommerce_app/screens/account.dart';
@@ -34,6 +36,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          ChangeNotifierProvider.value(value: SelectSize()),
+          ChangeNotifierProvider.value(value: SelectColor()),
           ChangeNotifierProvider.value(value: Categories()),
           ChangeNotifierProvider.value(value: SliderList()),
           ChangeNotifierProvider.value(value: Auth()),

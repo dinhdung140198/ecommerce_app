@@ -56,21 +56,34 @@ class OrderItemProduct extends StatelessWidget {
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
                         SizedBox(height: 12),
-                        Wrap(
-                          spacing: 10,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Icon(
-                              UiIcons.calendar,
-                              color: Theme.of(context).focusColor,
-                              size: 20,
+                            Text('Color:',style: Theme.of(context).textTheme.caption,),
+                            Container(
+                              width: 10,
+                              height: 10,
+                              decoration: BoxDecoration(shape: BoxShape.circle,color: orderProduct!.color),
                             ),
-                            Icon(
-                              UiIcons.line_chart,
-                              color: Theme.of(context).focusColor,
-                              size: 20,
-                            ),
+                            SizedBox(width:5,),
+                            Text('Size: ${orderProduct!.size}',style: Theme.of(context).textTheme.caption,)
                           ],
                         ),
+                        // Wrap(
+                        //   spacing: 10,
+                        //   children: [
+                        //     Icon(
+                        //       UiIcons.calendar,
+                        //       color: Theme.of(context).focusColor,
+                        //       size: 20,
+                        //     ),
+                        //     Icon(
+                        //       UiIcons.line_chart,
+                        //       color: Theme.of(context).focusColor,
+                        //       size: 20,
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),

@@ -37,7 +37,10 @@ class _RatingBarWidgetState extends State<RatingBarWidget> {
           description: widget.product!.description,
           urlImage: widget.product!.urlImage,
           rate: _rating,
-          category: widget.product!.category);
+          category: widget.product!.category,
+          colors: widget.product!.colors,
+          sizes: widget.product!.sizes,
+          );
       Provider.of<Products>(context)
           .updateProduct(widget.product!.id!, productRate!);
     }
