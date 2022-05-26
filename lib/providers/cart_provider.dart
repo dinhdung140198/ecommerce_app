@@ -43,8 +43,8 @@ class Cart with ChangeNotifier {
               name: existingCartItem.name,
               price: existingCartItem.price,
               urlImage: existingCartItem.urlImage,
-              color: existingCartItem.color,
-              size: existingCartItem.size,
+              color: color??existingCartItem.color,
+              size: size??existingCartItem.size,
               quantity: existingCartItem.quantity! + 1));
     } else {
       _items.putIfAbsent(

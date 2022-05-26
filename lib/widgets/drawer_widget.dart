@@ -26,7 +26,7 @@ class DrawerWidget extends StatelessWidget {
               Navigator.of(context).pushNamed(AccountScreen.routeName);
             },
             child: UserAccountsDrawerHeader(
-              accountEmail: Text(user.email!),
+              accountEmail: Text(user!.email!),
               accountName: Text(user.name!,
                   style: Theme.of(context).textTheme.headline6),
               currentAccountPicture: CircleAvatar(
@@ -63,7 +63,7 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed(OrdersScreen.routeName);
+              Navigator.of(context).pushNamed(OrdersScreen.routeName,arguments: 0);
             },
             leading: Icon(
               UiIcons.inbox,

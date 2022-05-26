@@ -1,8 +1,8 @@
 import 'dart:convert';
-
-import 'package:ecommerce_app/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:ecommerce_app/models/product.dart';
 
 class Products with ChangeNotifier {
   List<Product> _items = [];

@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:ecommerce_app/models/http_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/user.dart';
+import 'package:ecommerce_app/models/http_exception.dart';
+
 
 class Auth with ChangeNotifier {
   String? _token;

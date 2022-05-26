@@ -116,15 +116,6 @@ class _InformationTabWigetState extends State<InformationTabWiget> {
                     'Select Color',
                     style: Theme.of(context).textTheme.bodyText1,
                   )),
-                  MaterialButton(
-                    onPressed: () {},
-                    padding: EdgeInsets.all(0),
-                    minWidth: 0,
-                    child: Text(
-                      'Clear All',
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                  )
                 ],
               ),
               SizedBox(height: 10),
@@ -157,15 +148,6 @@ class _InformationTabWigetState extends State<InformationTabWiget> {
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ),
-                  MaterialButton(
-                    onPressed: () {},
-                    padding: EdgeInsets.all(0),
-                    minWidth: 0,
-                    child: Text(
-                      'Clear All',
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                  )
                 ],
               ),
               SizedBox(height: 10),

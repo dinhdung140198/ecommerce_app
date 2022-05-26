@@ -44,7 +44,7 @@ class CheckoutDoneScreen extends StatelessWidget {
                 },
                 child: CircleAvatar(
                   backgroundImage: NetworkImage(
-                    user.avartar!),
+                    user!.avartar!),
                 ),
               )),
         ],
@@ -111,7 +111,7 @@ class CheckoutDoneScreen extends StatelessWidget {
               SizedBox(height: 25),
               FlatButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(OrdersScreen.routeName);
+                  Navigator.of(context).pushNamed(OrdersScreen.routeName,arguments: 0);
                 },
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
                 color: Theme.of(context).focusColor.withOpacity(0.15),

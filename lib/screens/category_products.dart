@@ -67,7 +67,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                   onTap: () =>
                       Navigator.of(context).pushNamed(AccountScreen.routeName),
                   child: CircleAvatar(
-                    backgroundImage: NetworkImage(user.avartar!),
+                    backgroundImage: NetworkImage(user!.avartar!),
                   ),
                 ),
               )

@@ -67,6 +67,7 @@ class MyApp extends StatelessWidget {
                   avartar: '',
                   gender: '',
                   address: '',
+                  phone: '',
                   dateOfBirth: DateTime.now(),
                 ),
               );
@@ -85,6 +86,7 @@ class MyApp extends StatelessWidget {
                           avartar: '',
                           gender: '',
                           address: '',
+                          phone: '',
                           dateOfBirth: DateTime.now(),
                         )
                       : previousUser.user);

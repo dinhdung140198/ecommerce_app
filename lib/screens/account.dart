@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/providers/auth.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
+import 'package:ecommerce_app/providers/orders.dart';
 import 'package:ecommerce_app/providers/user.dart';
 import 'package:ecommerce_app/screens/favorite_list.dart';
 import 'package:ecommerce_app/screens/orders.dart';
@@ -27,6 +28,7 @@ class _AccountScreenState extends State<AccountScreen> {
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
     final cartCount = Provider.of<Cart>(context, listen: false).itemCount;
+    final orders =Provider.of<Orders>(context,listen: false);
     return Scaffold(
       key: _scaffoldState,
       drawer: DrawerWidget(),
@@ -55,7 +57,7 @@ class _AccountScreenState extends State<AccountScreen> {
             height: 30,
             margin: EdgeInsets.only(top: 12.5, right: 12.5, bottom: 12.5),
             child: CircleAvatar(
-              backgroundImage: NetworkImage(user.avartar!),
+              backgroundImage: NetworkImage(user!.avartar!),
             ),
           )
         ],
@@ -196,13 +198,13 @@ class _AccountScreenState extends State<AccountScreen> {
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                         onPressed: () => Navigator.of(context)
-                            .pushNamed(OrdersScreen.routeName),
+                            .pushNamed(OrdersScreen.routeName,arguments: 0),
                       ),
                     ),
                   ),
                   ListTile(
                     onTap: () =>
-                        Navigator.of(context).pushNamed(OrdersScreen.routeName),
+                        Navigator.of(context).pushNamed(OrdersScreen.routeName,arguments: 1),
                     dense: true,
                     title: Text(
                       'Ship yet',
@@ -215,18 +217,18 @@ class _AccountScreenState extends State<AccountScreen> {
                           side:
                               BorderSide(color: Theme.of(context).focusColor)),
                       label: Text(
-                        '1',
+                        orders.orderShipYet.length.toString(),
                         style: TextStyle(color: Theme.of(context).focusColor),
                       ),
                     ),
                   ),
                   ListTile(
                     onTap: () {
-                      Navigator.of(context).pushNamed(OrdersScreen.routeName);
+                      Navigator.of(context).pushNamed(OrdersScreen.routeName,arguments: 2);
                     },
                     dense: true,
                     title: Text(
-                      'shipping',
+                      'Shipping',
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                     trailing: Chip(
@@ -236,14 +238,14 @@ class _AccountScreenState extends State<AccountScreen> {
                           side:
                               BorderSide(color: Theme.of(context).focusColor)),
                       label: Text(
-                        '5',
+                        orders.orderShipping.length.toString(),
                         style: TextStyle(color: Theme.of(context).focusColor),
                       ),
                     ),
                   ),
                   ListTile(
                     onTap: () {
-                      Navigator.of(context).pushNamed(OrdersScreen.routeName);
+                      Navigator.of(context).pushNamed(OrdersScreen.routeName,arguments: 3);
                     },
                     dense: true,
                     title: Text(
@@ -257,7 +259,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           side:
                               BorderSide(color: Theme.of(context).focusColor)),
                       label: Text(
-                        '3',
+                        orders.orderShipped.length.toString(),
                         style: TextStyle(color: Theme.of(context).focusColor),
                       ),
                     ),
@@ -424,13 +426,14 @@ class _AccountScreenState extends State<AccountScreen> {
                         ),
                         SizedBox(width: 10),
                         Text(
-                          'Ship Addresses',
+                          'Shipping Addresses:',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                       ],
                     ),
-                    trailing: Text(
+                    subtitle: Text(
                       user.address!,
+                      textAlign: TextAlign.end,
                       style: TextStyle(color: Theme.of(context).focusColor),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,

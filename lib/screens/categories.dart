@@ -57,7 +57,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             child: InkWell(
               onTap: () => Navigator.of(context).pushNamed(AccountScreen.routeName),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(user.avartar!),
+                backgroundImage: NetworkImage(user!.avartar!),
               ),
             ),
           )

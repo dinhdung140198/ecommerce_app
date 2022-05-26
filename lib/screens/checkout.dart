@@ -57,7 +57,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               onTap: () =>
                   Navigator.of(context).pushNamed(AccountScreen.routeName),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(user.avartar!),
+                backgroundImage: NetworkImage(user!.avartar!),
               ),
             ),
           )
@@ -120,13 +120,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                         SizedBox(width: 10),
                         Text(
-                          'Ship Addresses',
+                          'Shipping Addresses :',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                       ],
                     ),
-                    trailing: Text(
+                    subtitle: Text(
                       user.address!,
+                      textAlign: TextAlign.end,
                       style: TextStyle(color: Theme.of(context).focusColor),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,

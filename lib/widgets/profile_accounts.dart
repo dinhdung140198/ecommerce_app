@@ -1,8 +1,9 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
 import 'package:ecommerce_app/models/user.dart';
 import 'package:ecommerce_app/providers/user.dart';
-import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -40,7 +41,7 @@ class _ProfileAccountState extends State<ProfileAccount> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      _editedUser = Provider.of<UserProvider>(context).user;
+      _editedUser = Provider.of<UserProvider>(context).user!;
       _imageUrlController.text = _editedUser.avartar!;
     }
     _isInit = false;

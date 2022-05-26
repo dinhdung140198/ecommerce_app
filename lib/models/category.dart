@@ -12,4 +12,18 @@ class Category with ChangeNotifier {
     @required this.image,
     @required this.rate,
   });
+
+  Category.fromJson(String cateId, Map<dynamic, dynamic> map) {
+    id = cateId;
+    nameCategory = map['name'];
+    image = map['image'];
+    rate = map['rate'];
+  }
+  Map<dynamic, dynamic> toJson() {
+    return {
+      'name': nameCategory,
+      'image': image,
+      'rate': rate,
+    };
+  }
 }

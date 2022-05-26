@@ -22,15 +22,19 @@ class OrderItem {
     @required this.phone,
     @required this.email,
   });
-  OrderItem.fromJson(String orderId, Map<dynamic, dynamic> map) {
-    id = orderId;
-    amount = map['amount'];
-    shipAddress = map['shipAddress'];
-    phone = map['phone'];
-    email = map['email'];
-    orderStatus = map['orderStatus'];
-    products = (map['products'].map((product) => CartItem.fromJson(product)));
-    dateTime= DateTime.parse(map['dateTime']);
+  factory OrderItem.fromJson(String orderId, Map<String, dynamic> map) {
+    List<dynamic> list =map['products'];
+    List<CartItem> listProduct= list.map((cartItem) => CartItem.fromJson(cartItem)).toList();
+    return OrderItem(
+      id: orderId,
+      amount: map['amount'],
+      shipAddress: map['shipAddress'],
+      phone: map['phone'],
+      email: map['email'],
+      orderStatus: map['orderStatus'],
+      dateTime : DateTime.parse(map['dateTime']),
+      products: listProduct
+    );
   }
   Map<String, dynamic> toJson() {
     return {
@@ -39,7 +43,7 @@ class OrderItem {
       'shipAddress': shipAddress,
       'email': email,
       'phone': phone,
-      'orderStatus': 'shipping',
+      'orderStatus': 'yet',
       'products': products!
           .map((cp) => {
                 'id': cp.id,

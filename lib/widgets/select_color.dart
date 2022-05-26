@@ -12,7 +12,7 @@ class SelectColorWidget extends StatefulWidget {
 }
 
 class _SelectColorWidgetState extends State<SelectColorWidget> {
-  int? _value = 1;
+  int? _value = -1;
   @override
   Widget build(BuildContext context) {
     final selectColor = Provider.of<SelectColor>(context);

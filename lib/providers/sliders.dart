@@ -16,22 +16,15 @@ class SliderList with ChangeNotifier {
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as List;
-      // print(extractedData);
       if (extractedData == null) {
         return;
       }
       final List<Sliders> loadedData = [];
       extractedData.forEach((element) {
-        loadedData.add(
-          Sliders(
-            image: element['image'],
-            button: element['button'],
-            description: element['description'],
-          ),
+        loadedData.add(Sliders.fromJson(element)
         );
       });
       _listSlider = loadedData;
-      // print(loadedData);
       notifyListeners();
     } catch (error) {
       throw (error);

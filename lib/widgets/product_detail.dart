@@ -1,6 +1,4 @@
 import 'package:ecommerce_app/config/ui_icons.dart';
-import 'package:ecommerce_app/config/extention.dart';
-import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/providers/auth.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/products.dart';
@@ -11,6 +9,7 @@ import 'package:ecommerce_app/screens/account.dart';
 import 'package:ecommerce_app/widgets/details_tab_widget.dart';
 import 'package:ecommerce_app/widgets/information_tab_wiget.dart';
 import 'package:ecommerce_app/widgets/shopping_cart_button.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -114,9 +113,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
                   price: loadProduct.price!,
                   name: loadProduct.name!,
                   urlImage: loadProduct.urlImage!,
-                  color:
-                  // Colors.red,
-                  color.getColor,
+                  color: color.getColor,
                   size: size.getSize),
               child: Container(
                 child: Row(
@@ -148,9 +145,9 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
                           price: loadProduct.price!,
                           name: loadProduct.name!,
                           urlImage: loadProduct.urlImage!,
-                          color: 
-                          // Colors.red,
-                          color.getColor,
+                          color:
+                              // Colors.red,
+                              color.getColor,
                           size: size.getSize),
                       icon: Icon(Icons.add_circle_outline),
                       color: Theme.of(context).primaryColor,
@@ -189,7 +186,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget>
                     Navigator.of(context).pushNamed(AccountScreen.routeName);
                   },
                   child: CircleAvatar(
-                    backgroundImage: NetworkImage(user.avartar!),
+                    backgroundImage: NetworkImage(user!.avartar!),
                   ),
                 ),
                 margin: EdgeInsets.only(top: 12.5, bottom: 12.5, right: 20),

@@ -1,6 +1,6 @@
 import 'package:ecommerce_app/providers/auth.dart';
-import 'package:email_auth/email_auth.dart';
 
+import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +15,6 @@ class ChangePasswordWidget extends StatefulWidget {
 class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
   final TextEditingController _otpController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  // final _passwordFocusNode = FocusNode();
   GlobalKey<FormState> _profileAccountFormKey = GlobalKey<FormState>();
   String? _password;
   EmailAuth? emailAuth;
@@ -52,7 +51,6 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
   void verify() {
     bool result = emailAuth!.validateOtp(
         recipientMail: widget.email!,
-        // _emailController.value.text,
         userOtp: _otpController.value.text);
     if (result) {
       setState(() {
@@ -66,7 +64,6 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
   void sendOtp() async {
     bool result = await emailAuth!.sendOtp(
         recipientMail: widget.email!,
-        //  _emailController.value.text,
         otpLength: 5);
     if (result) {
       setState(() {
@@ -97,22 +94,6 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
           key: _profileAccountFormKey,
           child: Column(
             children: [
-              // TextFormField(
-              //   controller: _emailController,
-              //   style: TextStyle(color: Theme.of(context).hintColor),
-              //   keyboardType: TextInputType.text,
-              //   onFieldSubmitted: (value) {
-              //    sendOtp();
-              //   },
-              //   decoration: getInputDecoration(
-              //       hintText: widget.email, labelText: 'Email'),
-              //   validator: (value) {
-              //     if (value!.isEmpty || !value.contains('@')) {
-              //       return 'Invalid email';
-              //     }
-              //     return null;
-              //   },
-              // ),
               ListTile(
                 dense: true,
                 title: Text(

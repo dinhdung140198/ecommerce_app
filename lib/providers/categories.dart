@@ -29,11 +29,7 @@ class Categories with ChangeNotifier {
       final List<Category> loadCategories = [];
       extractedData.forEach((cateId, cateVal) {
         loadCategories.add(
-          Category(
-              id: cateId,
-              nameCategory: cateVal['name'],
-              image: cateVal['image'],
-              rate: cateVal['rate']),
+          Category.fromJson(cateId, cateVal)
         );
       });
       _categoryList = loadCategories;
@@ -70,11 +66,8 @@ class Categories with ChangeNotifier {
       final url = Uri.parse(
           'https://flutter-update-89c84-default-rtdb.firebaseio.com/categories/$id.json');
       await http.patch(url,
-          body: json.encode({
-            'name': newProduct.nameCategory,
-            'image': newProduct.image,
-            'rate': newProduct.rate,
-          }));
+          body: json.encode(newProduct.toJson()
+              ));
       _categoryList[prodIndex] = newProduct;
     } else {
       print('Category List is empty');

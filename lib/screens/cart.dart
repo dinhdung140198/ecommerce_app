@@ -41,7 +41,7 @@ class CartScreen extends StatelessWidget {
               onTap: () {Navigator.of(context).pushNamed(AccountScreen.routeName);},
               child: CircleAvatar(
                 backgroundImage: NetworkImage(
-                    user.avartar!),
+                    user!.avartar!),
               ),
             ),
           )
@@ -185,7 +185,7 @@ class CartScreen extends StatelessWidget {
                               '\$${cart.totalAmount}',
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline4!
+                                  .headline5!
                                   .merge(TextStyle(
                                       color: Theme.of(context).primaryColor)),
                             ),

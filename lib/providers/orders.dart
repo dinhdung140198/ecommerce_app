@@ -1,13 +1,15 @@
 import 'dart:convert';
-
-import 'package:ecommerce_app/config/extention.dart';
-import 'package:ecommerce_app/models/cart.dart';
-import 'package:ecommerce_app/models/order.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'package:ecommerce_app/models/cart.dart';
+import 'package:ecommerce_app/models/order.dart';
+
 class Orders with ChangeNotifier {
   List<OrderItem> _order = [];
+  List<OrderItem> _orderShipYet = [];
+  List<OrderItem> _orderShipping = [];
+  List<OrderItem> _orderShipped = [];
   final String? authToken;
   final String? userId;
 
@@ -17,74 +19,47 @@ class Orders with ChangeNotifier {
     return [..._order];
   }
 
-  Future<void> fetchAndSetOrders(String orderStatus ) async {
+  List<OrderItem> get orderShipYet {
+    return [..._orderShipYet];
+  }
+
+  List<OrderItem> get orderShipping {
+    return [..._orderShipping];
+  }
+
+  List<OrderItem> get orderShipped {
+    return [..._orderShipped];
+  }
+
+  Future<void> fetchAndSetOrders() async {
     final url = Uri.parse(
         'https://flutter-update-89c84-default-rtdb.firebaseio.com/orders/$userId.json?auth=$authToken');
     final response = await http.get(
       url,
     );
     final List<OrderItem> loadOrder = [];
+    final List<OrderItem> loadOrderShipYet = [];
+    final List<OrderItem> loadOrderShipped = [];
+    final List<OrderItem> loadOrdershipping = [];
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
     if (extractedData == null) {
       return;
     }
     extractedData.forEach((orderId, orderData) {
-      if (orderStatus == 'All') {
-        loadOrder.add(
-          // OrderItem.fromJson(orderId, orderData)
-          OrderItem(
-            id: orderId,
-            amount: orderData['amount'],
-            shipAddress: orderData['shipAddress'],
-            phone: orderData['phone'],
-            email: orderData['email'],
-            orderStatus: orderData['orderStatus'],
-            products: (orderData['products'] as List<dynamic>)
-                .map(
-                  (item) => CartItem(
-                      id: item['id'],
-                      productId: item['productId'],
-                      name: item['title'],
-                      price: item['price'],
-                      quantity: item['quantity'],
-                      urlImage: item['urlImage'],
-                      size: item['size'],
-                      color: HexColor.fromHex(item['color'])),
-                )
-                .toList(),
-            dateTime: DateTime.parse(orderData['dateTime']),
-          ),
-        );
-      } else {
-        if (orderData['orderStatus'] == orderStatus) {
-          loadOrder.add(
-            // OrderItem.fromJson(orderId, orderData)
-            OrderItem(
-              id: orderId,
-              amount: orderData['amount'],
-              shipAddress: orderData['shipAddress'],
-              phone: orderData['phone'],
-              email: orderData['email'],
-              orderStatus: orderData['orderStatus'],
-              products: (orderData['products'] as List<dynamic>)
-                  .map(
-                    (item) => CartItem(
-                        id: item['id'],
-                        productId: item['productId'],
-                        name: item['title'],
-                        price: item['price'],
-                        quantity: item['quantity'],
-                        urlImage: item['urlImage'],
-                        size: item['size'],
-                        color: HexColor.fromHex(item['color'])),
-                  )
-                  .toList(),
-              dateTime: DateTime.parse(orderData['dateTime']),
-            ),
-          );
-        }
+      if (orderData['orderStatus'] == 'yet') {
+        loadOrderShipYet.add(OrderItem.fromJson(orderId, orderData));
       }
+      if (orderData['orderStatus'] == 'shipping') {
+        loadOrdershipping.add(OrderItem.fromJson(orderId, orderData));
+      }
+      if (orderData['orderStatus'] == 'shipped') {
+        loadOrderShipped.add(OrderItem.fromJson(orderId, orderData));
+      }
+      loadOrder.add(OrderItem.fromJson(orderId, orderData));
     });
+    _orderShipped = loadOrderShipped.reversed.toList();
+    _orderShipYet = loadOrderShipYet.reversed.toList();
+    _orderShipping = loadOrdershipping.reversed.toList();
     _order = loadOrder.reversed.toList();
     notifyListeners();
   }
@@ -120,25 +95,3 @@ class Orders with ChangeNotifier {
     notifyListeners();
   }
 }
-
-
-// {
-//           'amount': total,
-//           'dateTime': timeStamp.toIso8601String(),
-//           'shipAddress': shipAddress,
-//           'email': email,
-//           'phone': phone,
-//           'orderStatus': 'shipping',
-//           'products': cartProduct
-//               .map((cp) => {
-//                     'id': cp.id,
-//                     'productId': cp.productId,
-//                     'title': cp.name,
-//                     'quantity': cp.quantity,
-//                     'price': cp.price,
-//                     'urlImage': cp.urlImage,
-//                     'color': cp.color!.toHex(),
-//                     'size': cp.size
-//                   })
-//               .toList(),
-//         }

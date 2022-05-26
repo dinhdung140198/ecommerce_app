@@ -11,7 +11,7 @@ class SelectSizeWidget extends StatefulWidget {
 }
 
 class _SelectSizeWidgetState extends State<SelectSizeWidget> {
-  int? _selected = 2;
+  int? _selected = -1;
   @override
   Widget build(BuildContext context) {
     final selectSize= Provider.of<SelectSize>(context);

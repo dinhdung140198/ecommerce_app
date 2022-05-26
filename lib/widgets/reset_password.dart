@@ -1,6 +1,6 @@
 import 'package:ecommerce_app/providers/auth.dart';
-import 'package:email_auth/email_auth.dart';
 
+import 'package:email_auth/email_auth.dart';
 // import 'package:email_auth_example/auth.config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
