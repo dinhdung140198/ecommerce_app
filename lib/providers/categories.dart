@@ -23,9 +23,6 @@ class Categories with ChangeNotifier {
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      if (extractedData == null) {
-        return null;
-      }
       final List<Category> loadCategories = [];
       extractedData.forEach((cateId, cateVal) {
         loadCategories.add(

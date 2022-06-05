@@ -42,9 +42,6 @@ class Orders with ChangeNotifier {
     final List<OrderItem> loadOrderShipped = [];
     final List<OrderItem> loadOrdershipping = [];
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
-    if (extractedData == null) {
-      return;
-    }
     extractedData.forEach((orderId, orderData) {
       if (orderData['orderStatus'] == 'yet') {
         loadOrderShipYet.add(OrderItem.fromJson(orderId, orderData));

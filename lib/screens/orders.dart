@@ -133,7 +133,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           ),
         ),
         body: FutureBuilder(
-            future: Provider.of<Orders>(context, listen: false)
+            future: Provider.of<Orders>(context,listen: false)
                 .fetchAndSetOrders(),
             builder: (ctx, dataSnapshot) {
               if (dataSnapshot.connectionState == ConnectionState.waiting) {
