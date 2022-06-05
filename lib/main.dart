@@ -25,8 +25,6 @@ import 'package:ecommerce_app/config/app_config.dart' as config;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
-
 void main() {
   runApp(MyApp());
 }
@@ -38,10 +36,24 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider.value(value: SelectSize()),
           ChangeNotifierProvider.value(value: SelectColor()),
-          ChangeNotifierProvider.value(value: Categories()),
-          ChangeNotifierProvider.value(value: SliderList()),
           ChangeNotifierProvider.value(value: Auth()),
           ChangeNotifierProvider.value(value: Cart()),
+          ChangeNotifierProxyProvider<Auth, Categories>(
+            create: (_) {
+              return Categories('');
+            },
+            update: (ctx, auth, _) {
+              return Categories(auth.token);
+            },
+          ),
+          ChangeNotifierProxyProvider<Auth, SliderList>(
+            create: (_) {
+              return SliderList('');
+            },
+            update: (ctx, auth, _) {
+              return SliderList(auth.token);
+            },
+          ),
           ChangeNotifierProxyProvider<Auth, Products>(create: (_) {
             return Products('', '', []);
           }, update: (ctx, auth, previousProducts) {
@@ -77,7 +89,7 @@ class MyApp extends StatelessWidget {
                   auth.token,
                   auth.userId,
                   previousUser == null
-                      ? 
+                      ?
                       // UserModel.init()
                       UserModel.advanced(
                           id: '',

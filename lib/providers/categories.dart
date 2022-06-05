@@ -8,6 +8,10 @@ import 'package:ecommerce_app/models/product.dart';
 class Categories with ChangeNotifier {
   List<Category> _categoryList = [];
   List<Product> _productList = [];
+  final String? authToken;
+
+  Categories(this.authToken);
+  
 
   List<Category> get categoryList {
     return [..._categoryList];
@@ -19,7 +23,7 @@ class Categories with ChangeNotifier {
 
   Future<void> fetchCategory() async {
     final url = Uri.parse(
-        'https://flutter-update-89c84-default-rtdb.firebaseio.com/categories.json');
+        'https://flutter-update-89c84-default-rtdb.firebaseio.com/categories.json?auth=$authToken');
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -38,7 +42,7 @@ class Categories with ChangeNotifier {
 
   Future<void> getProductByCategories(String category) async {
     final url = Uri.parse(
-        'https://flutter-update-89c84-default-rtdb.firebaseio.com/products.json');
+        'https://flutter-update-89c84-default-rtdb.firebaseio.com/products.json?auth=$authToken ');
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
