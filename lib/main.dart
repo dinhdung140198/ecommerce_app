@@ -148,7 +148,9 @@ class MyApp extends StatelessWidget {
               textTheme: TextTheme(
                 button: TextStyle(color: Colors.white),
                 caption: TextStyle(
-                    fontSize: 12.0, color: config.Colors().secondColor(0.6)),
+                  fontSize: 12.0,
+                  color: config.Colors().secondColor(0.6),
+                ),
               ),
             ),
             home: auth.isAuth
