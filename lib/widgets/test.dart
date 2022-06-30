@@ -380,3 +380,367 @@ class _ProfileAccountState extends State<ProfileAccount> {
 //         });
 //       }
 //     }
+
+
+class CartScreen extends StatelessWidget {
+  static const routeName = '/cart';
+  const CartScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final cart = Provider.of<Cart>(context);
+    final user =Provider.of<UserProvider>(context).user;
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(
+            UiIcons.return_icon,
+            color: Theme.of(context).hintColor,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          'Cart',
+          style: Theme.of(context).textTheme.headline4,
+        ),
+        actions: [
+          Container(
+            width: 30,
+            height: 30,
+            margin: EdgeInsets.only(top: 12.5, bottom: 12.5, right: 20),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(300),
+              onTap: () {Navigator.of(context).pushNamed(AccountScreen.routeName);},
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(
+                    user!.avartar!),
+              ),
+            ),
+          )
+        ],
+      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Container(
+            margin: EdgeInsets.only(bottom: 150),
+            padding: EdgeInsets.only(bottom: 15),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 20, right: 10),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(vertical: 0),
+                      leading: Icon(
+                        UiIcons.shopping_cart,
+                        color: Theme.of(context).hintColor,
+                      ),
+                      title: Text(
+                        'Shopping Cart',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      subtitle: Text(
+                        'Verify your quantity and click checkout',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    ),
+                  ),
+                  ListView.separated(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemBuilder: (ctx, i) => CartItemWidget(
+                          id: cart.items.values.toList()[i].id,
+                          productId: cart.items.keys.toList()[i],
+                          name: cart.items.values.toList()[i].name,
+                          quantity: cart.items.values.toList()[i].quantity,
+                          price: cart.items.values.toList()[i].price,
+                          color: cart.items.values.toList()[i].color,
+                          size: cart.items.values.toList()[i].size,
+                          urlImage: cart.items.values.toList()[i].urlImage),
+                      separatorBuilder: (context, index) {
+                        return SizedBox(height: 15);
+                      },
+                      itemCount: cart.items.length)
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+              bottom: 1,
+              child: Container(
+                height: 170,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        topLeft: Radius.circular(20)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Theme.of(context).focusColor.withOpacity(0.15),
+                          offset: Offset(0, -2),
+                          blurRadius: 5.0)
+                    ]),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width - 40,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                              child: Text(
+                            'subtotal',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          )),
+                          Text(
+                            '\$${cart.totalAmount}',
+                            style: Theme.of(context).textTheme.subtitle1,
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: Text(
+                            'TAX(10%)',
+                            style: Theme.of(context).textTheme.subtitle1,
+                          )),
+                          Text(
+                            '\$10',
+                            style: Theme.of(context).textTheme.bodyText2,
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Stack(
+                        fit: StackFit.loose,
+                        alignment: AlignmentDirectional.centerEnd,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width - 40,
+                            child: FlatButton(
+                              onPressed: () {
+                                Navigator.of(context).pushNamed(CheckoutScreen.routeName);
+                              },
+                              padding: EdgeInsets.symmetric(vertical: 14),
+                              color: Theme.of(context).accentColor,
+                              shape: StadiumBorder(),
+                              child: Text(
+                                'Checkout',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
+                              '\$${cart.totalAmount}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5!
+                                  .merge(TextStyle(
+                                      color: Theme.of(context).primaryColor)),
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 10,)
+                    ],
+                  ),
+                ),
+              ))
+        ],
+      ),
+    );
+  }
+}
+
+class CartItemWidget extends StatelessWidget {
+  final String? id;
+  final String? productId;
+  final String? name;
+  final int? quantity;
+  final double? price;
+  final Color? color;
+  final String? size;
+  final String? urlImage;
+  const CartItemWidget(
+      {Key? key,
+      @required this.id,
+      @required this.productId,
+      @required this.name,
+      @required this.quantity,
+      @required this.price,
+      @required this.color,
+      @required this.size,
+      @required this.urlImage})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final cart = Provider.of<Cart>(context);
+    return Dismissible(
+      key: ValueKey(id),
+      background: Container(
+        color: Theme.of(context).errorColor,
+        child: Icon(
+          Icons.delete,
+          color: Theme.of(context).primaryColor,
+          size: 40,
+        ),
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.only(right: 20),
+        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+      ),
+      direction: DismissDirection.endToStart,
+      confirmDismiss: (directon) {
+        return showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text('Are Your sure?'),
+            content: Text('Do you want to remove ${name} from the cart?'),
+            actions: [
+              FlatButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop(false);
+                  },
+                  child: Text('No')),
+              FlatButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop(true);
+                  },
+                  child: Text('Yes')),
+            ],
+          ),
+        );
+      },
+      onDismissed: (direction) =>
+          Provider.of<Cart>(context, listen: false).removeItem(productId!),
+      child: InkWell(
+        splashColor: Theme.of(context).accentColor,
+        focusColor: Theme.of(context).accentColor,
+        highlightColor: Theme.of(context).primaryColor,
+        onTap: () {
+          Navigator.of(context).pushNamed(ProductDetailWidget.routeName,
+              arguments: this.productId);
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+          decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor.withOpacity(0.9),
+              boxShadow: [
+                BoxShadow(
+                    color: Theme.of(context).focusColor.withOpacity(0.1),
+                    blurRadius: 5,
+                    offset: Offset(0, 2))
+              ]),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Hero(
+                  tag: id!,
+                  child: Container(
+                    height: 90,
+                    width: 90,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
+                        ),
+                        image: DecorationImage(
+                            image: NetworkImage(urlImage!), fit: BoxFit.cover)),
+                  )),
+              SizedBox(
+                width: 15,
+              ),
+              Flexible(
+                  child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          name!,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                        Text(
+                          '\$$price',
+                          style: Theme.of(context).textTheme.headline5,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text('Color:',style: Theme.of(context).textTheme.subtitle1,),
+                            Container(
+                              width: 15,
+                              height: 15,
+                              decoration: BoxDecoration(shape: BoxShape.circle,color: color),
+                            ),
+                            SizedBox(width: 15,),
+                            Text('Size: $size',style: Theme.of(context).textTheme.subtitle1,)
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  Column(
+                    //  mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      IconButton(
+                        onPressed: () => cart.addItem(productId: productId!),
+                        iconSize: 30,
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        icon: Icon(Icons.add_circle_outline),
+                        color: Theme.of(context).hintColor,
+                      ),
+                      Text(quantity.toString()),
+                      IconButton(
+                        onPressed: () => cart.removeSingleItem(productId!),
+                        iconSize: 30,
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        icon: Icon(Icons.remove_circle_outline),
+                        color: Theme.of(context).hintColor,
+                      ),
+                    ],
+                  ),
+                ],
+              ))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+// https://stackoverflow.com/questions/50129761/flutter-hold-splash-screen-for-3-seconds-how-to-implement-splash-screen-in-flut
+// ReorderableListView

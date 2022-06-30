@@ -93,7 +93,6 @@ class Cart with ChangeNotifier {
   }
 }
 
-
   // Future<void> fetchCartProduct() async{
   //   var url = Uri.parse('https://flutter-update-89c84-default-rtdb.firebaseio.com/cart/$userId.json?$authToken');
   //   try {
